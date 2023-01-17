@@ -1,0 +1,21 @@
+{
+    "files.associations": {
+        "*.inc": "cpp",
+        "*.tcc": "cpp",
+        "list": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "fstream": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "streambuf": "cpp",
+        "functional": "cpp",
+        "core": "cpp"
+    },
+    "jupyter.kernels.filter": [
+        {
+            "path": "~\\AppData\\Local\\Microsoft\\WindowsApps\\python3.10.exe",
+            "type": "pythonEnvironment"
+        }
+    ]
+}

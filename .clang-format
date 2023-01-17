@@ -1,0 +1,64 @@
+---
+Language: Cpp
+BasedOnStyle: WebKit
+
+AlwaysBreakTemplateDeclarations: Yes
+BreakBeforeBinaryOperators: NonAssignment
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterCaseLabel:  false
+  AfterClass:      false
+  AfterControlStatement: Never
+  AfterEnum:       false
+  AfterFunction:   false
+  AfterNamespace:  false
+  AfterObjCDeclaration: false
+  AfterStruct:     false
+  AfterUnion:      false
+  AfterExternBlock: false
+  BeforeCatch:     false
+  BeforeElse:      false
+  BeforeLambdaBody: false
+  BeforeWhile:     false
+  IndentBraces:    false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+
+#BreakBeforeConceptDeclarations: Always
+BreakBeforeConceptDeclarations: true
+BreakConstructorInitializers: AfterColon
+BreakInheritanceList: AfterColon
+
+# TODO: maybe regroup
+IncludeBlocks: Preserve
+
+IndentAccessModifiers: true
+IndentCaseLabels: true
+
+#InsertBraces: false
+#RemoveBracesLLVM: false
+
+MaxEmptyLinesToKeep: 4
+
+#PackConstructorInitializers: Never
+AllowAllConstructorInitializersOnNextLine: false
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+ConstructorInitializerIndentWidth: 0
+
+PointerAlignment: Right
+ReferenceAlignment: Left
+
+#RequiresClausePosition: OwnLine
+
+#SeperateDefinitionBlocks: Leave
+
+SpaceAfterCStyleCast: true
+SpaceAfterTemplateKeyword: false
+SpaceBeforeCtorInitializerColon: false
+SpaceInEmptyBlock: false
+SpacesInContainerLiterals: false
+
+TabWidth: 4
+...
