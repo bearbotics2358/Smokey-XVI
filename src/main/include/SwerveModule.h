@@ -9,7 +9,6 @@
 #include <frc/AnalogInput.h>
 #include <frc/controller/PIDController.h>
 #include <math.h>
-#include <rev/CANSparkMax.h>
 
 class SwerveModule // Handles steering and driving of each Swerve Module
 {
@@ -71,10 +70,10 @@ class SwerveModule // Handles steering and driving of each Swerve Module
         static double motorTicksToMeters(double motorTicks);
 
         TalonFX driveMotor;
-        rev::CANSparkMax steerMotor;
+        TalonFX steerMotor;
 
         TalonFXSensorCollection driveEnc; // built in TalonFX sensors
-        rev::SparkMaxRelativeEncoder steerEncNEO;
+        TalonFXSensorCollection steerEncFalcon;
         AbsoluteEncoder absSteerEnc;
 
         frc2::PIDController steerPID;

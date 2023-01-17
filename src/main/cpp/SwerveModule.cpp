@@ -5,9 +5,9 @@
 
 SwerveModule::SwerveModule(int driveID, int steerID, AbsoluteEncoder&& absEncoder):
 driveMotor(driveID),
-steerMotor(steerID, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
+steerMotor(steerID),
 driveEnc(driveMotor),
-steerEncNEO(steerMotor.GetEncoder()),
+steerEncFalcon(steerMotor),
 absSteerEnc(std::move(absEncoder)),
 steerPID(0, 0, 0) {
     // by default this selects the ingetrated sensor
@@ -44,7 +44,7 @@ void SwerveModule::resetSteerEncoder() {
 }
 
 double SwerveModule::getRelativeAngle() {
-    float temp = steerEncNEO.GetPosition();
+    float temp = steerEncFalcon.GetIntegratedSensorPosition();
     float angle = (fmod(temp, TICKS_STEERING) / TICKS_STEERING) * 360; // convert to angle in degrees
 
     float adjusted = angle;
@@ -70,7 +70,7 @@ void SwerveModule::goToPosition(float meters) {
 
 void SwerveModule::steerToAng(float degrees) {
     float speed = std::clamp(steerPID.Calculate(getAngle(), degrees) / 270.0, -0.5, 0.5);
-    steerMotor.Set(speed);
+    steerMotor.Set(TalonFXControlMode::Velocity, misc::rpmToTalonVel(speed)); //This is a guess, I don't really know how steerToAng works
 }
 
 void SwerveModule::setDrivePercent(float percent) {
@@ -78,7 +78,7 @@ void SwerveModule::setDrivePercent(float percent) {
 }
 
 void SwerveModule::setSteerPercent(float percent) {
-    steerMotor.Set(percent);
+    steerMotor.Set(TalonFXControlMode::PercentOutput, percent);
 }
 
 float SwerveModule::setDriveSpeed(float speed) {
