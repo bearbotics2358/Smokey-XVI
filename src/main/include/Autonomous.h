@@ -3,8 +3,6 @@
 #pragma once
 
 // #include <frc/WPILib.h>
-#include "BallShooter.h"
-#include "Collector.h"
 #include "SwerveDrive.h"
 #include <JrimmyGyro.h>
 #include <Prefs.h>
@@ -101,7 +99,7 @@ enum class A5V {
 
 class Autonomous {
     public:
-        Autonomous(JrimmyGyro *Gyro, frc::Joystick *XboxController, SwerveDrive *SwerveDrive, BallShooter *BallShooter, Collector *Collector);
+        Autonomous(JrimmyGyro *Gyro, frc::Joystick *XboxController, SwerveDrive *SwerveDrive);
 
         void DecidePath();
         const char *GetCurrentPath();
@@ -136,11 +134,6 @@ class Autonomous {
 
         void SpoolShooter(float speed); // Spools up shooter ahead of time to improve efficiency
 
-        // deploy collector and spool motoer
-        void CollectorDown();
-        // raise collector and stop motor
-        void CollectorUp();
-
         bool IndexAndShoot(float speed); // Shooting a ball when the shooter is spinning fast enough
 
         // Drives in direction at speed for distance. If going straight backwards, set angle to 180, not dist as a negative
@@ -153,8 +146,6 @@ class Autonomous {
         JrimmyGyro *a_Gyro;
         SwerveDrive *a_SwerveDrive;
         frc::Joystick *a_Xbox;
-        BallShooter *a_BallShooter;
-        Collector *a_Collector;
 
         AutoState0 a_AutoState0;
         AutoState1 a_AutoState1;

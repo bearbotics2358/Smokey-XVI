@@ -9,38 +9,6 @@
 // uncomment to enable the new swerve
 //#define NEW_SWERVE
 
-/*======== CLIMBER CONSTANTS ========*/
-
-#define CLIMBER_MOTOR_ID 24
-#define CLIMBER_PUSH_SOLENOID_MODULE 10
-#define CLIMBER_PULL_SOLENOID_MODULE 11
-#define CLIMBER_MOTOR_PERCENT_OUTPUT 1.0
-#define CLIMBER_MOTOR_SPEED 1000 // the desired speed for the arm to rise (mm/s)
-// 12:1 gearbox between motor and thunderhex (winch)
-#define CLIMBER_MM_PER_TICK (0.026 / 12.0) // how many mm the climber arm rises every motor tick
-#define CLIMBER_TICKS_PER_MM (3.8347 * 12.0) // how many ticks for every mm the climber arm rises
-// port of the climber limit switch
-#define CLIMBER_SWITCH_PORT 0
-
-/*======== SHOOTER CONSTANTS ========*/
-
-#define LEFT_SHOOTER_ID 26
-#define RIGHT_SHOOTER_ID 27
-// desired shooter speed to shoot from the wall in rpm
-#define LOW_SHOOTER_SPEED 1000
-#define SHOOTER_SPEED 2000
-// how close we have to be to shooter speed to start indexing in balls
-#define SHOOTER_TOLERANCE 0.98
-
-/*======== COLLECTOR CONSTANTS ========*/
-
-#define COLLECTOR_MOTOR_ID 21
-#define INDEXER_MOTOR_ID 22
-#define COLLECTOR_MOTOR_PERCENT_OUTPUT 1.0
-#define INDEXER_MOTOR_PERCENT_OUTPUT 0.75
-#define COLLECTOR_PUSH_SOLENOID_MODULE 8
-#define COLLECTOR_PULL_SOLENOID_MODULE 9
-
 
 /*====== SWERVE MOTOR CONTROLLER IDS ======*/
 #define FL_DRIVE_ID 1

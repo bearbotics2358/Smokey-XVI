@@ -1,7 +1,6 @@
 
 #include "Robot.h"
 #include "Autonomous.h"
-#include "Climber.h"
 #include "Prefs.h"
 #include "buttons.h"
 #include "misc.h"
@@ -18,13 +17,9 @@ a_FRModule(FR_DRIVE_ID, FR_STEER_ID, AbsoluteEncoder(FR_SWERVE_ABS_ENC_PORT, FR_
 a_BLModule(BL_DRIVE_ID, BL_STEER_ID, AbsoluteEncoder(BL_SWERVE_ABS_ENC_PORT, BL_SWERVE_ABS_ENC_MIN_VOLTS, BL_SWERVE_ABS_ENC_MAX_VOLTS, BL_SWERVE_ABS_ENC_OFFSET / 360)),
 a_BRModule(BR_DRIVE_ID, BR_STEER_ID, AbsoluteEncoder(BR_SWERVE_ABS_ENC_PORT, BR_SWERVE_ABS_ENC_MIN_VOLTS, BR_SWERVE_ABS_ENC_MAX_VOLTS, BR_SWERVE_ABS_ENC_OFFSET / 360)),
 a_SwerveDrive(a_FLModule, a_FRModule, a_BLModule, a_BRModule, a_Gyro),
-a_Autonomous(&a_Gyro, &a_XboxController, &a_SwerveDrive, &a_Shooter, &a_Collector),
+a_Autonomous(&a_Gyro, &a_XboxController, &a_SwerveDrive),
 joystickOne(JOYSTICK_PORT),
 a_XboxController(XBOX_CONTROLLER),
-a_Shooter(LEFT_SHOOTER_ID, RIGHT_SHOOTER_ID),
-a_Collector(COLLECTOR_MOTOR_ID, INDEXER_MOTOR_ID, COLLECTOR_PUSH_SOLENOID_MODULE, COLLECTOR_PULL_SOLENOID_MODULE),
-a_LimitSwitch(CLIMBER_SWITCH_PORT),
-a_Climber(CLIMBER_MOTOR_ID, CLIMBER_PUSH_SOLENOID_MODULE, CLIMBER_PULL_SOLENOID_MODULE),
 a_CompressorController(),
 // NEEDED A PORT, THIS IS PROBABLY WRONG, PLEASE FIX IT LATER
 //  handler("169.254.179.144", "1185", "data"),
@@ -67,16 +62,8 @@ void Robot::RobotPeriodic() {
     frc::SmartDashboard::PutNumber("Robot y Position", a_SwerveDrive.getPosition().y());
 
     frc::SmartDashboard::PutBoolean("Slow speed enabled", a_slowSpeed);
-    frc::SmartDashboard::PutBoolean("Collector Solenoid Toggle: ", a_Collector.getValue());
 
     frc::SmartDashboard::PutNumber("Tank Pressure", a_CompressorController.getTankPressure());
-
-    frc::SmartDashboard::PutNumber("Current Shooter RPM", a_Shooter.getSpeed());
-
-    frc::SmartDashboard::PutNumber("Climber Arm Height (mm)", a_Climber.getHeight());
-    frc::SmartDashboard::PutNumber("Climber Arm Speed (mm/s)", a_Climber.getSpeed());
-    frc::SmartDashboard::PutNumber("Climber Arm Ticks Raised", a_Climber.getTicks());
-    frc::SmartDashboard::PutNumber("Climber Limit Switch Pressed", a_LimitSwitch.limitSwitchPressed());
 }
 
 void Robot::DisabledInit() {
@@ -90,13 +77,10 @@ void Robot::DisabledPeriodic() {
 }
 
 void Robot::EnabledInit() {
-    a_Collector.resetSolenoid();
-    a_Climber.resetClimber();
+    
 }
 
 void Robot::EnabledPeriodic() {
-    a_shooterVision.update();
-    a_ballTracker.update();
     a_CompressorController.update();
 }
 
@@ -127,66 +111,6 @@ void Robot::TeleopInit() {
 // main loop
 void Robot::TeleopPeriodic() {
     EnabledPeriodic();
-
-    /* =-=-=-=-=-=-=-=-=-=-= Climber Controls =-=-=-=-=-=-=-=-=-=-= */
-
-    if (joystickOne.GetRawButton(DriverButton::Button8)) { // arms up
-        a_Climber.setArmSpeed(CLIMBER_MOTOR_PERCENT_OUTPUT);
-    } else if (joystickOne.GetRawButton(DriverButton::Button7)) { // arms down
-        a_Climber.setArmSpeed(-CLIMBER_MOTOR_PERCENT_OUTPUT);
-    } else {
-        a_Climber.setArmSpeed(0);
-    }
-    if (joystickOne.GetRawButtonPressed(DriverButton::Button6)) {
-        a_Climber.setSolenoid(true); // arms out
-    }
-    if (joystickOne.GetRawButtonPressed(DriverButton::Button4)) {
-        a_Climber.setSolenoid(false); // arms in
-    }
-
-
-    /* Limit Switch Automatic Climb
-
-    if (a_LimitSwitch.limitSwitchPressed() == true){
-        a_Climber.setSolenoid(frc::DoubleSolenoid::Value::kReverse);
-    }
-
-    */
-
-
-
-    /* =-=-=-=-=-=-=-=-=-=-= Shooter Controls =-=-=-=-=-=-=-=-=-=-= */
-
-    if (joystickOne.GetRawButton(DriverButton::ThumbButton)) {
-        a_Collector.setIndexerMotorSpeed(INDEXER_MOTOR_PERCENT_OUTPUT);
-    } else {
-        a_Collector.setIndexerMotorSpeed(0);
-    }
-    if (joystickOne.GetRawButton(DriverButton::Button11)) {
-        a_Shooter.stop();
-    }
-    if (joystickOne.GetRawButton(DriverButton::Button12)) {
-        a_Shooter.setSpeed(SHOOTER_SPEED);
-    }
-    if (joystickOne.GetRawButton(DriverButton::Button9)) {
-        a_Shooter.setSpeed(LOW_SHOOTER_SPEED);
-    }
-
-    /* =-=-=-=-=-=-=-=-=-=- Collector Controls -=-=-=-=-=-=-=-=-=-= */
-
-    if (a_XboxController.GetRawButtonPressed(OperatorButton::LeftBumper)) {
-        a_Collector.setSolenoid(false); // collecter in
-    }
-    if (a_XboxController.GetRawButtonPressed(OperatorButton::RightBumper)) {
-        a_Collector.setSolenoid(true); // collecter out
-    }
-    if (a_XboxController.GetRawButton(OperatorButton::Y)) {
-        a_Collector.setCollectorMotorSpeed(COLLECTOR_MOTOR_PERCENT_OUTPUT);
-    } else if (a_XboxController.GetRawButton(OperatorButton::X)) {
-        a_Collector.setCollectorMotorSpeed(-COLLECTOR_MOTOR_PERCENT_OUTPUT);
-    } else {
-        a_Collector.setCollectorMotorSpeed(0);
-    }
 
     /* =-=-=-=-=-=-=-=-=-=-= Swerve Controls =-=-=-=-=-=-=-=-=-=-= */
 
@@ -253,7 +177,6 @@ void Robot::TeleopPeriodic() {
 void Robot::TestInit() {
     TeleopInit();
     a_SwerveDrive.setPosition(Vec2(0.0, 0.0));
-    a_Shooter.stop();
 }
 
 

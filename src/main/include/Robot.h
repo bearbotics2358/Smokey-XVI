@@ -2,10 +2,7 @@
 #pragma once
 
 #include "Autonomous.h"
-#include "BallShooter.h"
 #include "CanHandler.h"
-#include "Climber.h"
-#include "Collector.h"
 #include "CompressorController.h"
 #include "JrimmyGyro.h" // Gyro wrapper class; takes in I2C port
 #include "LimitSwitch.h"
@@ -66,14 +63,6 @@ class Robot : public frc::TimedRobot {
 
         frc::Joystick joystickOne; // 3D flightstick (Logitech Attack 3?)
         frc::Joystick a_XboxController;
-
-        BallShooter a_Shooter;
-
-        Collector a_Collector;
-
-        // climber limit switch
-        LimitSwitch a_LimitSwitch;
-        Climber a_Climber;
 
         CompressorController a_CompressorController;
 
