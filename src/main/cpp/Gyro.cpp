@@ -9,10 +9,10 @@ const uint8_t Gyro::kPowerMgmRegister;
 /**
  * Constructor.
  *
- * @param port The I2C port the gyro is attached to
+ * @param deviceID The I2C port the gyro is attached to
  */
-Gyro::Gyro(Port port):
-CAN(port, 0x68) {
+Gyro::Gyro(int deviceID):
+CAN(deviceID) {
     // uint8_t Buff[256];
     lastUpdate = 0;
     Init();

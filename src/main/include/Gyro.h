@@ -31,7 +31,7 @@ class Gyro : public frc::CAN {
         double ZAxis;
 
     public:
-        explicit Gyro(Port port);
+        explicit Gyro(int deviceID);
         virtual ~Gyro();
 
         // Gyro interface
