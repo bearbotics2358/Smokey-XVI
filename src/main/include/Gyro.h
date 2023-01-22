@@ -1,10 +1,11 @@
 #pragma once
 
-#include <frc/CAN.h>
+//#include <frc/CAN.h>
 #include <frc/Timer.h>
 #include <hal/HAL.h>
+#include <ctre/phoenix/sensors/WPI_Pigeon2.h>
 
-class Gyro : public frc::CAN {
+class Gyro {
     protected:
         static const uint8_t kPowerMgmRegister = 0x3E;
         // static const uint8_t kDataFormatRegister = 0x31;
@@ -38,14 +39,8 @@ class Gyro : public frc::CAN {
         void WaitForValues();
         virtual void Init();
         void Cal();
-        uint8_t GetReg0();
         virtual int16_t GetReg(uint8_t regNum);
         virtual void Update();
-        virtual double GetX();
-        virtual double GetY();
-        virtual double GetZ();
-        virtual int GetTemp();
-        double GetAxisAngle(int axis = 1);
         // only use this method to get angle, and getAngleClamped
         // the angle of the gyro increases when turning in a counterclockwise direction
         double getAngle() const;
@@ -65,4 +60,5 @@ class Gyro : public frc::CAN {
         double angle[3];
         double angleBias[3];
         double lastUpdate;
+        ctre::phoenix::sensors::WPI_Pigeon2 a_WPI_Pigeon2;
 };
