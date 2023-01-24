@@ -13,7 +13,7 @@ const char *error_type_to_string(ErrorType type) {
         case ErrorType::Library:
             return "error returned by library";
         case ErrorType::Unknown:
-            return "uknown error";
+            return "unknown error";
         case ErrorType::InvalidOperation:
             return "invalid operation";
         case ErrorType::InvalidArgs:
@@ -21,7 +21,7 @@ const char *error_type_to_string(ErrorType type) {
         case ErrorType::ResourceUnavailable:
             return "resource unavailable";
         case ErrorType::Network:
-            return "netwrok error";
+            return "network error";
         case ErrorType::OutOfMem:
             return "out of memory";
     }
