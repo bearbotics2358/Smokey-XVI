@@ -12,7 +12,7 @@ enum class ErrorType : int {
     Internal = 1,
     /** A library returned an error and the cause is unknown. */
     Library = 2,
-    /** An unknown erorr occured. */
+    /** An unknown error occured. */
     Unknown = 3,
     /** The requested operation was not valid. */
     InvalidOperation = 4,

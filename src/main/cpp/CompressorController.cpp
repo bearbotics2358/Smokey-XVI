@@ -21,3 +21,7 @@ double CompressorController::getTankPressure(){
 /*  CompressorController Ideas
     - give operator the ability to turn compressor on and off, an override
 */
+
+void CompressorController::turnOff() {
+    a_Compressor.Disable();
+}

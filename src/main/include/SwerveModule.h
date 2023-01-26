@@ -50,7 +50,7 @@ class SwerveModule // Handles steering and driving of each Swerve Module
         void setSteerPID(double pNew, double iNew, double dNew);
 
         // steers to the given targetAngle by taking the shortest possible path of rotation
-        // this meanss the whell may end up facing backwards
+        // this means the wheel may end up facing backwards
         // if that is the case, this returns true to indicate that the wheel speed should be opposite of what it would normally be
         bool adjustAngle(float targetAngle);
 
