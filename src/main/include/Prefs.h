@@ -11,6 +11,18 @@
 
 
 /*====== SWERVE MOTOR CONTROLLER IDS ======*/
+
+/*
+
+Module Numbering Scheme:
+
+m = number engraved on module
+
+    - Drive ID: 2m - 1
+    - Steering ID: 2m
+
+*/
+
 #define FL_DRIVE_ID 1
 #define FL_STEER_ID 2
 
@@ -75,7 +87,7 @@
 /* ============ GEAR RATIOS ======== */
 // I have a feeling this might be wrong, since our distance measurents are sligtly off
 // ratio is drive motor rotations / wheel rotations
-#define SWERVE_DRIVE_MOTOR_GEAR_RATIO (7.04 / 1.0)
+#define SWERVE_DRIVE_MOTOR_GEAR_RATIO (6.75 / 1.0)
 
 // wheel diameter in meters
 #define WHEEL_DIAMETER 0.1016
