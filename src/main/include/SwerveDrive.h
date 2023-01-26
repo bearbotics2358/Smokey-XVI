@@ -61,7 +61,7 @@ class SwerveDrive // Class to handle the kinematics of Swerve Drive
         void crabUpdate(float x, float y, bool fieldOriented = true);
         void swerveUpdate(float x, float y, float z, bool fieldOriented);
         /*
-            x = x asix on joystick
+            x = x axis on joystick
             y = y axis on joystick
             z = z axis on joystick (rotation)
             gyroDegrees = sensor
