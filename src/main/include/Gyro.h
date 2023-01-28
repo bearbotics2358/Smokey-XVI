@@ -3,10 +3,10 @@
 //#include <frc/CAN.h>
 #include <frc/Timer.h>
 #include <hal/HAL.h>
-#include <ctre/phoenix/sensors/WPI_Pigeon2.h>
+#include <ctre/phoenix/sensors/PigeonIMU.h>
 
 class Gyro {
-    protected:
+    /* protected:
         static const uint8_t kPowerMgmRegister = 0x3E;
         // static const uint8_t kDataFormatRegister = 0x31;
         static const uint8_t kSampleRateDivider = 0x15;
@@ -20,13 +20,9 @@ class Gyro {
             kDataFormat_SPI = 0x40,
             kDataFormat_IntInvert = 0x20,
             kDataFormat_FullRes = 0x08,
-            kDataFormat_Justify = 0x04 };
+            kDataFormat_Justify = 0x04 }; */
 
     public:
-        enum Axes { kAxis_X = 0x00,
-            kAxis_Y = 0x02,
-            kAxis_Z = 0x04 };
-        double temp;
         double XAxis;
         double YAxis;
         double ZAxis;
@@ -39,7 +35,6 @@ class Gyro {
         void WaitForValues();
         virtual void Init();
         void Cal();
-        virtual int16_t GetReg(uint8_t regNum);
         virtual void Update();
         // only use this method to get angle, and getAngleClamped
         // the angle of the gyro increases when turning in a counterclockwise direction
@@ -49,16 +44,12 @@ class Gyro {
         void Zero(double offsetAngle = 0); // takes offsetAngle, defaults to zero if none provided. CCW is +
 
         virtual std::string GetSmartDashboardType();
-
-    protected:
-        // I2C m_i2c;
     private:
-        double temperature;
         double AxisX;
         double AxisY;
         double AxisZ;
         double angle[3];
         double angleBias[3];
         double lastUpdate;
-        ctre::phoenix::sensors::WPI_Pigeon2 a_WPI_Pigeon2;
+        ctre::phoenix::sensors::PigeonIMU a_PigeonIMU;
 };

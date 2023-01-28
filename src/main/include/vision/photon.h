@@ -1,7 +1,7 @@
 #pragma once
 
 #include <optional>
-#include <photonlib/PhotonCamera.h>
+//#include <photonlib/PhotonCamera.h>
 #include <string>
 #include <vector>
 
@@ -64,7 +64,7 @@ class TargetTracker {
         const std::vector<Target>& getBalls() const;
 
     private:
-        photonlib::PhotonCamera m_camera;
+        //photonlib::PhotonCamera m_camera;
         TargetTracker::Mode m_mode;
         TargetType m_team;
 

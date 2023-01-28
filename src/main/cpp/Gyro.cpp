@@ -2,16 +2,16 @@
 #include "misc.h"
 
 /* External Functions of Gyro:
--Zero
+-Zero - done
 -getAngle - done
--init
--update
--cal
+-init - done
+-update - done
+-cal - done
 -getAngleClamped - done
 
 */
 
-const uint8_t Gyro::kPowerMgmRegister;
+//const uint8_t Gyro::kPowerMgmRegister;
 // const uint8_t JrimmyGyro::kDataFormatRegister;
 // const uint8_t JrimmyGyro::kDataRegister;
 // constexpr double JrimmyGyro::kGsPerLSB;
@@ -22,7 +22,7 @@ const uint8_t Gyro::kPowerMgmRegister;
  * @param deviceID The I2C port the gyro is attached to
  */
 Gyro::Gyro(int deviceID):
-a_WPI_Pigeon2(0, "ee") {
+a_PigeonIMU(deviceID) {
     // uint8_t Buff[256];
     lastUpdate = 0;
     Init();
@@ -51,11 +51,10 @@ void Gyro::WaitForValues() { //internal
 
 void Gyro::Init() { //EXTERNAL
     lastUpdate = 0;
-    Write(kDLPFRegister, 0x1B);
-    Write(kSampleRateDivider, 9);
-    Write(kPowerMgmRegister, 1); // set to more accurate clock
-    Write(kIntCfg, 5);
-    //Only #3 exists elsewhere in this codebase
+    //Write(kDLPFRegister, 0x1B);
+    //Write(kSampleRateDivider, 9);
+    //Write(kPowerMgmRegister, 1); // set to more accurate clock
+    //Write(kIntCfg, 5);
     Cal();
 }
 
@@ -85,14 +84,14 @@ void Gyro::Cal() { //EXTERNAL
     // SmartDashboard::PutNumber("Angle Bias Z", angleBias[2]);
 }
 
-int16_t Gyro::GetReg(uint8_t regNum) { //internal method, seems to convert 8-bit data to 16-bit?
+/* int16_t Gyro::GetReg(uint8_t regNum) { //internal method, seems to convert 8-bit data to 16-bit?
     uint16_t ret;
     uint8_t buff[2];
 
     Read(regNum, 2, buff);
     ret = (buff[0] << 8) | buff[1];
     return (int16_t) ret;
-}
+} */
 
 void Gyro::Update() { //EXTERNAL
     if (lastUpdate == 0) {
@@ -102,23 +101,23 @@ void Gyro::Update() { //EXTERNAL
     double time = frc::Timer::GetFPGATimestamp().value();
     double timeDelta = (time - lastUpdate);
 
-    temperature = GetReg(kTempRegister);
-    temperature = -13200 - temp;
-    temperature = temperature / 280;
-    temperature += 35;
+    double storeAngles[3];
 
-    XAxis = GetReg(kDataRegister + kAxis_X);
+    a_PigeonIMU.GetAccelerometerAngles(storeAngles);
+
+    XAxis = storeAngles[0];
     XAxis = XAxis / 14.375;
 
-    YAxis = GetReg(kDataRegister + kAxis_Y);
+    YAxis = storeAngles[1];
     YAxis = YAxis / 14.375;
 
-    ZAxis = GetReg(kDataRegister + kAxis_Z);
+    ZAxis = storeAngles[2];
     ZAxis = ZAxis / 14.375;
 
     angle[0] += ((XAxis - angleBias[0]) * timeDelta);
     angle[1] += ((YAxis - angleBias[1]) * timeDelta);
     angle[2] += ((ZAxis - angleBias[2]) * timeDelta);
+
     lastUpdate = time;
 
     /* for(int i = 0; i < 3; i++) {
@@ -133,12 +132,12 @@ void Gyro::Update() { //EXTERNAL
 
 double Gyro::getAngle() const { //EXTERNAL
     // update this depending on how the gyro is mounted in future years
-    return a_WPI_Pigeon2.GetAngle();
+    return angle[2];
 }
 
 double Gyro::getAngleClamped() const { //EXTERNAL
     // update this depending on how gyro is mounted in future years
-    return misc::clampDegrees(a_WPI_Pigeon2.GetAngle());
+    return misc::clampDegrees(angle[2]);
 }
 
 void Gyro::Zero(double offsetAngle) { //EXTERNAL - takes offsetAngle, defaults to zero if none provided. CCW is +

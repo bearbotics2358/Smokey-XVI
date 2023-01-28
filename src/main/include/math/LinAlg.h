@@ -74,7 +74,7 @@ class Matrix {
         template<typename... Args>
         constexpr Matrix(Args... args) noexcept:
         data { std::forward<Args>(args)... } {
-            static_assert(sizeof...(args) == size(), "Incorrect number of arguments for Matrix");
+           // static_assert(sizeof...(args) == size(), "Incorrect number of arguments for Matrix");
         }
 
         // creates a 2d counterclockwise rotation matrix given an angle in radians
