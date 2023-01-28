@@ -9,6 +9,7 @@ steerMotor(steerID),
 driveEnc(driveMotor),
 steerEncFalcon(steerMotor),
 absSteerEnc(std::move(absEncoder)),
+canCoder(driveID, ""),
 steerPID(0, 0, 0) {
     // by default this selects the ingetrated sensor
     ctre::phoenix::motorcontrol::can::TalonFXConfiguration config;
@@ -44,7 +45,7 @@ void SwerveModule::resetSteerEncoder() {
 }
 
 double SwerveModule::getRelativeAngle() {
-    float temp = steerEncFalcon.GetIntegratedSensorPosition();
+    float temp = canCoder.GetPosition();
     float angle = (fmod(temp, TICKS_STEERING) / TICKS_STEERING) * 360; // convert to angle in degrees
 
     float adjusted = angle;

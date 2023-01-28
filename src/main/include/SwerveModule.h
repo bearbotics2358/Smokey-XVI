@@ -9,7 +9,7 @@
 #include <frc/AnalogInput.h>
 #include <frc/controller/PIDController.h>
 #include <math.h>
-
+#include <ctre/phoenix/sensors/WPI_CANCoder.h>
 class SwerveModule // Handles steering and driving of each Swerve Module
 {
     public:
@@ -78,6 +78,7 @@ class SwerveModule // Handles steering and driving of each Swerve Module
 
         frc2::PIDController steerPID;
 
+        WPI_CANCoder::CANCoder canCoder;
         // how many degrees away from the actual zero degrees
         // that the relative encoder's zero point is
         double encZeroPoint { 0.0 };
