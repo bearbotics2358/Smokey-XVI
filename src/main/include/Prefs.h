@@ -9,6 +9,8 @@
 // uncomment to enable the new swerve
 //#define NEW_SWERVE
 
+#define GYRO_ID 0 // TODO: UPDATE TO CORRECT NUMBER
+
 
 /*====== SWERVE MOTOR CONTROLLER IDS ======*/
 
