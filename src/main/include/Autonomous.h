@@ -4,7 +4,7 @@
 
 // #include <frc/WPILib.h>
 #include "SwerveDrive.h"
-#include <JrimmyGyro.h>
+#include "Gyro.h"
 #include <Prefs.h>
 #include <frc/Joystick.h>
 #include <frc/Timer.h>
@@ -99,7 +99,7 @@ enum class A5V {
 
 class Autonomous {
     public:
-        Autonomous(JrimmyGyro *Gyro, frc::Joystick *XboxController, SwerveDrive *SwerveDrive);
+        Autonomous(Gyro *Gyro, frc::Joystick *XboxController, SwerveDrive *SwerveDrive);
 
         void DecidePath();
         const char *GetCurrentPath();
@@ -143,7 +143,7 @@ class Autonomous {
 
 
     private:
-        JrimmyGyro *a_Gyro;
+        Gyro *a_Gyro;
         SwerveDrive *a_SwerveDrive;
         frc::Joystick *a_Xbox;
 

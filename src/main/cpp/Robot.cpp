@@ -4,14 +4,14 @@
 #include "Prefs.h"
 #include "buttons.h"
 #include "misc.h"
-#include <JrimmyGyro.h>
+#include "Gyro.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <iostream>
 #include <stdio.h>
 
 /*~~ hi :) ~~ */
 Robot::Robot():
-a_Gyro(frc::I2C::kMXP),
+a_Gyro(0),
 a_FLModule(FL_DRIVE_ID, FL_STEER_ID, AbsoluteEncoder(FL_SWERVE_ABS_ENC_PORT, FL_SWERVE_ABS_ENC_MIN_VOLTS, FL_SWERVE_ABS_ENC_MAX_VOLTS, FL_SWERVE_ABS_ENC_OFFSET / 360)),
 a_FRModule(FR_DRIVE_ID, FR_STEER_ID, AbsoluteEncoder(FR_SWERVE_ABS_ENC_PORT, FR_SWERVE_ABS_ENC_MIN_VOLTS, FR_SWERVE_ABS_ENC_MAX_VOLTS, FR_SWERVE_ABS_ENC_OFFSET / 360)),
 a_BLModule(BL_DRIVE_ID, BL_STEER_ID, AbsoluteEncoder(BL_SWERVE_ABS_ENC_PORT, BL_SWERVE_ABS_ENC_MIN_VOLTS, BL_SWERVE_ABS_ENC_MAX_VOLTS, BL_SWERVE_ABS_ENC_OFFSET / 360)),

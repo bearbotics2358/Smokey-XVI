@@ -2,7 +2,7 @@
 
 #include <frc/controller/PIDController.h>
 
-#include "JrimmyGyro.h"
+#include "Gyro.h"
 #include "Prefs.h"
 #include "SwerveModule.h"
 #include "math/LinAlg.h"
@@ -52,7 +52,7 @@ class SwerveDrive {
 class SwerveDrive // Class to handle the kinematics of Swerve Drive
 {
     public:
-        SwerveDrive(SwerveModule& flModule, SwerveModule& frModule, SwerveModule& blModule, SwerveModule& brModule, JrimmyGyro& gyro);
+        SwerveDrive(SwerveModule& flModule, SwerveModule& frModule, SwerveModule& blModule, SwerveModule& brModule, Gyro& gyro);
 
         // TODO: change the signs of x, because the positive is left thing is wierd
         // TODO: use meters/second vector for crabUpdate and swerveUpdate, instead of x and y going from 0 to 1
@@ -139,7 +139,7 @@ class SwerveDrive // Class to handle the kinematics of Swerve Drive
         SwerveModule& frModule;
         SwerveModule& blModule;
         SwerveModule& brModule;
-        JrimmyGyro& a_gyro;
+        Gyro& a_gyro;
 
         // pid when using turn to angle
         frc2::PIDController turnAnglePid;

@@ -4,7 +4,7 @@
 #include "Autonomous.h"
 #include "CanHandler.h"
 #include "CompressorController.h"
-#include "JrimmyGyro.h" // Gyro wrapper class; takes in I2C port
+#include "Gyro.h"
 #include "LimitSwitch.h"
 #include "SwerveDrive.h" // Swerve kinematics
 #include "SwerveModule.h" // Swerve modules
@@ -48,7 +48,7 @@ class Robot : public frc::TimedRobot {
         // keeps track of when to call enabled init
         bool a_doEnabledInit { true };
 
-        JrimmyGyro a_Gyro;
+        Gyro a_Gyro;
 
         SwerveModule a_FLModule;
         SwerveModule a_FRModule;

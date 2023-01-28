@@ -54,7 +54,7 @@ float SwerveDrive::getAvgDistance() const {
 
 #else
 
-SwerveDrive::SwerveDrive(SwerveModule& flModule, SwerveModule& frModule, SwerveModule& blModule, SwerveModule& brModule, JrimmyGyro& gyro):
+SwerveDrive::SwerveDrive(SwerveModule& flModule, SwerveModule& frModule, SwerveModule& blModule, SwerveModule& brModule, Gyro& gyro):
 flModule(flModule),
 frModule(frModule),
 blModule(blModule),
