@@ -1,10 +1,12 @@
 #include "Gyro.h"
 #include "misc.h"
+#include <frc/interfaces/Gyro.h>
+
 
 /**
  * Constructor.
  *
- * @param deviceID The CAN Device ID
+ * @pa_ram deviceID The CAN Device ID
  */
 Gyro::Gyro(int deviceID):
 a_PigeonIMU(deviceID) {
@@ -80,6 +82,12 @@ double Gyro::getAngle() const {
 double Gyro::getAngleClamped() const {
     // update this depending on how gyro is mounted in future years
     return misc::clampDegrees(angle[2]);
+}
+double Gyro::getYaw() const {
+    return a_PigeonIMU.GetYaw();
+}
+double Gyro::getCompassHeading () const{
+    return a_PigeonIMU.GetCompassHeading();
 }
 
 void Gyro::Zero(double offsetAngle) { //takes offsetAngle, defaults to zero if none provided. CCW is +
