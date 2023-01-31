@@ -63,8 +63,8 @@ void Robot::RobotPeriodic() {
 
     frc::SmartDashboard::PutNumber("Distance Driven: ", a_SwerveDrive.getAvgDistance());
     frc::SmartDashboard::PutNumber("Gyro Angle: ", a_Gyro.getAngle());
-    frc::SmartDashboard::PutNumber("Gyro Angle: ", a_Gyro.getYaw());
-    frc::SmartDashboard::PutNumber("Gyro Angle: ", a_Gyro.getCompassHeading());
+    frc::SmartDashboard::PutNumber("Gyro Yaw: ", a_Gyro.getYaw());
+    frc::SmartDashboard::PutNumber("Gyro Compass: ", a_Gyro.getCompassHeading());
     frc::SmartDashboard::PutNumber("Robot x Position", a_SwerveDrive.getPosition().x());
     frc::SmartDashboard::PutNumber("Robot y Position", a_SwerveDrive.getPosition().y());
 
