@@ -25,7 +25,7 @@ class Gyro {
         // the angle of the gyro increases when turning in a counterclockwise direction
         double getAngle() const;
         double getYaw() const;
-        double getCompassHeading () const;
+        double getAbsoluteCompassHeading () const;
         // returns the same angle as get angle, but clamped to be within 0 - 360 degrees
         double getAngleClamped() const;
         void Zero(double offsetAngle = 0); // takes offsetAngle, defaults to zero if none provided. CCW is +
