@@ -25,26 +25,23 @@ m = number engraved on module
 
 */
 
-#define FL_DRIVE_ID 1
-#define FL_STEER_ID 2
+#define FL_DRIVE_ID 8
+#define FL_STEER_ID 7
 
-#define FR_DRIVE_ID 3
-#define FR_STEER_ID 8
+#define FR_DRIVE_ID 2
+#define FR_STEER_ID 1
 
-#define BL_DRIVE_ID 5
-#define BL_STEER_ID 6
+#define BL_DRIVE_ID 6
+#define BL_STEER_ID 5
 
-#define BR_DRIVE_ID 7
-#define BR_STEER_ID 4
+#define BR_DRIVE_ID 4
+#define BR_STEER_ID 3
 
 
 /*======= ENCODER CONSTANTS =======*/
 
 // the distance we were getting from the wheel was not quite right, so we multiply them by this constant to get the right distance
 #define DISTANCE_ADJUSTMANT_FACTOR 1.09789
-
-// TODO: figure out what this constant means
-#define TICKS_STEERING 18.0 // roughly 18 "position" units per steering rotation
 
 // falcon encoder ticks per 1 revolution
 #define FALCON_UNITS_PER_REV 2048
