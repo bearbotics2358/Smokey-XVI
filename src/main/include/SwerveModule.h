@@ -14,7 +14,7 @@ class SwerveModule // Handles steering and driving of each Swerve Module
 {
     public:
         SwerveModule(int driveID, int steerID, AbsoluteEncoder&& absEncoder); // CAN IDs, analog port for steer encoder
-
+    
         // Returns position of the distance encoder in meters
         float getDistance();
         // sets the drive encoder to 0 ticks
@@ -77,7 +77,8 @@ class SwerveModule // Handles steering and driving of each Swerve Module
         AbsoluteEncoder absSteerEnc;
 
         frc2::PIDController steerPID;
-        
+
+        int _steerID = 0;
         // how many degrees away from the actual zero degrees
         // that the relative encoder's zero point is
         double encZeroPoint { 0.0 };

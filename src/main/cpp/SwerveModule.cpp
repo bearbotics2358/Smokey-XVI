@@ -2,6 +2,7 @@
 #include "SwerveModule.h"
 #include "misc.h"
 #include <math.h>
+#include <stdio.h>
 
 SwerveModule::SwerveModule(int driveID, int steerID, AbsoluteEncoder&& absEncoder):
 driveMotor(driveID),
@@ -12,7 +13,7 @@ absSteerEnc(std::move(absEncoder)),
 steerPID(0, 0, 0) {
     // by default this selects the ingetrated sensor
     ctre::phoenix::motorcontrol::can::TalonFXConfiguration config;
-
+    _steerID = steerID;
     // these settings are present in the documentation example, and since they relate to safety of motor, they are probably a good idea to include
     config.supplyCurrLimit.triggerThresholdCurrent = 40; // the peak supply current, in amps
     config.supplyCurrLimit.triggerThresholdTime = 1.5; // the time at the peak supply current before the limit triggers, in sec
@@ -46,13 +47,14 @@ void SwerveModule::resetSteerEncoder() {
 
 double SwerveModule::getRelativeAngle() {
     float temp = steerEncFalcon.GetIntegratedSensorPosition();
-    float angle = (fmod(temp, FALCON_UNITS_PER_REV) / FALCON_UNITS_PER_REV) * 360; // convert to angle in degrees
-
+    //printf("%f\n",temp);
+    float angle = (fmod(temp, 44000) / 44000) * 360; // convert to angle in degrees
+    if (_steerID == 1){ printf("Raw Angle: %f\n",angle); } //TODO: Delete this
     float adjusted = angle;
     if (angle < 0) {
         adjusted += 360; // bounds to 0-360
     }
-
+    //printf("%f\n",adjusted);
     return adjusted;
 }
 

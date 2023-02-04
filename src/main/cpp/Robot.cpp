@@ -37,16 +37,16 @@ a_ballTracker(SHOOTER_CAMERA_NAME, TargetTracker::Mode::ball(0)) {
     }*/
 
     a_FLModule.setDrivePID(0.001, 0, 0);
-    a_FLModule.setSteerPID(2.0, 0, 0.01);
+    a_FLModule.setSteerPID(0.8, 0, 0.01);
 
     a_FRModule.setDrivePID(0.001, 0, 0);
-    a_FRModule.setSteerPID(2.0, 0, 0.01);
+    a_FRModule.setSteerPID(0.8, 0, 0.01);
 
     a_BLModule.setDrivePID(0.001, 0, 0);
-    a_BLModule.setSteerPID(2.0, 0, 0.01);
+    a_BLModule.setSteerPID(0.8, 0, 0.01);
 
     a_BRModule.setDrivePID(0.001, 0, 0);
-    a_BRModule.setSteerPID(2.0, 0, 0.01);
+    a_BRModule.setSteerPID(0.8, 0, 0.01);
 
     a_SwerveDrive.brakeOnStop();
 }
@@ -64,7 +64,7 @@ void Robot::RobotPeriodic() {
     frc::SmartDashboard::PutNumber("Distance Driven: ", a_SwerveDrive.getAvgDistance());
     frc::SmartDashboard::PutNumber("Gyro Angle: ", a_Gyro.getAngle());
     frc::SmartDashboard::PutNumber("Gyro Yaw: ", a_Gyro.getYaw());
-    frc::SmartDashboard::PutNumber("Gyro Compass: ", a_Gyro.getCompassHeading());
+    frc::SmartDashboard::PutNumber("Gyro Compass: ", a_Gyro.getAbsoluteCompassHeading());
     frc::SmartDashboard::PutNumber("Robot x Position", a_SwerveDrive.getPosition().x());
     frc::SmartDashboard::PutNumber("Robot y Position", a_SwerveDrive.getPosition().y());
 
