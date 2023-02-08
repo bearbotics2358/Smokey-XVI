@@ -3,6 +3,7 @@
 #include "misc.h"
 #include <math.h>
 #include <stdio.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 SwerveModule::SwerveModule(int driveID, int steerID, AbsoluteEncoder&& absEncoder):
 driveMotor(driveID),
@@ -55,6 +56,8 @@ double SwerveModule::getRelativeAngle() {
         adjusted += 360; // bounds to 0-360
     }
     //printf("%f\n",adjusted);
+    frc::SmartDashboard::PutNumber("Position Error", steerPID.GetPositionError());
+    frc::SmartDashboard::PutNumber("Velocity Error", steerPID.GetVelocityError());
     return adjusted;
 }
 

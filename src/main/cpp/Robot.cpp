@@ -60,6 +60,7 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
     a_Gyro.Update();
     a_SwerveDrive.updatePosition();
+    /*
 
     frc::SmartDashboard::PutNumber("Distance Driven: ", a_SwerveDrive.getAvgDistance());
     frc::SmartDashboard::PutNumber("Gyro Angle: ", a_Gyro.getAngle());
@@ -71,6 +72,8 @@ void Robot::RobotPeriodic() {
     frc::SmartDashboard::PutBoolean("Slow speed enabled", a_slowSpeed);
 
     frc::SmartDashboard::PutNumber("Tank Pressure", a_CompressorController.getTankPressure());
+
+    */
 }
 
 void Robot::DisabledInit() {
@@ -113,11 +116,29 @@ void Robot::TeleopInit() {
         EnabledInit();
         a_doEnabledInit = false;
     }
+
+    pChange = 0;
+    dChange = 0;
+
 }
 
 // main loop
 void Robot::TeleopPeriodic() {
     EnabledPeriodic();
+
+    if (joystickOne.GetRawButtonReleased(DriverButton::Button12)) {
+        pChange += 0.01;
+    } else if (joystickOne.GetRawButtonReleased(DriverButton::Button11)) {
+        pChange -= 0.01;
+    }
+    if (joystickOne.GetRawButtonReleased(DriverButton::Button10)) {
+        dChange += 0.001;
+    } else if (joystickOne.GetRawButtonReleased(DriverButton::Button9)) {
+        dChange -= 0.001;
+    }
+    a_FRModule.setSteerPID(0.8 + pChange, 0, 0.01 + dChange);
+    frc::SmartDashboard::PutNumber("P value", 0.8 + pChange);
+    frc::SmartDashboard::PutNumber("D value", 0.01 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Swerve Controls =-=-=-=-=-=-=-=-=-=-= */
 

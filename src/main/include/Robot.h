@@ -72,4 +72,7 @@ class Robot : public frc::TimedRobot {
 
         TargetTracker a_shooterVision;
         TargetTracker a_ballTracker;
+
+        double pChange;
+        double dChange;
 };
