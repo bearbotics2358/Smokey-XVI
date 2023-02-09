@@ -50,7 +50,7 @@ double SwerveModule::getRelativeAngle() {
     float temp = steerEncFalcon.GetIntegratedSensorPosition();
     //printf("%f\n",temp);
     float angle = (fmod(temp, 44000) / 44000) * 360; // convert to angle in degrees
-    if (_steerID == 1){ printf("Raw Angle: %f\n",angle); } //TODO: Delete this
+    //if (_steerID == 1){ printf("Raw Angle: %f\n",angle); } //TODO: Delete this
     float adjusted = angle;
     if (angle < 0) {
         adjusted += 360; // bounds to 0-360
