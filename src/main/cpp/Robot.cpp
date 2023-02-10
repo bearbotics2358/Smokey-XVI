@@ -60,6 +60,9 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
     a_Gyro.Update();
     a_SwerveDrive.updatePosition();
+
+    bool bstate = beamBoi.beamBroken();
+    frc::SmartDashboard::PutNumber("beam: ", bstate);
     /*
 
     frc::SmartDashboard::PutNumber("Distance Driven: ", a_SwerveDrive.getAvgDistance());
