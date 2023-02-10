@@ -60,14 +60,9 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
     a_Gyro.Update();
     a_SwerveDrive.updatePosition();
-
-    float x = -1 * joystickOne.GetRawAxis(DriverJoystick::XAxis);
-    float y = -1 * joystickOne.GetRawAxis(DriverJoystick::YAxis);
-    float z = -1 * joystickOne.GetRawAxis(DriverJoystick::ZAxis);
-
-    printf("x: %f\n", x);
-    //printf("y: %f\n", y);
-    //printf("z: %f\n", z);
+    
+    bool bstate = beamBoi.beamBroken();
+    printf("beam: %f/n", bstate);
     /*
 
     frc::SmartDashboard::PutNumber("Distance Driven: ", a_SwerveDrive.getAvgDistance());

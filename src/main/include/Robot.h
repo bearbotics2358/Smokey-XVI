@@ -12,6 +12,7 @@
 #include <frc/Joystick.h> // Joystick
 #include <frc/TimedRobot.h> // "Timed Robot" template
 #include <frc/Timer.h>
+#include "BeamBreak.h"
 
 enum class DriveBackState {
     Inactive,
@@ -55,6 +56,8 @@ class Robot : public frc::TimedRobot {
         SwerveModule a_BLModule;
         SwerveModule a_BRModule;
         SwerveDrive a_SwerveDrive;
+
+        BeamBreak beamBoi = BeamBreak(1); //int port = 1
 
         // speed multiplier for driver controls for the swerve
         bool a_slowSpeed { false };
