@@ -2,7 +2,6 @@
 #include "misc.h"
 #include <frc/interfaces/Gyro.h>
 
-
 /**
  * Constructor.
  *
@@ -23,6 +22,7 @@ void Gyro::WaitForValues() {
     while (now - start > 0.1) {now = frc::Timer::GetFPGATimestamp().value();}
     //the old logic basically checked for a result or it auto-expired after 0.1 seconds. 0.1 seconds is very short, so it just waits 0.1 seconds now
 }
+
 
 void Gyro::Init() {
     lastUpdate = 0;

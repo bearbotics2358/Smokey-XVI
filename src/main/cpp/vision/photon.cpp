@@ -30,12 +30,12 @@ bool TargetTracker::Mode::isBall() const {
 
 
 TargetTracker::TargetTracker(const std::string& cameraName, TargetTracker::Mode mode):
-m_camera(cameraName),
+//m_camera(cameraName),
 m_mode(mode),
 m_team(TargetType::Red) {}
 
 TargetTracker::TargetTracker(const std::string& cameraName, TargetTracker::Mode mode, TargetType team):
-m_camera(cameraName),
+//m_camera(cameraName),
 m_mode(mode),
 m_team(team) {}
 
@@ -46,25 +46,25 @@ void TargetTracker::setTeam(TargetType team) {
 
 void TargetTracker::setMode(TargetTracker::Mode mode) {
     m_mode = mode;
-    m_camera.SetPipelineIndex(mode.getPipelineIndex());
+    //m_camera.SetPipelineIndex(mode.getPipelineIndex());
 }
 
 void TargetTracker::update() {
-    auto result = m_camera.GetLatestResult();
+    //auto result = m_camera.GetLatestResult();
 
     if (m_mode.isTarget()) {
         // TODO:
     } else {
         // TODO: filter out sufficiently bad balls, but this might be done in pi code
         m_balls.clear();
-        auto targets = result.GetTargets();
-        for (auto target : targets) {
+        //auto targets = result.GetTargets();
+        /*for (auto target : targets) {
             units::meter_t distance = photonlib::PhotonUtils::CalculateDistanceToTarget(
                 TARGET_CAMERA_HEIGHT,
                 TARGET_HEIGHT,
                 TARGET_CAMERA_PITCH,
                 units::degree_t(target.GetPitch()));
-        }
+        }*/
     }
 }
 

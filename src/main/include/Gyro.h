@@ -6,7 +6,6 @@
 #include <ctre/phoenix/sensors/PigeonIMU.h>
 
 class Gyro {
-
     public:
         double XAxis;
         double YAxis;
