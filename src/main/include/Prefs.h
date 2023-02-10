@@ -88,6 +88,8 @@ m = number engraved on module
 // ratio is drive motor rotations / wheel rotations
 #define SWERVE_DRIVE_MOTOR_GEAR_RATIO (6.75 / 1.0)
 
+#define INVERTED_MOTOR (-1.0) //used to allow for the inversion of motors in MK4i modules
+
 // wheel diameter in meters
 #define WHEEL_DIAMETER 0.1016
 
