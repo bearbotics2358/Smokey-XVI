@@ -62,7 +62,7 @@ void Robot::RobotPeriodic() {
     a_SwerveDrive.updatePosition();
 
     bool bstate = beamBoi.beamBroken();
-    frc::SmartDashboard::PutNumber("beam: ", bstate);
+    printf("beam: %f/n", bstate);
     /*
 
     frc::SmartDashboard::PutNumber("Distance Driven: ", a_SwerveDrive.getAvgDistance());
