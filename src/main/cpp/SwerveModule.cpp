@@ -3,6 +3,8 @@
 #include "SwerveModule.h"
 #include "misc.h"
 #include <math.h>
+#include <stdio.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 SwerveModule::SwerveModule(int driveID, int steerID, AbsoluteEncoder&& absEncoder):
 driveMotor(driveID),
@@ -13,7 +15,7 @@ absSteerEnc(std::move(absEncoder)),
 steerPID(0, 0, 0) {
     // by default this selects the ingetrated sensor
     ctre::phoenix::motorcontrol::can::TalonFXConfiguration config;
-
+    _steerID = steerID;
     // these settings are present in the documentation example, and since they relate to safety of motor, they are probably a good idea to include
     config.supplyCurrLimit.triggerThresholdCurrent = 40; // the peak supply current, in amps
     config.supplyCurrLimit.triggerThresholdTime = 1.5; // the time at the peak supply current before the limit triggers, in sec
@@ -25,6 +27,7 @@ steerPID(0, 0, 0) {
     config.slot0.kP = 1.0;
 
     driveMotor.ConfigAllSettings(config);
+    steerMotor.ConfigAllSettings(config);
 
     steerPID.EnableContinuousInput(0.0, 360.0);
 }
@@ -46,13 +49,16 @@ void SwerveModule::resetSteerEncoder() {
 
 double SwerveModule::getRelativeAngle() {
     float temp = steerEncFalcon.GetIntegratedSensorPosition();
-    float angle = (fmod(temp, TICKS_STEERING) / TICKS_STEERING) * 360; // convert to angle in degrees
-
+    //printf("%f\n",temp);
+    float angle = (fmod(temp, 44000) / 44000) * 360; // convert to angle in degrees
+    //if (_steerID == 1){ printf("Raw Angle: %f\n",angle); } //TODO: Delete this
     float adjusted = angle;
     if (angle < 0) {
         adjusted += 360; // bounds to 0-360
     }
-
+    //printf("%f\n",adjusted);
+    frc::SmartDashboard::PutNumber("Position Error", steerPID.GetPositionError());
+    frc::SmartDashboard::PutNumber("Velocity Error", steerPID.GetVelocityError());
     return adjusted;
 }
 
@@ -66,26 +72,26 @@ float SwerveModule::getAbsAngleDegrees() {
 
 void SwerveModule::goToPosition(float meters) {
     float ticks = SwerveModule::metersToMotorTicks(meters);
-    driveMotor.Set(TalonFXControlMode::Position, ticks);
+    driveMotor.Set(TalonFXControlMode::Position, ticks * INVERTED_MOTOR);
 }
 
 void SwerveModule::steerToAng(float degrees) {
-    float speed = std::clamp(steerPID.Calculate(getAngle(), degrees) / 270.0, -0.5, 0.5);
-    steerMotor.Set(TalonFXControlMode::Velocity, misc::rpmToTalonVel(speed)); //This is a guess, I don't really know how steerToAng works
+    float speed = std::clamp(steerPID.Calculate(getAngle(), degrees) / 270.0, -0.5, 0.5); //old implementation relied on value between -1 and 1
+    steerMotor.Set(TalonFXControlMode::PercentOutput, speed * INVERTED_MOTOR);
 }
 
 void SwerveModule::setDrivePercent(float percent) {
-    driveMotor.Set(TalonFXControlMode::PercentOutput, percent);
+    driveMotor.Set(TalonFXControlMode::PercentOutput, percent * INVERTED_MOTOR);
 }
 
 void SwerveModule::setSteerPercent(float percent) {
-    steerMotor.Set(TalonFXControlMode::PercentOutput, percent);
+    steerMotor.Set(TalonFXControlMode::PercentOutput, percent * INVERTED_MOTOR);
 }
 
 float SwerveModule::setDriveSpeed(float speed) {
     float rpm = SwerveModule::wheelSpeedToRpm(speed);
 
-    driveMotor.Set(TalonFXControlMode::Velocity, misc::rpmToTalonVel(rpm));
+    driveMotor.Set(TalonFXControlMode::Velocity, misc::rpmToTalonVel(rpm) * INVERTED_MOTOR);
 
     return speed;
 }

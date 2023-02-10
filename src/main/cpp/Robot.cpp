@@ -4,14 +4,19 @@
 #include "Prefs.h"
 #include "buttons.h"
 #include "misc.h"
-#include <JrimmyGyro.h>
+#include "Gyro.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <iostream>
 #include <stdio.h>
+#include <frc/interfaces/Gyro.h>
+
+
+
+
 
 /*~~ hi :) ~~ */
 Robot::Robot():
-a_Gyro(frc::I2C::kMXP),
+a_Gyro(GYRO_ID),
 a_FLModule(FL_DRIVE_ID, FL_STEER_ID, AbsoluteEncoder(FL_SWERVE_ABS_ENC_PORT, FL_SWERVE_ABS_ENC_MIN_VOLTS, FL_SWERVE_ABS_ENC_MAX_VOLTS, FL_SWERVE_ABS_ENC_OFFSET / 360)),
 a_FRModule(FR_DRIVE_ID, FR_STEER_ID, AbsoluteEncoder(FR_SWERVE_ABS_ENC_PORT, FR_SWERVE_ABS_ENC_MIN_VOLTS, FR_SWERVE_ABS_ENC_MAX_VOLTS, FR_SWERVE_ABS_ENC_OFFSET / 360)),
 a_BLModule(BL_DRIVE_ID, BL_STEER_ID, AbsoluteEncoder(BL_SWERVE_ABS_ENC_PORT, BL_SWERVE_ABS_ENC_MIN_VOLTS, BL_SWERVE_ABS_ENC_MAX_VOLTS, BL_SWERVE_ABS_ENC_OFFSET / 360)),
@@ -32,16 +37,16 @@ a_ballTracker(SHOOTER_CAMERA_NAME, TargetTracker::Mode::ball(0)) {
     }*/
 
     a_FLModule.setDrivePID(0.001, 0, 0);
-    a_FLModule.setSteerPID(2.0, 0, 0.01);
+    a_FLModule.setSteerPID(0.8, 0, 0.01);
 
     a_FRModule.setDrivePID(0.001, 0, 0);
-    a_FRModule.setSteerPID(2.0, 0, 0.01);
+    a_FRModule.setSteerPID(0.8, 0, 0.01);
 
     a_BLModule.setDrivePID(0.001, 0, 0);
-    a_BLModule.setSteerPID(2.0, 0, 0.01);
+    a_BLModule.setSteerPID(0.8, 0, 0.01);
 
     a_BRModule.setDrivePID(0.001, 0, 0);
-    a_BRModule.setSteerPID(2.0, 0, 0.01);
+    a_BRModule.setSteerPID(0.8, 0, 0.01);
 
     a_SwerveDrive.brakeOnStop();
 }
@@ -55,15 +60,23 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
     a_Gyro.Update();
     a_SwerveDrive.updatePosition();
+    
+    bool bstate = beamBoi.beamBroken();
+    printf("beam: %f/n", bstate);
+    /*
 
     frc::SmartDashboard::PutNumber("Distance Driven: ", a_SwerveDrive.getAvgDistance());
     frc::SmartDashboard::PutNumber("Gyro Angle: ", a_Gyro.getAngle());
+    frc::SmartDashboard::PutNumber("Gyro Yaw: ", a_Gyro.getYaw());
+    frc::SmartDashboard::PutNumber("Gyro Compass: ", a_Gyro.getAbsoluteCompassHeading());
     frc::SmartDashboard::PutNumber("Robot x Position", a_SwerveDrive.getPosition().x());
     frc::SmartDashboard::PutNumber("Robot y Position", a_SwerveDrive.getPosition().y());
 
     frc::SmartDashboard::PutBoolean("Slow speed enabled", a_slowSpeed);
 
     frc::SmartDashboard::PutNumber("Tank Pressure", a_CompressorController.getTankPressure());
+
+    */
 }
 
 void Robot::DisabledInit() {
@@ -106,11 +119,29 @@ void Robot::TeleopInit() {
         EnabledInit();
         a_doEnabledInit = false;
     }
+
+    pChange = 0;
+    dChange = 0;
+
 }
 
 // main loop
 void Robot::TeleopPeriodic() {
     EnabledPeriodic();
+
+    if (joystickOne.GetRawButtonReleased(DriverButton::Button12)) {
+        pChange += 0.01;
+    } else if (joystickOne.GetRawButtonReleased(DriverButton::Button11)) {
+        pChange -= 0.01;
+    }
+    if (joystickOne.GetRawButtonReleased(DriverButton::Button10)) {
+        dChange += 0.001;
+    } else if (joystickOne.GetRawButtonReleased(DriverButton::Button9)) {
+        dChange -= 0.001;
+    }
+    a_FRModule.setSteerPID(0.8 + pChange, 0, 0.01 + dChange);
+    frc::SmartDashboard::PutNumber("P value", 0.8 + pChange);
+    frc::SmartDashboard::PutNumber("D value", 0.01 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Swerve Controls =-=-=-=-=-=-=-=-=-=-= */
 

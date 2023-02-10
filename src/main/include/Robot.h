@@ -4,7 +4,7 @@
 #include "Autonomous.h"
 #include "CanHandler.h"
 #include "CompressorController.h"
-#include "JrimmyGyro.h" // Gyro wrapper class; takes in I2C port
+#include "Gyro.h"
 #include "LimitSwitch.h"
 #include "SwerveDrive.h" // Swerve kinematics
 #include "SwerveModule.h" // Swerve modules
@@ -12,6 +12,7 @@
 #include <frc/Joystick.h> // Joystick
 #include <frc/TimedRobot.h> // "Timed Robot" template
 #include <frc/Timer.h>
+#include "BeamBreak.h"
 
 enum class DriveBackState {
     Inactive,
@@ -48,13 +49,15 @@ class Robot : public frc::TimedRobot {
         // keeps track of when to call enabled init
         bool a_doEnabledInit { true };
 
-        JrimmyGyro a_Gyro;
+        Gyro a_Gyro;
 
         SwerveModule a_FLModule;
         SwerveModule a_FRModule;
         SwerveModule a_BLModule;
         SwerveModule a_BRModule;
         SwerveDrive a_SwerveDrive;
+
+        BeamBreak beamBoi = BeamBreak(1); //int port = 1
 
         // speed multiplier for driver controls for the swerve
         bool a_slowSpeed { false };
@@ -72,4 +75,7 @@ class Robot : public frc::TimedRobot {
 
         TargetTracker a_shooterVision;
         TargetTracker a_ballTracker;
+
+        double pChange;
+        double dChange;
 };

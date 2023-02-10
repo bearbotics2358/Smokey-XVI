@@ -9,12 +9,12 @@
 #include <frc/AnalogInput.h>
 #include <frc/controller/PIDController.h>
 #include <math.h>
-
+#include <ctre/phoenix/sensors/WPI_CANCoder.h>
 class SwerveModule // Handles steering and driving of each Swerve Module
 {
     public:
         SwerveModule(int driveID, int steerID, AbsoluteEncoder&& absEncoder); // CAN IDs, analog port for steer encoder
-
+    
         // Returns position of the distance encoder in meters
         float getDistance();
         // sets the drive encoder to 0 ticks
@@ -50,7 +50,7 @@ class SwerveModule // Handles steering and driving of each Swerve Module
         void setSteerPID(double pNew, double iNew, double dNew);
 
         // steers to the given targetAngle by taking the shortest possible path of rotation
-        // this meanss the whell may end up facing backwards
+        // this means the wheel may end up facing backwards
         // if that is the case, this returns true to indicate that the wheel speed should be opposite of what it would normally be
         bool adjustAngle(float targetAngle);
 
@@ -78,6 +78,7 @@ class SwerveModule // Handles steering and driving of each Swerve Module
 
         frc2::PIDController steerPID;
 
+        int _steerID = 0;
         // how many degrees away from the actual zero degrees
         // that the relative encoder's zero point is
         double encZeroPoint { 0.0 };
