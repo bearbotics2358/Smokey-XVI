@@ -25,17 +25,17 @@ m = number engraved on module
 
 */
 
-#define FL_DRIVE_ID 8
-#define FL_STEER_ID 7
+#define FL_DRIVE_ID 15
+#define FL_STEER_ID 16
 
-#define FR_DRIVE_ID 2
-#define FR_STEER_ID 1
+#define FR_DRIVE_ID 7
+#define FR_STEER_ID 8
 
-#define BL_DRIVE_ID 6
-#define BL_STEER_ID 5
+#define BL_DRIVE_ID 9
+#define BL_STEER_ID 10
 
-#define BR_DRIVE_ID 4
-#define BR_STEER_ID 3
+#define BR_DRIVE_ID 5
+#define BR_STEER_ID 6
 
 
 /*======= ENCODER CONSTANTS =======*/
@@ -87,6 +87,8 @@ m = number engraved on module
 // I have a feeling this might be wrong, since our distance measurents are sligtly off
 // ratio is drive motor rotations / wheel rotations
 #define SWERVE_DRIVE_MOTOR_GEAR_RATIO (6.75 / 1.0)
+
+#define INVERTED_MOTOR (-1.0) //used to allow for the inversion of motors in MK4i modules
 
 // wheel diameter in meters
 #define WHEEL_DIAMETER 0.1016

@@ -60,7 +60,7 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
     a_Gyro.Update();
     a_SwerveDrive.updatePosition();
-
+    
     bool bstate = beamBoi.beamBroken();
     printf("beam: %f/n", bstate);
     /*
