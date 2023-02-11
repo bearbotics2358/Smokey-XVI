@@ -28,6 +28,7 @@ steerPID(0, 0, 0) {
 
     driveMotor.ConfigAllSettings(config);
     steerMotor.ConfigAllSettings(config);
+    steerMotor.ConfigNeutralDeadband(0.001);
 
     steerPID.EnableContinuousInput(0.0, 360.0);
 }
@@ -50,8 +51,8 @@ void SwerveModule::resetSteerEncoder() {
 double SwerveModule::getRelativeAngle() {
     float temp = steerEncFalcon.GetIntegratedSensorPosition();
     //printf("%f\n",temp);
-    float angle = (fmod(temp, 44000) / 44000) * 360; // convert to angle in degrees
-    //if (_steerID == 1){ printf("Raw Angle: %f\n",angle); } //TODO: Delete this
+    float angle = (fmod(temp, 44000) / 44000) * 360; // convert to angle in degrees -- we were getting 44000 ticks per revolution
+    //if (_steerID == 8){ printf("Raw Angle: %f\n",angle); } //TODO: Delete this
     float adjusted = angle;
     if (angle < 0) {
         adjusted += 360; // bounds to 0-360
@@ -72,26 +73,42 @@ float SwerveModule::getAbsAngleDegrees() {
 
 void SwerveModule::goToPosition(float meters) {
     float ticks = SwerveModule::metersToMotorTicks(meters);
-    driveMotor.Set(TalonFXControlMode::Position, ticks * INVERTED_MOTOR);
+    driveMotor.Set(TalonFXControlMode::Position, ticks);
 }
 
 void SwerveModule::steerToAng(float degrees) {
-    float speed = std::clamp(steerPID.Calculate(getAngle(), degrees) / 270.0, -0.5, 0.5); //old implementation relied on value between -1 and 1
-    steerMotor.Set(TalonFXControlMode::PercentOutput, speed * INVERTED_MOTOR);
+    float ticks = degrees / 360 * 44000;
+    float trueticks = steerEncFalcon.GetIntegratedSensorPosition() * -1;
+    float trueangle = (fmod(trueticks, 44000) / 44000) * 360 * -1;
+    float speed = std::clamp(steerPID.Calculate(getAngle(), degrees) / 270.0, -0.5, 0.5);
+    steerMotor.Set(TalonFXControlMode::PercentOutput, speed);
+    if (_steerID == 8) { 
+        printf("angle: %6.2f    trueangle: %6.2f   ticks: %6.2f  trueticks: %6.2f    speed: %6.2f\n", degrees, trueangle, ticks, trueticks, speed);
+    }
+}
+
+void SwerveModule::debugSteer(float angle) {
+    float ticks = angle / 360 * 44000;
+    float trueticks = steerEncFalcon.GetIntegratedSensorPosition() * -1;
+    float trueangle = (fmod(trueticks, 44000) / 44000) * 360 * -1;
+    if (_steerID == 8) { 
+        printf("angle: %6.2f    trueangle: %6.2f   ticks: %6.2f  trueticks: %6.2f\n", angle, trueangle, ticks, trueticks); 
+    }
+    steerMotor.Set(TalonFXControlMode::Position, ticks);
 }
 
 void SwerveModule::setDrivePercent(float percent) {
-    driveMotor.Set(TalonFXControlMode::PercentOutput, percent * INVERTED_MOTOR);
+    driveMotor.Set(TalonFXControlMode::PercentOutput, percent);
 }
 
 void SwerveModule::setSteerPercent(float percent) {
-    steerMotor.Set(TalonFXControlMode::PercentOutput, percent * INVERTED_MOTOR);
+    steerMotor.Set(TalonFXControlMode::PercentOutput, percent);
 }
 
 float SwerveModule::setDriveSpeed(float speed) {
     float rpm = SwerveModule::wheelSpeedToRpm(speed);
 
-    driveMotor.Set(TalonFXControlMode::Velocity, misc::rpmToTalonVel(rpm) * INVERTED_MOTOR);
+    driveMotor.Set(TalonFXControlMode::Velocity, misc::rpmToTalonVel(rpm));
 
     return speed;
 }

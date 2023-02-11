@@ -62,6 +62,8 @@ class SwerveModule // Handles steering and driving of each Swerve Module
         // TODO: remove
         double getAbsEncoderVolts() const;
 
+        void debugSteer(float angle);
+
 
     private:
         // speed is meters per second
