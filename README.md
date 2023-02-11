@@ -1,6 +1,4 @@
 # Smokey-XVI
-Public code repository for our 2023 Charged Up Robot
+Public code repository for our 2023 Charged Up Robot, competing at the Midwest Regional in Chicago, IL from March 8-11 and the Wisconsin Regional in Milwaukee, WI from March 22-25
 
-If the swerve isn't rotating correctly, check line 73 of SwerveModule.cpp, in translating to Talons I had to guess how SteerToAng works
-
-All code follows a must-build standard, as any programmers must build code before pushing. This rule DOES NOT APPLY to branches labeled "experimental-"
+All code follows a must-build standard, as any programmers must successfully build code before pushing. This rule DOES NOT APPLY to branches labeled "experimental-"
