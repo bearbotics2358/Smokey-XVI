@@ -60,21 +60,24 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
     a_Gyro.Update();
     //a_SwerveDrive.updatePosition();
-
-    if (joystickOne.GetRawButton(3)) {
-        a_FRModule.steerToAng(120);
-        a_FLModule.steerToAng(120);
-        a_BRModule.steerToAng(120);
-        a_BLModule.steerToAng(120);
-    }
-    else {
-        a_FRModule.steerToAng(150);
-        a_FLModule.steerToAng(150);
-        a_BRModule.steerToAng(150);
-        a_BLModule.steerToAng(150);
-    }
     
     bool bstate = beamBoi.beamBroken();
+
+//testing code block for PID tuning
+
+    // if(joystickOne.GetRawButton(3)) {
+    //     a_FRModule.steerToAng(120);
+    //     a_FLModule.steerToAng(120);
+    //     a_BRModule.steerToAng(120);
+    //     a_BLModule.steerToAng(120);
+    // } 
+    // else {
+    //     a_FRModule.steerToAng(150);
+    //     a_FLModule.steerToAng(150);
+    //     a_BRModule.steerToAng(150);
+    //     a_BLModule.steerToAng(150);
+    // }
+    
     //printf("beam: %f/n", bstate);
     /*
 
@@ -161,7 +164,7 @@ void Robot::TeleopPeriodic() {
     a_FRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
     a_FLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
     a_BRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    a_FLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange); //P 0.6, I 1.0 D 0.06
+    a_BLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange); //P 0.6, I 1.0 D 0.06
     frc::SmartDashboard::PutNumber("P value", 0.6 + pChange);
     frc::SmartDashboard::PutNumber("I value", 1.0 + iChange);
     frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
@@ -180,52 +183,52 @@ void Robot::TeleopPeriodic() {
     if (a_slowSpeed) {
         multiplier = 0.25;
     }
+ 
+    float x = joystickOne.GetRawAxis(DriverJoystick::XAxis);
+    float y = joystickOne.GetRawAxis(DriverJoystick::YAxis);
+    float z = joystickOne.GetRawAxis(DriverJoystick::ZAxis);
 
-    // /*float x = -1 * joystickOne.GetRawAxis(DriverJoystick::XAxis);
-    // float y = -1 * joystickOne.GetRawAxis(DriverJoystick::YAxis);
-    // float z = -1 * joystickOne.GetRawAxis(DriverJoystick::ZAxis);
+    if (fabs(x) < 0.10) {
+        x = 0;
+    }
+    if (fabs(y) < 0.10) {
+        y = 0;
+    }
+    if (fabs(z) < 0.10) {
+        z = 0;
+    }
 
-    // if (fabs(x) < 0.10) {
-    //     x = 0;
-    // }
-    // if (fabs(y) < 0.10) {
-    //     y = 0;
-    // }
-    // if (fabs(z) < 0.10) {
-    //     z = 0;
-    // }
+    bool inDeadzone = (sqrt(x * x + y * y) < JOYSTICK_DEADZONE) && (fabs(z) < JOYSTICK_DEADZONE); // Checks joystick deadzones
 
-    // bool inDeadzone = (sqrt(x * x + y * y) < JOYSTICK_DEADZONE) && (fabs(z) < JOYSTICK_DEADZONE); // Checks joystick deadzones
+    // scale by multiplier for slow mode, do this after deadzone check
+    x *= multiplier;
+    y *= multiplier;
+    z *= multiplier;
 
-    // // scale by multiplier for slow mode, do this after deadzone check
-    // x *= multiplier;
-    // y *= multiplier;
-    // z *= multiplier; */
+    // turn field oriented mode off if button 3 is pressed
+    bool fieldOreo = !joystickOne.GetRawButton(DriverButton::Button3);
 
-    // // turn field oriented mode off if button 3 is pressed
-    // bool fieldOreo = !joystickOne.GetRawButton(DriverButton::Button3);
+    // calibrate gyro
+    if (joystickOne.GetRawButton(DriverButton::Button5)) {
+        a_Gyro.Cal();
+        a_Gyro.Zero();
+    }
 
-    // // calibrate gyro
-    // if (joystickOne.GetRawButton(DriverButton::Button5)) {
-    //     a_Gyro.Cal();
-    //     a_Gyro.Zero();
-    // }
-
-    // if (!inDeadzone) {
-    //     if (joystickOne.GetRawButton(DriverButton::Trigger)) {
-    //         a_SwerveDrive.swerveUpdate(x, y, 0.5 * z, fieldOreo);
-    //     } else {
-    //         a_SwerveDrive.crabUpdate(x, y, fieldOreo);
-    //     }
-    // } else {
-    //         a_SwerveDrive.swerveUpdate(0, 0, 0, fieldOreo);
-    // }
+    if (!inDeadzone) {
+        if (joystickOne.GetRawButton(DriverButton::Trigger)) {
+            a_SwerveDrive.swerveUpdate(x, y, 0.5 * z, fieldOreo);
+        } else {
+            a_SwerveDrive.crabUpdate(x, y, fieldOreo);
+        }
+    } else {
+            a_SwerveDrive.swerveUpdate(0, 0, 0, fieldOreo);
+    }
     
 
-    // turn to the right angle for climbing
-    // if (joystickOne.GetRawButton(DriverButton::Button10)) {
-    //     a_SwerveDrive.turnToAngle(180.0);
-    // }
+    //turn to the right angle for climbing
+    if (joystickOne.GetRawButton(DriverButton::Button10)) {
+        a_SwerveDrive.turnToAngle(180.0);
+    }
 }
 
 void Robot::TestInit() {
