@@ -330,7 +330,7 @@ void SwerveDrive::swerveUpdateInner(float x, float y, float z, float gyroDegrees
 
     float deadzoneCheck = sqrt(x * x + y * y);
 
-    if (deadzoneCheck < 0.15 && fabs(z) < 0.01) {
+    /*if (deadzoneCheck < 0.15 && fabs(z) < 0.01) {
         flSpeed = 0;
         frSpeed = 0;
         blSpeed = 0;
@@ -340,7 +340,7 @@ void SwerveDrive::swerveUpdateInner(float x, float y, float z, float gyroDegrees
         frAngle = currentFR;
         blAngle = currentBL;
         brAngle = currentBR;
-    }
+    }*/
 
     // update speeds and angles
     if (flModule.adjustAngle(flAngle)) {
