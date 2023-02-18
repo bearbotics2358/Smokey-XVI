@@ -185,8 +185,8 @@ void Robot::TeleopPeriodic() {
     }
  
     float x = a_XboxController.GetLeftX();
-    float y = a_XboxController.GetRawAxis(DriverJoystick::YAxis);
-    float z = a_XboxController.GetRawAxis(DriverJoystick::ZAxis);
+    float y = a_XboxController.GetLeftY();
+    float z = a_XboxController.GetRightX();
 
     if (fabs(x) < 0.10) {
         x = 0;
