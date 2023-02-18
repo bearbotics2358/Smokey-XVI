@@ -121,7 +121,7 @@ void Autonomous::Periodic0Ball() {
     switch (a_AutoState0) {
 
         case kAutoIdle0:
-            IDontLikeExercise();
+            StopSwerves();
 
             break;
 
@@ -156,7 +156,7 @@ void Autonomous::Periodic1Ball() {
     switch (a_AutoState1) {
 
         case kAutoIdle1:
-            IDontLikeExercise();
+            StopSwerves();
             break;
 
         case kStartShooter1:
@@ -186,7 +186,7 @@ void Autonomous::Periodic1Ball() {
             break;
 
         case kDoneShooting1:
-            IDontLikeExercise();
+            StopSwerves();
             nextState = kTaxi1;
             break;
 
@@ -210,7 +210,7 @@ void Autonomous::Periodic2Ball() {
 
     switch (a_AutoState2) {
         case kAutoIdle2:
-            IDontLikeExercise();
+            StopSwerves();
 
             break;
 
@@ -263,7 +263,7 @@ void Autonomous::Periodic3Ball() {
 
     switch (nextState) {
         case A3::Idle:
-            IDontLikeExercise();
+            StopSwerves();
             break;
         case A3::SpoolShooter:
             StartTimer();
@@ -319,7 +319,7 @@ void Autonomous::Periodic5Ball() {
 
     switch (nextState) {
         case A5::Idle:
-            IDontLikeExercise();
+            StopSwerves();
             break;
         case A5::SpoolShooter:
             StartTimer();
@@ -386,7 +386,7 @@ void Autonomous::Periodic5Ball() {
 
 void Autonomous::Periodic5BallVision() {}
 
-void Autonomous::IDontLikeExercise() {
+void Autonomous::StopSwerves() {
     a_SwerveDrive->stop();
 }
 
