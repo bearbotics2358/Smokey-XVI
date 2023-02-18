@@ -22,20 +22,25 @@ m = number engraved on module
 
     - Drive ID: 2m - 1
     - Steering ID: 2m
+    - Encoder ID: 16 + m
 
 */
 
-#define FL_DRIVE_ID 13
-#define FL_STEER_ID 14
+#define FL_DRIVE_ID 15
+#define FL_STEER_ID 16
+#define FL_CANCODER_ID 24
 
-#define FR_DRIVE_ID 3
-#define FR_STEER_ID 4
+#define FR_DRIVE_ID 7
+#define FR_STEER_ID 8
+#define FR_CANCODER_ID 20
 
-#define BL_DRIVE_ID 1
-#define BL_STEER_ID 2
+#define BL_DRIVE_ID 9
+#define BL_STEER_ID 10
+#define BL_CANCODER_ID 21
 
-#define BR_DRIVE_ID 11
-#define BR_STEER_ID 12
+#define BR_DRIVE_ID 5
+#define BR_STEER_ID 6
+#define BR_CANCODER_ID 19
 
 
 /*======= ENCODER CONSTANTS =======*/
