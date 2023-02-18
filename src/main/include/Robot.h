@@ -8,11 +8,12 @@
 #include "LimitSwitch.h"
 #include "SwerveDrive.h" // Swerve kinematics
 #include "SwerveModule.h" // Swerve modules
-#include "vision/photon.h"
+#include "photonlib/photon.h"
 #include <frc/Joystick.h> // Joystick
 #include <frc/TimedRobot.h> // "Timed Robot" template
 #include <frc/Timer.h>
 #include <frc/XboxController.h>
+#include <photonlib/PhotonCamera.h>
 #include "BeamBreak.h"
 
 enum class DriveBackState {
@@ -74,10 +75,28 @@ class Robot : public frc::TimedRobot {
 
         // stuff that autonomous needs
 
-        TargetTracker a_shooterVision;
-        TargetTracker a_ballTracker;
 
         double pChange;
         double iChange;
         double dChange;
+
+        //--------------photonvision-------------//
+        const units::meter_t CAMERA_HEIGHT = 24_in;
+        const units::meter_t TARGET_HEIGHT = 5_ft;
+
+        // Angle between horizontal and the camera.
+        const units::radian_t CAMERA_PITCH = 0_deg;
+
+        // How far from the target we want to be
+        const units::meter_t GOAL_RANGE_METERS = 3_ft;
+
+        // PID constants should be tuned per robot
+        const double LINEAR_P = 0.1;
+        const double LINEAR_D = 0.0;
+        frc2::PIDController forwardController{LINEAR_P, 0.0, LINEAR_D};
+        const double ANGULAR_P = 0.1;
+        const double ANGULAR_D = 0.0;
+        frc2::PIDController turnController{ANGULAR_P, 0.0, ANGULAR_D};
+
+        photonlib::PhotonCamera a_camera{"OV5647"}; //name of camera
 };

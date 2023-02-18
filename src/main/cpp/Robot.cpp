@@ -25,13 +25,12 @@ a_SwerveDrive(a_FLModule, a_FRModule, a_BLModule, a_BRModule, a_Gyro),
 a_Autonomous(&a_Gyro, &a_XboxController, &a_SwerveDrive),
 joystickOne(JOYSTICK_PORT),
 a_XboxController(XBOX_CONTROLLER),
-a_CompressorController(),
+a_CompressorController()
 // NEEDED A PORT, THIS IS PROBABLY WRONG, PLEASE FIX IT LATER
 //  handler("169.254.179.144", "1185", "data"),
 //  handler("raspberrypi.local", 1883, "PI/CV/SHOOT/DATA"),
 //  a_canHandler(CanHandler::layout2022()),
-a_shooterVision(SHOOTER_CAMERA_NAME, TargetTracker::Mode::target(0)),
-a_ballTracker(SHOOTER_CAMERA_NAME, TargetTracker::Mode::ball(0)) {
+{
     /*if (!handler.ready()) {
         // do something if handler failed to connect
     }*/
@@ -161,6 +160,7 @@ void Robot::TeleopPeriodic() {
     } else if (joystickOne.GetRawButtonReleased(DriverButton::Button9)) {
         dChange -= 0.01;
     }
+    
     a_FRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
     a_FLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
     a_BRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
