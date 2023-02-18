@@ -65,18 +65,18 @@ void Robot::RobotPeriodic() {
 
 //testing code block for PID tuning
 
-    // if(joystickOne.GetRawButton(3)) {
-    //     a_FRModule.steerToAng(120);
-    //     a_FLModule.steerToAng(120);
-    //     a_BRModule.steerToAng(120);
-    //     a_BLModule.steerToAng(120);
-    // } 
-    // else {
-    //     a_FRModule.steerToAng(150);
-    //     a_FLModule.steerToAng(150);
-    //     a_BRModule.steerToAng(150);
-    //     a_BLModule.steerToAng(150);
-    // }
+    if(joystickOne.GetRawButton(3)) {
+        a_FRModule.steerToAng(120);
+        a_FLModule.steerToAng(120);
+        a_BRModule.steerToAng(120);
+        a_BLModule.steerToAng(120);
+    } 
+    else {
+        a_FRModule.steerToAng(150);
+        a_FLModule.steerToAng(150);
+        a_BRModule.steerToAng(150);
+        a_BLModule.steerToAng(150);
+    }
     
     //printf("beam: %f/n", bstate);
     /*
@@ -184,9 +184,9 @@ void Robot::TeleopPeriodic() {
         multiplier = 0.25;
     }
  
-    float x = joystickOne.GetRawAxis(DriverJoystick::XAxis);
-    float y = joystickOne.GetRawAxis(DriverJoystick::YAxis);
-    float z = joystickOne.GetRawAxis(DriverJoystick::ZAxis);
+    float x = a_XboxController.GetLeftX();
+    float y = a_XboxController.GetRawAxis(DriverJoystick::YAxis);
+    float z = a_XboxController.GetRawAxis(DriverJoystick::ZAxis);
 
     if (fabs(x) < 0.10) {
         x = 0;

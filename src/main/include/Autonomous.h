@@ -99,7 +99,7 @@ enum class A5V {
 
 class Autonomous {
     public:
-        Autonomous(Gyro *Gyro, frc::Joystick *XboxController, SwerveDrive *SwerveDrive);
+        Autonomous(Gyro *Gyro, frc::XboxController *XboxController, SwerveDrive *SwerveDrive);
 
         void DecidePath();
         const char *GetCurrentPath();
@@ -145,7 +145,7 @@ class Autonomous {
     private:
         Gyro *a_Gyro;
         SwerveDrive *a_SwerveDrive;
-        frc::Joystick *a_Xbox;
+        frc::XboxController *a_Xbox;
 
         AutoState0 a_AutoState0;
         AutoState1 a_AutoState1;

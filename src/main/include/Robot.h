@@ -12,6 +12,7 @@
 #include <frc/Joystick.h> // Joystick
 #include <frc/TimedRobot.h> // "Timed Robot" template
 #include <frc/Timer.h>
+#include <frc/XboxController.h>
 #include "BeamBreak.h"
 
 enum class DriveBackState {
@@ -65,7 +66,7 @@ class Robot : public frc::TimedRobot {
         Autonomous a_Autonomous;
 
         frc::Joystick joystickOne; // 3D flightstick (Logitech Attack 3?)
-        frc::Joystick a_XboxController;
+        frc::XboxController a_XboxController;
 
         CompressorController a_CompressorController;
 
