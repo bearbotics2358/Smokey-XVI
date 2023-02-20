@@ -26,21 +26,26 @@ m = number engraved on module
 
 */
 
-#define FL_DRIVE_ID 15
-#define FL_STEER_ID 16
-#define FL_CANCODER_ID 24
+#define FL_ID 8
+#define FR_ID 4
+#define BL_ID 5
+#define BR_ID 3
 
-#define FR_DRIVE_ID 7
-#define FR_STEER_ID 8
-#define FR_CANCODER_ID 20
+// #define FL_DRIVE_ID 15
+// #define FL_STEER_ID 16
+// #define FL_CANCODER_ID 24
 
-#define BL_DRIVE_ID 9
-#define BL_STEER_ID 10
-#define BL_CANCODER_ID 21
+// #define FR_DRIVE_ID 7
+// #define FR_STEER_ID 8
+// #define FR_CANCODER_ID 20
 
-#define BR_DRIVE_ID 5
-#define BR_STEER_ID 6
-#define BR_CANCODER_ID 19
+// #define BL_DRIVE_ID 9
+// #define BL_STEER_ID 10
+// #define BL_CANCODER_ID 21
+
+// #define BR_DRIVE_ID 5
+// #define BR_STEER_ID 6
+// #define BR_CANCODER_ID 19
 
 
 /*======= ENCODER CONSTANTS =======*/

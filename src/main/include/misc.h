@@ -28,4 +28,19 @@ double degreesDiff(double a, double b);
 
 // gets seconds elapsed since the epoch of the system clock
 double getSeconds();
+
+
+//Provide IDs for Swerve Modules, making for easier switching at comp
+int GetFLDrive();
+int GetFLSteer();
+int GetFLCANCoder();
+int GetFRDrive();
+int GetFRSteer();
+int GetFRCANCoder();
+int GetBLDrive();
+int GetBLSteer();
+int GetBLCANCoder();
+int GetBRDrive();
+int GetBRSteer();
+int GetBRCANCoder();
 }
