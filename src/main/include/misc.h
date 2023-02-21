@@ -30,7 +30,7 @@ double degreesDiff(double a, double b);
 double getSeconds();
 
 
-//Provide IDs for Swerve Modules, making for easier switching at comp
+//Provide IDs for Swerve Modules, making for easier module switching at comp
 int GetFLDrive();
 int GetFLSteer();
 int GetFLCANCoder();
