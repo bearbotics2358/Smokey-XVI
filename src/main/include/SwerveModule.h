@@ -77,7 +77,7 @@ class SwerveModule // Handles steering and driving of each Swerve Module
         TalonFXSensorCollection driveEnc; // built in TalonFX sensors
         TalonFXSensorCollection steerEncFalcon;
         AbsoluteEncoder absSteerEnc;
-        CANCoder CANCoder;
+        CANCoder m_CANCoder;
 
         frc2::PIDController steerPID;
 
