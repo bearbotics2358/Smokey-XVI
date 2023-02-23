@@ -51,6 +51,7 @@ class Robot : public frc::TimedRobot {
         bool a_doEnabledInit { true };
 
         Gyro a_Gyro;
+        Arm a_Arm;
 
         SwerveModule a_FLModule;
         SwerveModule a_FRModule;

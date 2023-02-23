@@ -9,6 +9,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <frc/interfaces/Gyro.h>
+#include "Arm.h"
 
 
 
@@ -17,12 +18,13 @@
 /*~~ hi :) ~~ */
 Robot::Robot():
 a_Gyro(GYRO_ID),
+a_Arm(0, 0), //Get the IDs for the arms solenoids
 a_FLModule(misc::GetFLDrive(), misc::GetFLSteer(), AbsoluteEncoder(FL_SWERVE_ABS_ENC_PORT, FL_SWERVE_ABS_ENC_MIN_VOLTS, FL_SWERVE_ABS_ENC_MAX_VOLTS, FL_SWERVE_ABS_ENC_OFFSET / 360), misc::GetFLCANCoder()),
 a_FRModule(misc::GetFRDrive(), misc::GetFRSteer(), AbsoluteEncoder(FR_SWERVE_ABS_ENC_PORT, FR_SWERVE_ABS_ENC_MIN_VOLTS, FR_SWERVE_ABS_ENC_MAX_VOLTS, FR_SWERVE_ABS_ENC_OFFSET / 360), misc::GetFRCANCoder()),
 a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), AbsoluteEncoder(BL_SWERVE_ABS_ENC_PORT, BL_SWERVE_ABS_ENC_MIN_VOLTS, BL_SWERVE_ABS_ENC_MAX_VOLTS, BL_SWERVE_ABS_ENC_OFFSET / 360), misc::GetBLCANCoder()),
 a_BRModule(misc::GetBRDrive(), misc::GetBRSteer(), AbsoluteEncoder(BR_SWERVE_ABS_ENC_PORT, BR_SWERVE_ABS_ENC_MIN_VOLTS, BR_SWERVE_ABS_ENC_MAX_VOLTS, BR_SWERVE_ABS_ENC_OFFSET / 360), misc::GetBRCANCoder()),
 a_SwerveDrive(a_FLModule, a_FRModule, a_BLModule, a_BRModule, a_Gyro),
-a_Autonomous(&a_Gyro, &a_XboxController, &a_SwerveDrive),
+a_Autonomous(&a_Gyro, &a_XboxController, &a_SwerveDrive, &a_Arm),
 joystickOne(JOYSTICK_PORT),
 a_XboxController(XBOX_CONTROLLER),
 a_CompressorController(),

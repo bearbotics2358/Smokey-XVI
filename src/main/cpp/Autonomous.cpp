@@ -5,10 +5,11 @@
 #include <math.h>
 
 
-Autonomous::Autonomous(Gyro *Gyro, frc::XboxController *Xbox_Controller, SwerveDrive *SwerveDrive):
+Autonomous::Autonomous(Gyro *Gyro, frc::XboxController *Xbox_Controller, SwerveDrive *SwerveDrive, Arm *Arm):
 a_Gyro(Gyro),
 a_SwerveDrive(SwerveDrive),
 a_Xbox(Xbox_Controller),
+a_Arm(Arm),
 a_AutoState0(kAutoIdle0),
 a_AutoState1(kAutoIdle1),
 a_AutoState2(kAutoIdle2) {
@@ -110,12 +111,12 @@ void Autonomous::PeriodicAuto() {
 // ----------------------------------AUTONOMOUS ROUTINES---------------------------------------- //
 
 void Autonomous::Start0Ball() {
-    a_AutoState0 = kDriveAway0;
-    a_Gyro->Zero();
+    a_AutoState0 = kArm0;
+    a_Arm->setSolenoid(true);
 }
 
 void Autonomous::Periodic0Ball() {
-
+    
     AutoState0 nextState = a_AutoState0;
 
     switch (a_AutoState0) {

@@ -10,6 +10,7 @@
 #include <frc/Timer.h>
 #include <frc/XboxController.h>
 #include <units/math.h>
+#include "Arm.h"
 
 
 enum AutoType {
@@ -25,7 +26,9 @@ enum AutoType {
 
 enum AutoState0 { // Encoders
     kAutoIdle0 = 0,
-    kDriveAway0
+    kDriveAway0,
+    kArm0
+
 };
 
 enum AutoState1 { // Encoders
@@ -99,7 +102,7 @@ enum class A5V {
 
 class Autonomous {
     public:
-        Autonomous(Gyro *Gyro, frc::XboxController *XboxController, SwerveDrive *SwerveDrive);
+        Autonomous(Gyro *Gyro, frc::XboxController *XboxController, SwerveDrive *SwerveDrive, Arm *Arm);
 
         void DecidePath();
         const char *GetCurrentPath();
@@ -122,6 +125,8 @@ class Autonomous {
         void Periodic3Ball();
         void Periodic5Ball();
         void Periodic5BallVision();
+
+        Arm *a_Arm;
 
         // ------------------Sub-Routines-------------------------//
 
@@ -146,6 +151,7 @@ class Autonomous {
         Gyro *a_Gyro;
         SwerveDrive *a_SwerveDrive;
         frc::XboxController *a_Xbox;
+        
 
         AutoState0 a_AutoState0;
         AutoState1 a_AutoState1;
