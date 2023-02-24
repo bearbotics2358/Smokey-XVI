@@ -1,5 +1,5 @@
 #include "Arm.h"
-
+#include "Autonomous.h"
 
 Arm::Arm(int pushSolenoidModule, int pullSolenoidModule):
     a_armSolenoid(frc::PneumaticsModuleType::REVPH, pushSolenoidModule, pullSolenoidModule) {}
@@ -11,3 +11,10 @@ void Arm::setSolenoid(bool deployed) {
         a_armSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
     }
 }
+void Arm::ArmUp(){
+    a_armSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
+}
+void Arm::ArmDown(){
+    a_armSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
+}
+

@@ -125,6 +125,8 @@ void Autonomous::Periodic0Ball() {
             StopSwerves();
 
             break;
+        case kArm0:
+
 
         case kDriveAway0:
             if (DriveDirection(1.0, 0, 0.25, false)) {
@@ -136,12 +138,12 @@ void Autonomous::Periodic0Ball() {
 }
 
 void Autonomous::StartLeft1Ball() {
-    a_AutoState1 = kStartShooter1;
-    a_Gyro->Zero(-21);
+    Start0Ball();
+    DriveDirection(1.0, 0, .25, false);
 }
 
 void Autonomous::StartMiddle1Ball() {
-    a_AutoState1 = kStartShooter1;
+    Start0Ball();
     a_Gyro->Zero();
 }
 
