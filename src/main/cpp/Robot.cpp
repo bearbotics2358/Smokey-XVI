@@ -103,8 +103,8 @@ void Robot::DisabledInit() {
 }
 
 void Robot::DisabledPeriodic() {
-    a_Autonomous.DecidePath();
-    frc::SmartDashboard::PutString("Selected Autonomous", a_Autonomous.GetCurrentPath());
+    //a_Autonomous.DecidePath();
+   // frc::SmartDashboard::PutString("Selected Autonomous", a_Autonomous.GetCurrentPath());
 }
 
 void Robot::EnabledInit() {
@@ -123,13 +123,13 @@ void Robot::AutonomousInit() {
 
     a_SwerveDrive.unsetHoldAngle();
     a_Gyro.Zero();
-    a_Autonomous.StartAuto();
+   // a_Autonomous.StartAuto();
 }
 
 void Robot::AutonomousPeriodic() {
     EnabledPeriodic();
 
-    a_Autonomous.PeriodicAuto();
+  //  a_Autonomous.PeriodicAuto();
 }
 
 void Robot::TeleopInit() {

@@ -23,82 +23,63 @@ enum AutoType {
     k5Ball = 6,
     k5BallVision = 7,
 };
-
 enum AutoState0 { // Encoders
-    kAutoIdle0 = 0,
-    kDriveAway0,
-    kArm0
+    kBlueAutoIdle0 = 0,
+    kBlueExtend0,
+    kBlueDrop0,
+    kBlueRetract0,
+    kBlueDriveAway0
 
 };
 
 enum AutoState1 { // Encoders
-    kAutoIdle1 = 0,
-    kStartShooter1,
-    kWaitShooter1,
-    kShoot1,
-    kStartTimer1,
-    kWait1,
-    kDoneShooting1,
-    kTaxi1
+    kBlueAutoIdle1,
+    kBlueExtend1,
+    kBlueDrop1,
+    kBlueRetract1,
+    kBlueDriveAway1,
+    kBlueGoToStation1,
+    kBlueBalance1,
+    kBlueWait1
 };
 
 enum AutoState2 { // T.O.F and Encoders
-    kAutoIdle2 = 0,
-    kDriveBackThroughBall2,
-    kTurn2,
-    kDriveToWall2,
-    kShoot2,
-    kWait2
-    /*
-    kSecondShoot2,
-    kCheckSecondShot2,
-    kWait2_2*/
+    kBlueAutoIdle2,
+    kBlueExtend2,
+    kBlueDrop2,
+    kBlueRetract2,
+    kBlueDriveAway2
 };
 
 // states for 3 ball auto
-enum class A3 {
-    Idle,
-    SpoolShooter,
-    WaitShooter,
-    Shoot1,
-    Pickup2,
-    Pickup3,
-    GoToShoot23,
-    Shoot23,
+enum AutoState3 {
+    kBlueAutoIdle3,
+    kBlueExtend3,
+    kBlueDrop3,
+    kBlueRetract3,
+    kBlueDriveAway3,
+    kBlueGoToStation3,
+    kBlueBalance3
+};
+
+enum AutoState4 {
+    kBlueAutoIdle4,
+    kBlueExtend4,
+    kBlueDrop4,
+    kBlueRetract4,
+    kBlueDriveAway4
 };
 
 // states for 5 ball auto
-enum class A5 {
-    Idle,
-    SpoolShooter,
-    WaitShooter,
-    Shoot1,
-    Pickup2,
-    Pickup3,
-    GoToShoot23,
-    Shoot23,
-    Pickup4,
-    WaitPickup5,
-    GoToShoot45,
-    Shoot45,
+enum AutoState5 {
+    kBlueAutoIdle5,
+    kBlueExtend5,
+    kBlueDrop5,
+    kBlueRetract5,
+    kBlueDriveAway5,
+    kBlueGoToStation5,
+    kBlueBalance5
 };
-
-// states for 5 ball auto with vision
-enum class A5V {
-    Idle,
-    SpoolShooter,
-    WaitShooter,
-    Shoot1,
-    Pickup2,
-    Pickup3,
-    GoToShoot23,
-    Shoot23,
-    Pickup4,
-    WaitPickup5,
-    GoToShoot45,
-    Shoot45,
-};
-
 
 class Autonomous {
     public:
@@ -110,20 +91,23 @@ class Autonomous {
         void StartAuto();
         void PeriodicAuto();
 
-        void Start0Ball();
-        void Periodic0Ball();
+        void BDGL(); //Blue Drop and Go
+        void PeriodicBDGL(); //Periodic Blue Drop and Go
 
-        void StartLeft1Ball();
-        void StartMiddle1Ball();
-        void StartRight1Ball();
-        void Periodic1Ball();
+        void BCSL(); //Blue Charge Station Left
+        void PeriodicBCSL(); //Periodic Blue Charge Station Left
 
-        void Start2Ball();
-        void Periodic2Ball();
+        void BDGM(); //Blue Drop and Go Middle
+        void PeriodicBDGM();//Periodic Blue Drop and Go Middle
+        
+        void BCSM();//Blue Charge Station Middle
+        void PeriodicBCSM();//Periodic Blue Charge Station Middle
 
-        void Start35Ball();
-        void Periodic3Ball();
-        void Periodic5Ball();
+        void BDGR();//Blue Drop and Go Right
+        void PeriodicBDGR();//Periodic Blue Drop and Go Right
+
+        void BCSR();//Blue Charge Station Right
+        void PeriodicBCSR();//Periodic Blue Charge Station Right
         void Periodic5BallVision();
 
         Arm *a_Arm;
@@ -156,9 +140,9 @@ class Autonomous {
         AutoState0 a_AutoState0;
         AutoState1 a_AutoState1;
         AutoState2 a_AutoState2;
-        A3 a_AutoState3 { A3::Idle };
-        A5 a_AutoState5 { A5::Idle };
-        A5V a_AutoState5Vision { A5V::Idle };
+        AutoState3 a_AutoState3;
+        AutoState4 a_AutoState4;
+        AutoState5 a_AutoState5;
 
         AutoType autoPathMaster;
         float drivestart { 0.0 };
