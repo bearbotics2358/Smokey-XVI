@@ -13,7 +13,7 @@ shuttleZeroSwitch(limitSwitchId) {
 }
 
 void Claw::clawInit() {
-
+    transformClaw(30, false, 0);
 }
 
 bool Claw::zeroShuttle() {
@@ -52,10 +52,22 @@ void Claw::transformClaw(double angle, bool extend, double shuttle) {
 
         case 1: // shuttle movement
         armMotor.StopMotor();
-        shuttleEncoder.SetPosition(shuttle);
-        if (shuttleEncoder.GetPosition() == shuttle){
+        if (shuttle == 0){
+            zeroShuttle();
+            if (zeroShuttle() == true){
+                stage = 2;
+            }
+        } else {
+            if (shuttleEncoder.GetPosition() < shuttle){
+                shuttleMotor.Set(0.2);
+            } else if (shuttleEncoder.GetPosition() > shuttle){
+                shuttleMotor.Set(-0.2);
+            }
+        }
+        if (abs(shuttleEncoder.GetPosition() - shuttle) < 3 || zeroShuttle() == true){
             stage = 2;
         }
+
             break;
         
         case 2: // finish rotation
