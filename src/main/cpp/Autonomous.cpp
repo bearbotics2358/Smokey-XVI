@@ -291,6 +291,7 @@ void Autonomous::PeriodicBDGR() {
             }
             break;
     }
+    a_AutoState4 = nextState;
  }
  void Autonomous::BCSR() 
 {
@@ -348,6 +349,41 @@ void Autonomous::PeriodicRDGL() {
                 nextState = kRedRetract6;
             }
     }
+    a_AutoState6 = nextState;
+}
+
+void Autonomous::RCSR() {
+    a_AutoState11 = kRedExtend11;
+    a_Arm->ArmUp();
+}
+
+void Autonomous::PeriodicRCSR() {
+    AutoState11 nextState = a_AutoState11;
+
+    switch(a_AutoState11){
+        case kRedDrop11:
+            //add code
+            break;
+        case kRedRetract11:
+            a_Arm->ArmDown();
+            break;
+        case kRedDriveAway11:
+            if(DriveDirection(1.0,1.0,1.0,false)) { // need real numbers
+                nextState = kRedRetract11;
+            }
+            break;
+        case kRedGoToStation11:
+            if(DriveDirection(1.0,1.0,1.0,false)) { // need real numbers
+                nextState = kRedRetract11;
+            }
+            break;
+        case kRedBalance11:
+           //need code
+           break; 
+        
+    }
+a_AutoState11 = nextState;
+
 }
 
 void Autonomous::Periodic5BallVision() {}
