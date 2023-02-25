@@ -126,14 +126,13 @@ void Autonomous::PeriodicBDGL() {
     switch (a_AutoState0) {
 
         case kBlueDrop0:
-            //need function to drop the piece
-
+            a_Arm->ClawOpen();
             break;
         case kBlueRetract0:
             a_Arm->ArmPistonDown();
             break;
         case kBlueDriveAway0:
-            if (DriveDirection(1.0, 0, 0.25, false)) {
+            if (DriveDirection(4.2926, 0, 0.25, false)) {
                 nextState = kBlueAutoIdle0;
             }
             break;
@@ -153,7 +152,7 @@ void Autonomous::PeriodicBCSL() {
     switch (a_AutoState1) {
 
         case kBlueDrop1:
-            //add dropping stuff
+             a_Arm->ClawOpen();
             break;
 
         case kBlueRetract1:
@@ -161,21 +160,21 @@ void Autonomous::PeriodicBCSL() {
             break;
 
         case kBlueDriveAway1:
-            if (DriveDirection(1.0, 90, 0.25, false)) {
+            if (DriveDirection(4.2926, 0, 0.25, false)) {
                 nextState = kBlueAutoIdle1;
             }
             //need to actually use drivedirection
             break;
 
         case kBlueGoToStation1:
-            if (DriveDirection(1.0, 90, 0.25, false)) {
+            if (DriveDirection(2.54, 90, 0.25, false)) {
                 nextState = kBlueAutoIdle1;
             }
             //need to actually use drivedirection
             break;
 
         case kBlueBalance1:
-            //add balance code
+            Balance(90);
             break;
 
         case kBlueWait1:
@@ -203,21 +202,16 @@ void Autonomous::PeriodicBDGM() {
             break;
 
         case kBlueDrop2:
-            if (DriveDirection(1.32, 133, 0.25, true)) {
-                nextState = kBlueRetract2;
-            }
+            a_Arm->ClawOpen();
             break;
 
         case kBlueRetract2:
-            if (TurnToAngle(-21)) {
-                nextState = kBlueDriveAway2;
-                StartTimer();
-            }
+            a_Arm->ArmPistonDown();
             break;
 
         case kBlueDriveAway2:
             // we might be stuck on the wall, so move to the next state after some time
-            if (DriveDirection(2.23, -37, 0.25, true) || WaitForTime(5)) {
+            if (DriveDirection(4.2926, 0, 0.4, false)) {
                 nextState = kBlueAutoIdle2;
             }
             break;     
@@ -237,27 +231,26 @@ void Autonomous::PeriodicBCSM() {
    
     switch (a_AutoState3) {
         case kBlueDrop3:
-            //need drop code
-
+            a_Arm->ClawOpen();
             break;
         case kBlueRetract3:
             a_Arm -> ArmPistonDown();
             
             break;
         case kBlueDriveAway3:
-            if (DriveDirection(1.0, 0, 0.25, false)) {
+            if (DriveDirection(4.2926, 0, 0.4, false)) {
                 nextState = kBlueAutoIdle3;
                 //need the actual numbers
             }
             break;
         case kBlueGoToStation3:
-            if (DriveDirection(1.0, 0, 0.25, false)) {
+            if(DriveDirection(.2, 180, .25, false)) {
                 nextState = kBlueAutoIdle3;
                 //need the actual numbers
             }
             break; 
         case kBlueBalance3:
-            //no code for balance yet
+            Balance(180);
             
             break;
     }
@@ -275,8 +268,7 @@ void Autonomous::PeriodicBDGR() {
     switch (a_AutoState4) {
 
         case kBlueDrop4:
-            //Drop code
-            
+            a_Arm->ClawOpen();
             break;
 
         case kBlueRetract4:
@@ -286,7 +278,7 @@ void Autonomous::PeriodicBDGR() {
 
         case kBlueDriveAway4:
             // need the real drive numbers
-            if (DriveDirection(1.32, 133, 0.25, true)) {
+            if (DriveDirection(4.2926, 0, 0.3, true)) {
                 nextState = kBlueRetract4;
             }
             break;
@@ -305,7 +297,7 @@ void Autonomous::PeriodicBCSR() {
 
     switch (a_AutoState5) {
         case kBlueDrop5:
-            //Drop Code
+            a_Arm->ClawOpen();
             break;
 
         case kBlueRetract5:
@@ -314,15 +306,19 @@ void Autonomous::PeriodicBCSR() {
             break;
 
         case kBlueDriveAway5:
-            //code to drive away
+            if (DriveDirection(4.2926, 0, 0.3, false)) {
+                nextState = kBlueRetract5;
+            }
             break;
 
         case kBlueGoToStation5:
-            //code to go to base station
+             if (DriveDirection(2.667, -90, 0.25, false)) {
+                nextState = kBlueRetract5;
+            }
             break;
 
         case kBlueBalance5:
-            // code to balance
+            Balance(-90);
             break;
 
     }
@@ -339,13 +335,13 @@ void Autonomous::PeriodicRDGL() {
 
     switch(a_AutoState6){
         case kRedDrop6:
-            //add code
+            a_Arm->ClawOpen();
             break;
         case kRedRetract6:
             a_Arm->ArmPistonDown();
             break;
         case kRedDriveAway6:
-            if(DriveDirection(1.0,1.0,1.0,false)) { // need real numbers
+            if(DriveDirection(4.2926, 0, .3, false)) { // need real numbers
                 nextState = kRedRetract6;
             }
     }
@@ -363,27 +359,26 @@ void Autonomous::PeriodicRCSL() {
    
     switch (a_AutoState7) {
         case kRedDrop7:
-            //need drop code
-
+            a_Arm->ClawOpen();
             break;
         case kRedRetract7:
             a_Arm -> ArmPistonDown();
             
             break;
         case kRedDriveAway7:
-            if (DriveDirection(1.0, 0, 0.25, false)) {
+            if (DriveDirection(4.2926, 0, 0.3, false)) {
                 nextState = kRedAutoIdle7;
                 //need the actual numbers
             }
             break;
         case kRedGoToStation7:
-            if (DriveDirection(1.0, 0, 0.25, false)) {
+            if (DriveDirection(2.667, 90, 0.25, false)) {
                 nextState = kRedAutoIdle7;
                 //need the actual numbers
             }
             break; 
         case kRedBalance7:
-            //no code for balance yet
+            Balance(90);
             
             break;
     }
@@ -400,13 +395,13 @@ void Autonomous::PeriodicRDGM(){
    
     switch (a_AutoState8) {
         case kRedDrop8:
-            //need drop code
-        break;
+            a_Arm->ClawOpen();
+            break;
         case kRedRetract8:
-        a_Arm->ArmPistonDown();
-        break;
+            a_Arm->ArmPistonDown();
+            break;
         case kRedDriveAway8:
-         if (DriveDirection(1.0, 0, 0.25, false)) {
+         if (DriveDirection(4.2926, 0, 0.4, false)) {
                 nextState = kRedAutoIdle8;
                 //need the actual numbers
             }
@@ -427,7 +422,7 @@ void Autonomous::PeriodicRCSM() {
     
     switch(a_AutoState9){
         case kRedDrop9:
-            //drop code missing D:
+            a_Arm->ClawOpen();
             break;
             
         case kRedRetract9:
@@ -435,19 +430,19 @@ void Autonomous::PeriodicRCSM() {
             break;
 
         case kRedDriveAway9:
-            if(DriveDirection(1.0,1.0,1.0,false)) { // need real numbers please & ty
+            if(DriveDirection(4.2926, 0, .4, false)) { // need real numbers please & ty
                 nextState = kRedRetract9;
             }
             break;
             
         case kRedGoToStation9:
-            if(DriveDirection(1.0,1.0,1.0,false)) { // need real numbers please & ty
+            if(DriveDirection(.2, 180, .25, false)) { // need real numbers please & ty
                 nextState = kRedRetract9;
             }
             break;
         
         case kRedBalance9:
-            //no balance code D:
+           Balance(180);
             break;
     }   
     a_AutoState9 = nextState;
@@ -465,8 +460,7 @@ void Autonomous::PeriodicRDGR() {
     switch (a_AutoState10) {
 
         case kRedDrop10:
-            //Drop code
-            
+            a_Arm->ClawOpen();
             break;
 
         case kRedRetract10:
@@ -476,7 +470,7 @@ void Autonomous::PeriodicRDGR() {
 
         case kRedDriveAway10:
             // need the real drive numbers
-            if (DriveDirection(1.32, 133, 0.25, true)) {
+            if (DriveDirection(4.2926, 0, 0.25, false)) {
                 nextState = kRedAutoIdle10;
             }
             break;
@@ -494,22 +488,23 @@ void Autonomous::PeriodicRCSR() {
 
     switch(a_AutoState11){
         case kRedDrop11:
-            //add code
+            a_Arm->ClawOpen();
             break;
         case kRedRetract11:
             a_Arm->ArmPistonDown();
             break;
         case kRedDriveAway11:
-            if(DriveDirection(1.0,1.0,1.0,false)) { // need real numbers
+            if(DriveDirection(4.2926, 0, .25, false)) { // need real numbers
                 nextState = kRedRetract11;
             }
             break;
         case kRedGoToStation11:
-            if(DriveDirection(1.0,1.0,1.0,false)) { // need real numbers
+            if(DriveDirection(2.54, -90, .25,false)) { // need real numbers
                 nextState = kRedRetract11;
-            }
+            }//18ft wide by 11 ft 3/8 
             break;
         case kRedBalance11:
+        Balance(-90);
            //need code
            break; 
         
@@ -517,6 +512,7 @@ void Autonomous::PeriodicRCSR() {
 a_AutoState11 = nextState;
 
 }
+
 
 void Autonomous::StopSwerves() {
     a_SwerveDrive->stop();
@@ -562,24 +558,28 @@ bool Autonomous::DriveDirection(double dist, double angle, double speed, bool fi
     }
 }
 
+
+
+
+
 bool Autonomous::Balance(float direction) {
     float currentTime = frc::Timer::GetFPGATimestamp().value();
-    double tiltAngle = a_Gyro->getPitch();
-    double percentTilt = tiltAngle / 15;
-    double speed = percentTilt * MAX_CLIMB_PERCENT * MAX_FREE_SPEED;
     if(startedClimb) {
+        double tiltAngle = a_Gyro->getPitch();
+        double percentTilt = tiltAngle / 15;
+        double speed = percentTilt * MAX_CLIMB_PERCENT * MAX_FREE_SPEED;
         a_SwerveDrive->driveDirectionVelocity(speed, direction);
-        if(abs(tiltAngle) < 1) {
-            startTime = frc::Timer::GetFPGATimestamp().value();
+        if(tiltAngle == 0) {
+            float startTime = frc::Timer::GetFPGATimestamp().value();
         }
         return false;
     }
-    if ((currentTime - startTime > 0.5) && (abs(tiltAngle) < 1) && startedClimb){
+    if ((currentTime - startTime > 0.5) && (a_Gyro->getPitch() == 0) && startedClimb){
         return true;
     }
     else{
-        a_SwerveDrive->driveDirection(MAX_CLIMB_PERCENT, direction);
-        if(abs(tiltAngle) > 1){
+        a_SwerveDrive->driveDirection(MAX_FREE_SPEED, direction);
+        if(a_Gyro->getPitch() > 0){
             startedClimb = true;
         }
         return false;
