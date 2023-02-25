@@ -518,8 +518,6 @@ a_AutoState11 = nextState;
 
 }
 
-void Autonomous::Periodic5BallVision() {}
-
 void Autonomous::StopSwerves() {
     a_SwerveDrive->stop();
 }

@@ -163,10 +163,8 @@ class Autonomous {
         void BDGR();//Blue Drop and Go Right AutoState4
         void PeriodicBDGR();//Periodic Blue Drop and Go Right AutoState4
 
-        void BCSR();//Blue Charge Station Right AutoState5
-        void PeriodicBCSR();//Periodic Blue Charge Station Right AutoState5
-
-        void Periodic5BallVision();
+        void BCSR();//Blue Charge Station Right
+        void PeriodicBCSR();//Periodic Blue Charge Station Right
         
         void RDGL();//Red Drop and Go Left AutoState6
         void PeriodicRDGL();//Periodic Red Drop and Go Left AutoState6
@@ -202,10 +200,6 @@ class Autonomous {
         // Note: you MUST have a separate case to start the timer, though WaitForTime handles stopping & resetting
         void StartTimer();
         bool WaitForTime(double time); // Wait for specified time in seconds
-
-        void SpoolShooter(float speed); // Spools up shooter ahead of time to improve efficiency
-
-        bool IndexAndShoot(float speed); // Shooting a ball when the shooter is spinning fast enough
 
         // Drives in direction at speed for distance. If going straight backwards, set angle to 180, not dist as a negative
         bool DriveDirection(double dist, double angle, double speed, bool fieldOriented);
