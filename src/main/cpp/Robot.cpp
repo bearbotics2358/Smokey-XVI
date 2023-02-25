@@ -27,13 +27,12 @@ a_SwerveDrive(a_FLModule, a_FRModule, a_BLModule, a_BRModule, a_Gyro),
 a_Autonomous(&a_Gyro, &a_XboxController, &a_SwerveDrive, &a_Arm),
 joystickOne(JOYSTICK_PORT),
 a_XboxController(XBOX_CONTROLLER),
-a_CompressorController(),
+a_CompressorController()
 // NEEDED A PORT, THIS IS PROBABLY WRONG, PLEASE FIX IT LATER
 //  handler("169.254.179.144", "1185", "data"),
 //  handler("raspberrypi.local", 1883, "PI/CV/SHOOT/DATA"),
 //  a_canHandler(CanHandler::layout2022()),
-a_shooterVision(SHOOTER_CAMERA_NAME, TargetTracker::Mode::target(0)),
-a_ballTracker(SHOOTER_CAMERA_NAME, TargetTracker::Mode::ball(0)) {
+{
     /*if (!handler.ready()) {
         // do something if handler failed to connect
     }*/
@@ -62,8 +61,6 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
     a_Gyro.Update();
     //a_SwerveDrive.updatePosition();
-    
-    bool bstate = beamBoi.beamBroken();
 
 //testing code block for PID tuning
 
@@ -79,6 +76,7 @@ void Robot::RobotPeriodic() {
         a_BRModule.steerToAng(150);
         a_BLModule.steerToAng(150);
     }
+
 
 
     

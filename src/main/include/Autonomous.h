@@ -148,43 +148,41 @@ class Autonomous {
         void StartAuto();
         void PeriodicAuto();
 
-        void BDGL(); //Blue Drop and Go
-        void PeriodicBDGL(); //Periodic Blue Drop and Go
+        void BDGL(); //Blue Drop and Go AutoState0
+        void PeriodicBDGL(); //Periodic Blue Drop and Go AutoState0
 
-        void BCSL(); //Blue Charge Station Left
-        void PeriodicBCSL(); //Periodic Blue Charge Station Left
+        void BCSL(); //Blue Charge Station Left AutoState1
+        void PeriodicBCSL(); //Periodic Blue Charge Station Left AutoState1
 
-        void BDGM(); //Blue Drop and Go Middle
-        void PeriodicBDGM();//Periodic Blue Drop and Go Middle
+        void BDGM(); //Blue Drop and Go Middle AutoState2
+        void PeriodicBDGM();//Periodic Blue Drop and Go Middle AutoState2
         
-        void BCSM();//Blue Charge Station Middle
-        void PeriodicBCSM();//Periodic Blue Charge Station Middle
+        void BCSM();//Blue Charge Station Middle AutoState3
+        void PeriodicBCSM();//Periodic Blue Charge Station Middle AutoState3
 
-        void BDGR();//Blue Drop and Go Right
-        void PeriodicBDGR();//Periodic Blue Drop and Go Right
+        void BDGR();//Blue Drop and Go Right AutoState4
+        void PeriodicBDGR();//Periodic Blue Drop and Go Right AutoState4
 
         void BCSR();//Blue Charge Station Right
         void PeriodicBCSR();//Periodic Blue Charge Station Right
-
-        void Periodic5BallVision();
         
-        void RDGL();//Red Drop and Go Left
-        void PeriodicRDGL();//Periodic Red Drop and Go Left
+        void RDGL();//Red Drop and Go Left AutoState6
+        void PeriodicRDGL();//Periodic Red Drop and Go Left AutoState6
 
-        void RCSL(); // Red Charge Station Left
-        void PeriodicRCSL();// Periodic Red Charge Station Left
+        void RCSL(); // Red Charge Station Left AutoState7
+        void PeriodicRCSL();// Periodic Red Charge Station Left AutoState7
 
-        void RDGM(); // Red Drop and Go Middle
-        void PeriodicRDGM(); // Periodic Red Drop and Go Middle
+        void RDGM(); // Red Drop and Go Middle AutoState8
+        void PeriodicRDGM(); // Periodic Red Drop and Go Middle AutoState8
 
-        void RCSM(); //Red Charge Station Middle
-        void PeriodicRCSM(); //Periodic Red Charge Station Middle
+        void RCSM(); //Red Charge Station Middle AutoState9
+        void PeriodicRCSM(); //Periodic Red Charge Station Middle AutoState9
 
-        void RDGR();//Red Drop and Go Right
-        void PeriodicRDGR(); //Periodic Red Drop and Go Right
+        void RDGR();//Red Drop and Go Right AutoState10
+        void PeriodicRDGR(); //Periodic Red Drop and Go Right AutoState10
 
-        void RCSR(); // Red Charge Station Right
-        void PeriodicRCSR(); // Periodic Red Charge Station Right
+        void RCSR(); // Red Charge Station Right AutoState11
+        void PeriodicRCSR(); // Periodic Red Charge Station Right AutoState11
 
        
 
@@ -202,10 +200,6 @@ class Autonomous {
         // Note: you MUST have a separate case to start the timer, though WaitForTime handles stopping & resetting
         void StartTimer();
         bool WaitForTime(double time); // Wait for specified time in seconds
-
-        void SpoolShooter(float speed); // Spools up shooter ahead of time to improve efficiency
-
-        bool IndexAndShoot(float speed); // Shooting a ball when the shooter is spinning fast enough
 
         // Drives in direction at speed for distance. If going straight backwards, set angle to 180, not dist as a negative
         bool DriveDirection(double dist, double angle, double speed, bool fieldOriented);

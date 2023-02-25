@@ -131,7 +131,7 @@ void Autonomous::PeriodicBDGL() {
             break;
         case kBlueRetract0:
             a_Arm->ArmPistonDown();
-
+            break;
         case kBlueDriveAway0:
             if (DriveDirection(1.0, 0, 0.25, false)) {
                 nextState = kBlueAutoIdle0;
@@ -291,6 +291,7 @@ void Autonomous::PeriodicBDGR() {
             }
             break;
     }
+    a_AutoState4 = nextState;
  }
  void Autonomous::BCSR() 
 {
@@ -348,9 +349,174 @@ void Autonomous::PeriodicRDGL() {
                 nextState = kRedRetract6;
             }
     }
+    a_AutoState6 = nextState;
 }
 
-void Autonomous::Periodic5BallVision() {}
+void Autonomous::RCSL() 
+{
+    a_AutoState7 = kRedExtend7;
+    a_Arm->ArmPistonUp();
+}
+
+void Autonomous::PeriodicRCSL() {
+    AutoState7 nextState = a_AutoState7;
+   
+    switch (a_AutoState7) {
+        case kRedDrop7:
+            //need drop code
+
+            break;
+        case kRedRetract7:
+            a_Arm -> ArmPistonDown();
+            
+            break;
+        case kRedDriveAway7:
+            if (DriveDirection(1.0, 0, 0.25, false)) {
+                nextState = kRedAutoIdle7;
+                //need the actual numbers
+            }
+            break;
+        case kRedGoToStation7:
+            if (DriveDirection(1.0, 0, 0.25, false)) {
+                nextState = kRedAutoIdle7;
+                //need the actual numbers
+            }
+            break; 
+        case kRedBalance7:
+            //no code for balance yet
+            
+            break;
+    }
+    a_AutoState7 = nextState;
+}
+
+void Autonomous::RDGM(){
+    a_AutoState8 =  kRedExtend8;
+    a_Arm->ArmPistonUp();
+}
+
+void Autonomous::PeriodicRDGM(){
+    AutoState8 nextState = a_AutoState8;
+   
+    switch (a_AutoState8) {
+        case kRedDrop8:
+            //need drop code
+        break;
+        case kRedRetract8:
+        a_Arm->ArmPistonDown();
+        break;
+        case kRedDriveAway8:
+         if (DriveDirection(1.0, 0, 0.25, false)) {
+                nextState = kRedAutoIdle8;
+                //need the actual numbers
+            }
+            break;
+    }
+    a_AutoState8 = nextState;
+}
+
+
+void Autonomous::RCSM() {
+    a_AutoState9 = kRedExtend9;
+    a_Arm->ArmPistonUp();
+}
+
+void Autonomous::PeriodicRCSM() {
+    
+    AutoState9 nextState = a_AutoState9;
+    
+    switch(a_AutoState9){
+        case kRedDrop9:
+            //drop code missing D:
+            break;
+            
+        case kRedRetract9:
+            a_Arm->ArmPistonDown();
+            break;
+
+        case kRedDriveAway9:
+            if(DriveDirection(1.0,1.0,1.0,false)) { // need real numbers please & ty
+                nextState = kRedRetract9;
+            }
+            break;
+            
+        case kRedGoToStation9:
+            if(DriveDirection(1.0,1.0,1.0,false)) { // need real numbers please & ty
+                nextState = kRedRetract9;
+            }
+            break;
+        
+        case kRedBalance9:
+            //no balance code D:
+            break;
+    }   
+    a_AutoState9 = nextState;
+}
+
+void Autonomous::RDGR(){
+    a_AutoState10 = kRedExtend10;
+    a_Arm->ArmPistonUp();
+}
+
+void Autonomous::PeriodicRDGR() {
+
+    AutoState10 nextState = a_AutoState10;
+
+    switch (a_AutoState10) {
+
+        case kRedDrop10:
+            //Drop code
+            
+            break;
+
+        case kRedRetract10:
+            a_Arm->ArmPistonDown();
+            
+            break;
+
+        case kRedDriveAway10:
+            // need the real drive numbers
+            if (DriveDirection(1.32, 133, 0.25, true)) {
+                nextState = kRedAutoIdle10;
+            }
+            break;
+    }
+    a_AutoState10 = nextState;
+ }
+
+void Autonomous::RCSR() {
+    a_AutoState11 = kRedExtend11;
+    a_Arm->ArmPistonUp();
+}
+
+void Autonomous::PeriodicRCSR() {
+    AutoState11 nextState = a_AutoState11;
+
+    switch(a_AutoState11){
+        case kRedDrop11:
+            //add code
+            break;
+        case kRedRetract11:
+            a_Arm->ArmPistonDown();
+            break;
+        case kRedDriveAway11:
+            if(DriveDirection(1.0,1.0,1.0,false)) { // need real numbers
+                nextState = kRedRetract11;
+            }
+            break;
+        case kRedGoToStation11:
+            if(DriveDirection(1.0,1.0,1.0,false)) { // need real numbers
+                nextState = kRedRetract11;
+            }
+            break;
+        case kRedBalance11:
+           //need code
+           break; 
+        
+    }
+a_AutoState11 = nextState;
+
+}
 
 void Autonomous::StopSwerves() {
     a_SwerveDrive->stop();
