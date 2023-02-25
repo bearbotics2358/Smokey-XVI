@@ -85,7 +85,7 @@ int misc::GetFLCANCoder(){
     return trueID;
 }
 int misc::GetFLCANCoderOffset(){
-    if((FL_ID >= 1) && (BL_ID <= 8)){
+    if((FL_ID >= 1) && (FL_ID <= 8)){
         return CANCODER_OFFSETS[FL_ID - 1];
     }
 }
