@@ -18,7 +18,7 @@
 /*~~ hi :) ~~ */
 Robot::Robot():
 a_Gyro(GYRO_ID),
-a_Arm(ARM_PUSH_SOLENOID_MODULE, ARM_PULL_SOLENOID_MODULE, ARM_OPEN_SOLENOID_MODULE, ARM_CLOSE_SOLENOID_MODULE, ARM_CARRIAGE_MOTOR), //Get the IDs for the arms solenoids
+a_Arm(ARM_PUSH_SOLENOID_MODULE, ARM_PULL_SOLENOID_MODULE, ARM_OPEN_SOLENOID_MODULE, ARM_CLOSE_SOLENOID_MODULE, ARM_CARRIAGE_MOTOR, ARM_CLAW_MOTOR, ARM_CARRIAGE_CANCODER), //Get the IDs for the arms solenoids
 a_FLModule(misc::GetFLDrive(), misc::GetFLSteer(), AbsoluteEncoder(FL_SWERVE_ABS_ENC_PORT, FL_SWERVE_ABS_ENC_MIN_VOLTS, FL_SWERVE_ABS_ENC_MAX_VOLTS, FL_SWERVE_ABS_ENC_OFFSET / 360), misc::GetFLCANCoder()),
 a_FRModule(misc::GetFRDrive(), misc::GetFRSteer(), AbsoluteEncoder(FR_SWERVE_ABS_ENC_PORT, FR_SWERVE_ABS_ENC_MIN_VOLTS, FR_SWERVE_ABS_ENC_MAX_VOLTS, FR_SWERVE_ABS_ENC_OFFSET / 360), misc::GetFRCANCoder()),
 a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), AbsoluteEncoder(BL_SWERVE_ABS_ENC_PORT, BL_SWERVE_ABS_ENC_MIN_VOLTS, BL_SWERVE_ABS_ENC_MAX_VOLTS, BL_SWERVE_ABS_ENC_OFFSET / 360), misc::GetBLCANCoder()),
@@ -79,6 +79,8 @@ void Robot::RobotPeriodic() {
         a_BRModule.steerToAng(150);
         a_BLModule.steerToAng(150);
     }
+
+
     
     //printf("beam: %f/n", bstate);
     /*
@@ -170,6 +172,34 @@ void Robot::TeleopPeriodic() {
     frc::SmartDashboard::PutNumber("P value", 0.6 + pChange);
     frc::SmartDashboard::PutNumber("I value", 1.0 + iChange);
     frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
+
+    /* =-=-=-=-=-=-=-=-=-=-= Arm Controls =-=-=-=-=-=-=-=-=-=-= */
+
+    if(a_XboxController.GetYButton()) {
+        a_Arm.ClawMotorUp();
+    }
+    if(a_XboxController.GetAButton()) {
+        a_Arm.ClawMotorDown();
+    }
+    if(a_XboxController.GetXButton()) {
+        a_Arm.ClawOpen();
+    }
+    if(a_XboxController.GetBButton()) {
+        a_Arm.ClawClose();
+    }
+
+    if(a_XboxController.GetPOV() == 90) {
+        a_Arm.ArmMotorUp();
+    }
+    if(a_XboxController.GetPOV() == 270) {
+        a_Arm.ArmMotorDown();
+    }
+    if(a_XboxController.GetPOV() == 0) {
+        a_Arm.ArmPistonUp();
+    }
+    if(a_XboxController.GetPOV() == 180) {
+        a_Arm.ArmPistonUp();
+    }
 
     /* =-=-=-=-=-=-=-=-=-=-= Swerve Controls =-=-=-=-=-=-=-=-=-=-= */
 

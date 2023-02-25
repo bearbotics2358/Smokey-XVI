@@ -116,7 +116,7 @@ void Autonomous::PeriodicAuto() {
 
 void Autonomous::BDGL() {
     a_AutoState0 = kBlueExtend0;
-    a_Arm->ArmUp();
+    a_Arm->ArmPistonUp();
 }
 
 void Autonomous::PeriodicBDGL() {
@@ -130,7 +130,7 @@ void Autonomous::PeriodicBDGL() {
 
             break;
         case kBlueRetract0:
-            a_Arm->ArmDown();
+            a_Arm->ArmPistonDown();
 
         case kBlueDriveAway0:
             if (DriveDirection(1.0, 0, 0.25, false)) {
@@ -143,7 +143,7 @@ void Autonomous::PeriodicBDGL() {
 
 void Autonomous::BCSL() {
     a_AutoState1 = kBlueExtend1;
-    a_Arm->ArmUp();
+    a_Arm->ArmPistonUp();
 }
 
 void Autonomous::PeriodicBCSL() {
@@ -157,7 +157,7 @@ void Autonomous::PeriodicBCSL() {
             break;
 
         case kBlueRetract1:
-           a_Arm->ArmDown();
+           a_Arm->ArmPistonDown();
             break;
 
         case kBlueDriveAway1:
@@ -229,7 +229,7 @@ void Autonomous::PeriodicBDGM() {
 void Autonomous::BCSM() 
 {
     a_AutoState3 = kBlueExtend3;
-    a_Arm->ArmUp();
+    a_Arm->ArmPistonUp();
 }
 
 void Autonomous::PeriodicBCSM() {
@@ -241,7 +241,7 @@ void Autonomous::PeriodicBCSM() {
 
             break;
         case kBlueRetract3:
-            a_Arm -> ArmDown();
+            a_Arm -> ArmPistonDown();
             
             break;
         case kBlueDriveAway3:
@@ -265,7 +265,7 @@ void Autonomous::PeriodicBCSM() {
 }
 
 void Autonomous::BDGR(){
-    a_Arm->ArmUp();
+    a_Arm->ArmPistonUp();
 }
 
 void Autonomous::PeriodicBDGR() {
@@ -280,7 +280,7 @@ void Autonomous::PeriodicBDGR() {
             break;
 
         case kBlueRetract4:
-            a_Arm->ArmDown();
+            a_Arm->ArmPistonDown();
             
             break;
 
@@ -295,7 +295,7 @@ void Autonomous::PeriodicBDGR() {
  void Autonomous::BCSR() 
 {
     a_AutoState5 = kBlueExtend5;
-    a_Arm->ArmUp();
+    a_Arm->ArmPistonUp();
 }
     
 void Autonomous::PeriodicBCSR() {
@@ -309,7 +309,7 @@ void Autonomous::PeriodicBCSR() {
 
         case kBlueRetract5:
            //arm close code
-           a_Arm->ArmDown();
+           a_Arm->ArmPistonDown();
             break;
 
         case kBlueDriveAway5:
@@ -330,7 +330,7 @@ void Autonomous::PeriodicBCSR() {
 
 void Autonomous::RDGL(){
     a_AutoState6 = kRedExtend6;
-    a_Arm->ArmUp();
+    a_Arm->ArmPistonUp();
 }
 
 void Autonomous::PeriodicRDGL() {
@@ -341,7 +341,7 @@ void Autonomous::PeriodicRDGL() {
             //add code
             break;
         case kRedRetract6:
-            a_Arm->ArmDown();
+            a_Arm->ArmPistonDown();
             break;
         case kRedDriveAway6:
             if(DriveDirection(1.0,1.0,1.0,false)) { // need real numbers

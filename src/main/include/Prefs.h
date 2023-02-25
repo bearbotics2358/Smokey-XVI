@@ -10,12 +10,13 @@
 //#define NEW_SWERVE
 
 #define GYRO_ID 0 // TODO: UPDATE TO CORRECT NUMBER
-#define ARM_ID 0 // Need to update to correct ID
 #define ARM_PUSH_SOLENOID_MODULE 0 // Need to update to correct ID
 #define ARM_PULL_SOLENOID_MODULE 0 // Need to update to correct ID
 #define ARM_OPEN_SOLENOID_MODULE 0
 #define ARM_CLOSE_SOLENOID_MODULE 0
 #define ARM_CARRIAGE_MOTOR 0
+#define ARM_CLAW_MOTOR 0
+#define ARM_CARRIAGE_CANCODER 0
 
 /*====== SWERVE MOTOR CONTROLLER IDS ======*/
 
