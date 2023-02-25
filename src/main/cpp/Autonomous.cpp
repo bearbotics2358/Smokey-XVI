@@ -328,6 +328,27 @@ void Autonomous::PeriodicBCSR() {
     a_AutoState5 = nextState;
 }
 
+void Autonomous::RDGL(){
+    a_AutoState6 = kRedExtend6;
+    a_Arm->ArmUp();
+}
+
+void Autonomous::PeriodicRDGL() {
+    AutoState6 nextState = a_AutoState6;
+
+    switch(a_AutoState6){
+        case kRedDrop6:
+            //add code
+            break;
+        case kRedRetract6:
+            a_Arm->ArmDown();
+            break;
+        case kRedDriveAway6:
+            if(DriveDirection(1.0,1.0,1.0,false)) { // need real numbers
+                nextState = kRedRetract6;
+            }
+    }
+}
 
 void Autonomous::Periodic5BallVision() {}
 

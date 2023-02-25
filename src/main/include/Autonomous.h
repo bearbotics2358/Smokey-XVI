@@ -81,6 +81,63 @@ enum AutoState5 {
     kBlueBalance5
 };
 
+enum AutoState6 {
+    kRedAutoIdle6,
+    kRedExtend6,
+    kRedDrop6,
+    kRedRetract6,
+    kRedDriveAway6
+};
+ enum AutoState7{
+    kRedAutoIdle7,
+    kRedExtend7,
+    kRedDrop7,
+    kRedRetract7,
+    kRedDriveAway7,
+    kRedGoToStation7,
+    kRedBalance7
+
+
+ };
+
+  enum AutoState8{
+    kRedAutoIdle8,
+    kRedExtend8,
+    kRedDrop8,
+    kRedRetract8,
+    kRedDriveAway8,
+
+  };
+
+  enum AutoState9{
+    kRedAutoIdle9,
+    kRedExtend9,
+    kRedDrop9,
+    kRedRetract9,
+    kRedDriveAway9,
+    kRedGoToStation9,
+    kRedBalance9
+  };
+  enum AutoState10{
+    kRedAutoIdle10,
+    kRedExtend10,
+    kRedDrop10,
+    kRedRetract10,
+    kRedDriveAway10
+
+
+  };
+    enum AutoState11{
+        kRedAutoIdle11,
+        kRedExtend11,
+        kRedDrop11,
+        kRedRetract11,
+        kRedDriveAway11,
+        kRedGoToStation11,
+        kRedBalance11
+    };
+
+
 class Autonomous {
     public:
         Autonomous(Gyro *Gyro, frc::XboxController *XboxController, SwerveDrive *SwerveDrive, Arm *Arm);
@@ -108,7 +165,32 @@ class Autonomous {
 
         void BCSR();//Blue Charge Station Right
         void PeriodicBCSR();//Periodic Blue Charge Station Right
+
         void Periodic5BallVision();
+        
+        void RDGL();//Red Drop and Go Left
+        void PeriodicRDGL();//Periodic Red Drop and Go Left
+
+        void RCSL(); // Red Charge Station Left
+        void PeriodicRCSL();// Periodic Red Charge Station Left
+
+        void RDGM(); // Red Drop and Go Middle
+        void PeriodicRDGM(); // Periodic Red Drop and Go Middle
+
+        void RCSM(); //Red Charge Station Middle
+        void PeriodicRCSM(); //Periodic Red Charge Station Middle
+
+        void RDGR();//Red Drop and Go Right
+        void PeriodicRDGR(); //Periodic Red Drop and Go Right
+
+        void RCSR(); // Red Charge Station Right
+        void PeriodicRCSR(); // Periodic Red Charge Station Right
+
+       
+
+
+       
+
 
         Arm *a_Arm;
 
@@ -143,6 +225,13 @@ class Autonomous {
         AutoState3 a_AutoState3;
         AutoState4 a_AutoState4;
         AutoState5 a_AutoState5;
+        AutoState6 a_AutoState6;
+        AutoState7 a_AutoState7;
+        AutoState8 a_AutoState8;
+        AutoState9 a_AutoState9;
+        AutoState10 a_AutoState10;
+        AutoState11 a_AutoState11;
+
 
         AutoType autoPathMaster;
         float drivestart { 0.0 };
