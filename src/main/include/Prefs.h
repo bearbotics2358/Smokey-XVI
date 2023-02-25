@@ -18,6 +18,9 @@
 #define ARM_CLAW_MOTOR 0
 #define ARM_CARRIAGE_CANCODER 0
 
+#define MAX_CLIMB_PERCENT 0.2
+#define MAX_FREE_SPEED 16.3
+
 #define TICKS_STEERING 18.0 // roughly 18 "position" units per steering rotation
 
 /*====== SWERVE MOTOR CONTROLLER IDS ======*/

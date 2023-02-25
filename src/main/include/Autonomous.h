@@ -184,14 +184,6 @@ class Autonomous {
         void RCSR(); // Red Charge Station Right AutoState11
         void PeriodicRCSR(); // Periodic Red Charge Station Right AutoState11
 
-       
-
-
-       
-
-
-        Arm *a_Arm;
-
         // ------------------Sub-Routines-------------------------//
 
         void StopSwerves(); // IDLE
@@ -205,10 +197,12 @@ class Autonomous {
         bool DriveDirection(double dist, double angle, double speed, bool fieldOriented);
 
         bool TurnToAngle(float angle); // turns to a specific angle
+        bool Balance(float direction);
 
 
     private:
         Gyro *a_Gyro;
+        Arm *a_Arm;
         SwerveDrive *a_SwerveDrive;
         frc::XboxController *a_Xbox;
         
@@ -237,6 +231,9 @@ class Autonomous {
         double autoStartTime { 0.0 };
         // TEMP
         double autoScale { 1.0 };
+
+        bool startedClimb { false };
+        float startTime { 0.0 };
 
         // start position of robot during 5 ball auto relative to near left corner of field
         // FIXME: this is a very innacurate guess, more so than the other measurements

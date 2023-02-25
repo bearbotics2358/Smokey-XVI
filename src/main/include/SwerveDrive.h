@@ -96,6 +96,7 @@ class SwerveDrive // Class to handle the kinematics of Swerve Drive
          *  @param directionDegrees direction to drive in degress from 0 to 360.
          */
         void driveDirection(float percent, float directionDegrees);
+        void driveDirectionVelocity(float speed, float directionDegrees);
 
         // returns the average of the total distance of the drive encoders in all 4 modules in meters
         float getAvgDistance();
