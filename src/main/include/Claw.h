@@ -2,11 +2,14 @@
 
 #include <frc/DoubleSolenoid.h>
 #include <rev/CANSparkMax.h>
+#include "LimitSwitch.h"
 
 class Claw {
     public:
-        Claw(int motorPort, int shuttlePort, int pistonPushSolenoidModule, int pistonPullSolenoidModule);
+        Claw(int motorPort, int shuttlePort, int pistonPushSolenoidModule, int pistonPullSolenoidModule, int limitSwitchId);
         void transformClaw(double angle, bool extend, double shuttle);
+        void clawInit();
+        bool zeroShuttle();
     private:
         frc::DoubleSolenoid a_Piston;
         rev::CANSparkMax shuttleMotor;
@@ -14,5 +17,5 @@ class Claw {
         rev::SparkMaxRelativeEncoder shuttleEncoder;
         rev::SparkMaxRelativeEncoder armEncoder;
 
-        double getRelativeAngle(rev::SparkMaxRelativeEncoder encoder);
+        LimitSwitch shuttleZeroSwitch;
 };
