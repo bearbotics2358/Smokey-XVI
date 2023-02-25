@@ -5,6 +5,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <ctre/phoenix/sensors/CANCoder.h>
 
 SwerveModule::SwerveModule(int driveID, int steerID, AbsoluteEncoder&& absEncoder, int CANCoderID):
 driveMotor(driveID),
@@ -17,6 +18,7 @@ steerPID(0, 0, 0) {
     // by default this selects the ingetrated sensor
     ctre::phoenix::motorcontrol::can::TalonFXConfiguration config;
     _steerID = steerID;
+    _CANCoderID = CANCoderID;
 
     steerMotor.SetInverted(true);
 
@@ -69,6 +71,10 @@ double SwerveModule::getRelativeAngle() {
 }
 
 float SwerveModule::getAngle() {
+    if(_CANCoderID == misc::GetFLCANCoder()) {
+        double position = m_CANCoder.GetAbsolutePosition();
+        printf("position: %6.2f \n", position);
+    }
     return misc::clampDegrees(getRelativeAngle() + encZeroPoint);
 }
 
@@ -88,9 +94,13 @@ void SwerveModule::steerToAng(float degrees) {
     float trueangle = (fmod(trueticks, 44000) / 44000) * 360;
     float speed = std::clamp(steerPID.Calculate(getAngle(), degrees) / 270.0, -0.5, 0.5);
     steerMotor.Set(TalonFXControlMode::PercentOutput, speed);
-    if (_steerID == 8) { 
+    /*if (_steerID == 8) { 
         printf("angle: %6.2f    trueangle: %6.2f   ticks: %6.2f  trueticks: %6.2f    speed: %6.2f\n", degrees, trueangle, ticks, trueticks, speed);
-    }
+    }*/
+    /*if(_CANCoderID == misc::GetBLCANCoder()) {
+        int position = m_CANCoder.GetAbsolutePosition();
+        printf("position: %6.2f \n", position);
+    }*/
 }
 
 void SwerveModule::debugSteer(float angle) {

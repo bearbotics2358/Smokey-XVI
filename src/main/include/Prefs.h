@@ -12,7 +12,10 @@
 #define GYRO_ID 0 // TODO: UPDATE TO CORRECT NUMBER
 #define ARM_ID 0 // Need to update to correct ID
 #define ARM_PUSH_SOLENOID_MODULE 0 // Need to update to correct ID
-#define ARM_PUSH_SOLENOID_MODULE 0 // Need to update to correct ID
+#define ARM_PULL_SOLENOID_MODULE 0 // Need to update to correct ID
+#define ARM_OPEN_SOLENOID_MODULE 0
+#define ARM_CLOSE_SOLENOID_MODULE 0
+#define ARM_CARRIAGE_MOTOR 0
 
 /*====== SWERVE MOTOR CONTROLLER IDS ======*/
 
@@ -28,10 +31,10 @@ m = number engraved on module
 
 */
 
-#define FL_ID 8
-#define FR_ID 4
-#define BL_ID 5
-#define BR_ID 3
+#define FL_ID 7
+#define FR_ID 2
+#define BL_ID 1
+#define BR_ID 6
 
 // #define FL_DRIVE_ID 15
 // #define FL_STEER_ID 16
@@ -86,6 +89,25 @@ m = number engraved on module
 #define FR_SWERVE_ABS_ENC_OFFSET 276.11
 #define BL_SWERVE_ABS_ENC_OFFSET 0.0
 #define BR_SWERVE_ABS_ENC_OFFSET 0.0
+
+#define CANCODER_OFFSET_1 0
+#define CANCODER_OFFSET_2 0
+#define CANCODER_OFFSET_3 0
+#define CANCODER_OFFSET_4 0
+#define CANCODER_OFFSET_5 0
+#define CANCODER_OFFSET_6 0
+#define CANCODER_OFFSET_7 0
+#define CANCODER_OFFSET_8 0
+static int CANCODER_OFFSETS[] = {
+    CANCODER_OFFSET_1, 
+    CANCODER_OFFSET_2, 
+    CANCODER_OFFSET_3, 
+    CANCODER_OFFSET_4, 
+    CANCODER_OFFSET_5, 
+    CANCODER_OFFSET_6, 
+    CANCODER_OFFSET_7, 
+    CANCODER_OFFSET_8,
+    };
 
 
 /* ========== Joystick Ports ========= */

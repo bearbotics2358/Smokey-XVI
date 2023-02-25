@@ -82,6 +82,7 @@ class SwerveModule // Handles steering and driving of each Swerve Module
         frc2::PIDController steerPID;
 
         int _steerID = 0;
+        int _CANCoderID = 0;
         // how many degrees away from the actual zero degrees
         // that the relative encoder's zero point is
         double encZeroPoint { 0.0 };

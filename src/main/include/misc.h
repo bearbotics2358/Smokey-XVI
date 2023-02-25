@@ -34,13 +34,17 @@ double getSeconds();
 int GetFLDrive();
 int GetFLSteer();
 int GetFLCANCoder();
+int GetFLCANCoderOffset();
 int GetFRDrive();
 int GetFRSteer();
 int GetFRCANCoder();
+int GetFRCANCoderOffset();
 int GetBLDrive();
 int GetBLSteer();
 int GetBLCANCoder();
+int GetBLCANCoderOffset();
 int GetBRDrive();
 int GetBRSteer();
 int GetBRCANCoder();
+int GetBRCANCoderOffset();
 }
