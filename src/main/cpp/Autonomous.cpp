@@ -578,7 +578,7 @@ bool Autonomous::Balance(float direction) {
         return true;
     }
     else{
-        a_SwerveDrive->driveDirection(MAX_FREE_SPEED, direction);
+        a_SwerveDrive->driveDirection(MAX_CLIMB_PERCENT, direction);
         if(abs(tiltAngle) > 1){
             startedClimb = true;
         }
