@@ -574,12 +574,12 @@ bool Autonomous::Balance(float direction) {
         }
         return false;
     }
-    if ((currentTime - startTime > 0.5) && (abs(a_Gyro->getPitch()) < 0) && startedClimb){
+    if ((currentTime - startTime > 0.5) && (abs(tiltAngle) < 1) && startedClimb){
         return true;
     }
     else{
         a_SwerveDrive->driveDirection(MAX_FREE_SPEED, direction);
-        if(a_Gyro->getPitch() > 0){
+        if(abs(tiltAngle) > 1){
             startedClimb = true;
         }
         return false;
