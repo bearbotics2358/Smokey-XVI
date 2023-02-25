@@ -59,8 +59,6 @@ class Robot : public frc::TimedRobot {
         SwerveModule a_BRModule;
         SwerveDrive a_SwerveDrive;
 
-        BeamBreak beamBoi = BeamBreak(1); //int port = 1
-
         // speed multiplier for driver controls for the swerve
         bool a_slowSpeed { false };
 
@@ -74,9 +72,6 @@ class Robot : public frc::TimedRobot {
         // CanHandler a_canHandler;
 
         // stuff that autonomous needs
-
-        TargetTracker a_shooterVision;
-        TargetTracker a_ballTracker;
 
         double pChange;
         double iChange;
