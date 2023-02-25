@@ -163,8 +163,8 @@ class Autonomous {
         void BDGR();//Blue Drop and Go Right AutoState4
         void PeriodicBDGR();//Periodic Blue Drop and Go Right AutoState4
 
-        void BCSR();//Blue Charge Station Right
-        void PeriodicBCSR();//Periodic Blue Charge Station Right
+        void BCSR();//Blue Charge Station Right AutoState5
+        void PeriodicBCSR();//Periodic Blue Charge Station Right AutoState5
         
         void RDGL();//Red Drop and Go Left AutoState6
         void PeriodicRDGL();//Periodic Red Drop and Go Left AutoState6
