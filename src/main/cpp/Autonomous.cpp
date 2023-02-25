@@ -564,17 +564,17 @@ bool Autonomous::DriveDirection(double dist, double angle, double speed, bool fi
 
 bool Autonomous::Balance(float direction) {
     float currentTime = frc::Timer::GetFPGATimestamp().value();
+    double tiltAngle = a_Gyro->getPitch();
+    double percentTilt = tiltAngle / 15;
+    double speed = percentTilt * MAX_CLIMB_PERCENT * MAX_FREE_SPEED;
     if(startedClimb) {
-        double tiltAngle = a_Gyro->getPitch();
-        double percentTilt = tiltAngle / 15;
-        double speed = percentTilt * MAX_CLIMB_PERCENT * MAX_FREE_SPEED;
         a_SwerveDrive->driveDirectionVelocity(speed, direction);
-        if(tiltAngle == 0) {
-            float startTime = frc::Timer::GetFPGATimestamp().value();
+        if(abs(tiltAngle) < 1) {
+            startTime = frc::Timer::GetFPGATimestamp().value();
         }
         return false;
     }
-    if ((currentTime - startTime > 0.5) && (a_Gyro->getPitch() == 0) && startedClimb){
+    if ((currentTime - startTime > 0.5) && (abs(a_Gyro->getPitch()) < 0) && startedClimb){
         return true;
     }
     else{
