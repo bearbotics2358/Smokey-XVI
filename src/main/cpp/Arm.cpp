@@ -8,7 +8,7 @@ a_clawSolenoid(frc::PneumaticsModuleType::REVPH, openSolenoidModule, closeSoleno
 a_carriageMotor(carriageID, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
 a_clawMotor(clawID, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
 a_CANCoder(carriageCANCoderID) {
-    _CANCoderID = carriageCANCoderID;
+    _CANCoderID = carriageCANCoderID - 25;
 }
 
 void Arm::updateDashboard(){

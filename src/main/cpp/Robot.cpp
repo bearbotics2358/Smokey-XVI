@@ -11,10 +11,6 @@
 #include <frc/interfaces/Gyro.h>
 #include "Arm.h"
 
-
-
-
-
 /*~~ hi :) ~~ */
 Robot::Robot():
 a_Gyro(GYRO_ID),
