@@ -152,6 +152,18 @@ void SwerveDrive::driveDirection(float percent, float directionDegrees) {
     blModule.setDrivePercent(percent);
     brModule.setDrivePercent(percent);
 }
+//exists solely for autonomous balance
+void SwerveDrive::driveDirectionVelocity(float speed, float directionDegrees) {
+    flModule.steerToAng(directionDegrees);
+    frModule.steerToAng(directionDegrees);
+    blModule.steerToAng(directionDegrees);
+    brModule.steerToAng(directionDegrees);
+
+    flModule.setDriveSpeed(speed);
+    frModule.setDriveSpeed(speed);
+    blModule.setDriveSpeed(speed);
+    brModule.setDriveSpeed(speed);
+}
 
 float SwerveDrive::getAvgDistance() {
     return (fabs(flModule.getDistance()) + fabs(frModule.getDistance()) + fabs(blModule.getDistance()) + fabs(brModule.getDistance())) / 4.0;

@@ -10,6 +10,7 @@
 #include <frc/Timer.h>
 #include <frc/XboxController.h>
 #include <units/math.h>
+#include "Arm.h"
 
 
 enum AutoType {
@@ -22,84 +23,124 @@ enum AutoType {
     k5Ball = 6,
     k5BallVision = 7,
 };
-
 enum AutoState0 { // Encoders
-    kAutoIdle0 = 0,
-    kDriveAway0
+    kBlueAutoIdle0 = 0,
+    kBlueExtend0,
+    kBlueDrop0,
+    kBlueRetract0,
+    kBlueDriveAway0
+
 };
 
 enum AutoState1 { // Encoders
-    kAutoIdle1 = 0,
-    kStartShooter1,
-    kWaitShooter1,
-    kShoot1,
-    kStartTimer1,
-    kWait1,
-    kDoneShooting1,
-    kTaxi1
+    kBlueAutoIdle1,
+    kBlueExtend1,
+    kBlueDrop1,
+    kBlueRetract1,
+    kBlueDriveAway1,
+    kBlueGoToStation1,
+    kBlueBalance1,
+    kBlueWait1
 };
 
 enum AutoState2 { // T.O.F and Encoders
-    kAutoIdle2 = 0,
-    kDriveBackThroughBall2,
-    kTurn2,
-    kDriveToWall2,
-    kShoot2,
-    kWait2
-    /*
-    kSecondShoot2,
-    kCheckSecondShot2,
-    kWait2_2*/
+    kBlueAutoIdle2,
+    kBlueExtend2,
+    kBlueDrop2,
+    kBlueRetract2,
+    kBlueDriveAway2
 };
 
 // states for 3 ball auto
-enum class A3 {
-    Idle,
-    SpoolShooter,
-    WaitShooter,
-    Shoot1,
-    Pickup2,
-    Pickup3,
-    GoToShoot23,
-    Shoot23,
+enum AutoState3 {
+    kBlueAutoIdle3,
+    kBlueExtend3,
+    kBlueDrop3,
+    kBlueRetract3,
+    kBlueDriveAway3,
+    kBlueGoToStation3,
+    kBlueBalance3
+};
+
+enum AutoState4 {
+    kBlueAutoIdle4,
+    kBlueExtend4,
+    kBlueDrop4,
+    kBlueRetract4,
+    kBlueDriveAway4
 };
 
 // states for 5 ball auto
-enum class A5 {
-    Idle,
-    SpoolShooter,
-    WaitShooter,
-    Shoot1,
-    Pickup2,
-    Pickup3,
-    GoToShoot23,
-    Shoot23,
-    Pickup4,
-    WaitPickup5,
-    GoToShoot45,
-    Shoot45,
+enum AutoState5 {
+    kBlueAutoIdle5,
+    kBlueExtend5,
+    kBlueDrop5,
+    kBlueRetract5,
+    kBlueDriveAway5,
+    kBlueGoToStation5,
+    kBlueBalance5
 };
 
-// states for 5 ball auto with vision
-enum class A5V {
-    Idle,
-    SpoolShooter,
-    WaitShooter,
-    Shoot1,
-    Pickup2,
-    Pickup3,
-    GoToShoot23,
-    Shoot23,
-    Pickup4,
-    WaitPickup5,
-    GoToShoot45,
-    Shoot45,
+enum AutoState6 {
+    kRedAutoIdle6,
+    kRedExtend6,
+    kRedDrop6,
+    kRedRetract6,
+    kRedDriveAway6
 };
+ enum AutoState7{
+    kRedAutoIdle7,
+    kRedExtend7,
+    kRedDrop7,
+    kRedRetract7,
+    kRedDriveAway7,
+    kRedGoToStation7,
+    kRedBalance7
+
+
+ };
+
+  enum AutoState8{
+    kRedAutoIdle8,
+    kRedExtend8,
+    kRedDrop8,
+    kRedRetract8,
+    kRedDriveAway8,
+
+  };
+
+  enum AutoState9{
+    kRedAutoIdle9,
+    kRedExtend9,
+    kRedDrop9,
+    kRedRetract9,
+    kRedDriveAway9,
+    kRedGoToStation9,
+    kRedBalance9
+  };
+  enum AutoState10{
+    kRedAutoIdle10,
+    kRedExtend10,
+    kRedDrop10,
+    kRedRetract10,
+    kRedDriveAway10
+
+
+  };
+    enum AutoState11{
+        kRedAutoIdle11,
+        kRedExtend11,
+        kRedDrop11,
+        kRedRetract11,
+        kRedDriveAway11,
+        kRedGoToStation11,
+        kRedBalance11
+    };
 
 
 class Autonomous {
     public:
-        Autonomous(Gyro *Gyro, frc::XboxController *XboxController, SwerveDrive *SwerveDrive);
+        Autonomous(Gyro *Gyro, frc::XboxController *XboxController, SwerveDrive *SwerveDrive, Arm *Arm);
 
         void DecidePath();
         const char *GetCurrentPath();
@@ -107,52 +148,78 @@ class Autonomous {
         void StartAuto();
         void PeriodicAuto();
 
-        void Start0Ball();
-        void Periodic0Ball();
+        void BDGL(); //Blue Drop and Go AutoState0
+        void PeriodicBDGL(); //Periodic Blue Drop and Go AutoState0
 
-        void StartLeft1Ball();
-        void StartMiddle1Ball();
-        void StartRight1Ball();
-        void Periodic1Ball();
+        void BCSL(); //Blue Charge Station Left AutoState1
+        void PeriodicBCSL(); //Periodic Blue Charge Station Left AutoState1
 
-        void Start2Ball();
-        void Periodic2Ball();
+        void BDGM(); //Blue Drop and Go Middle AutoState2
+        void PeriodicBDGM();//Periodic Blue Drop and Go Middle AutoState2
+        
+        void BCSM();//Blue Charge Station Middle AutoState3
+        void PeriodicBCSM();//Periodic Blue Charge Station Middle AutoState3
 
-        void Start35Ball();
-        void Periodic3Ball();
-        void Periodic5Ball();
-        void Periodic5BallVision();
+        void BDGR();//Blue Drop and Go Right AutoState4
+        void PeriodicBDGR();//Periodic Blue Drop and Go Right AutoState4
+
+        void BCSR();//Blue Charge Station Right AutoState5
+        void PeriodicBCSR();//Periodic Blue Charge Station Right AutoState5
+        
+        void RDGL();//Red Drop and Go Left AutoState6
+        void PeriodicRDGL();//Periodic Red Drop and Go Left AutoState6
+
+        void RCSL(); // Red Charge Station Left AutoState7
+        void PeriodicRCSL();// Periodic Red Charge Station Left AutoState7
+
+        void RDGM(); // Red Drop and Go Middle AutoState8
+        void PeriodicRDGM(); // Periodic Red Drop and Go Middle AutoState8
+
+        void RCSM(); //Red Charge Station Middle AutoState9
+        void PeriodicRCSM(); //Periodic Red Charge Station Middle AutoState9
+
+        void RDGR();//Red Drop and Go Right AutoState10
+        void PeriodicRDGR(); //Periodic Red Drop and Go Right AutoState10
+
+        void RCSR(); // Red Charge Station Right AutoState11
+        void PeriodicRCSR(); // Periodic Red Charge Station Right AutoState11
 
         // ------------------Sub-Routines-------------------------//
 
-        void IDontLikeExercise(); // IDLE
+        void StopSwerves(); // IDLE
 
         // Timer System
         // Note: you MUST have a separate case to start the timer, though WaitForTime handles stopping & resetting
         void StartTimer();
         bool WaitForTime(double time); // Wait for specified time in seconds
 
-        void SpoolShooter(float speed); // Spools up shooter ahead of time to improve efficiency
-
-        bool IndexAndShoot(float speed); // Shooting a ball when the shooter is spinning fast enough
-
         // Drives in direction at speed for distance. If going straight backwards, set angle to 180, not dist as a negative
         bool DriveDirection(double dist, double angle, double speed, bool fieldOriented);
 
         bool TurnToAngle(float angle); // turns to a specific angle
+        bool Balance(float direction);
 
 
     private:
         Gyro *a_Gyro;
+        Arm *a_Arm;
         SwerveDrive *a_SwerveDrive;
         frc::XboxController *a_Xbox;
+        
 
         AutoState0 a_AutoState0;
         AutoState1 a_AutoState1;
         AutoState2 a_AutoState2;
-        A3 a_AutoState3 { A3::Idle };
-        A5 a_AutoState5 { A5::Idle };
-        A5V a_AutoState5Vision { A5V::Idle };
+        AutoState3 a_AutoState3;
+        AutoState4 a_AutoState4;
+        AutoState5 a_AutoState5;
+        AutoState6 a_AutoState6;
+        AutoState7 a_AutoState7;
+        AutoState8 a_AutoState8;
+        AutoState9 a_AutoState9;
+        AutoState10 a_AutoState10;
+        AutoState11 a_AutoState11;
+
 
         AutoType autoPathMaster;
         float drivestart { 0.0 };
@@ -164,6 +231,9 @@ class Autonomous {
         double autoStartTime { 0.0 };
         // TEMP
         double autoScale { 1.0 };
+
+        bool startedClimb { false };
+        float startTime { 0.0 };
 
         // start position of robot during 5 ball auto relative to near left corner of field
         // FIXME: this is a very innacurate guess, more so than the other measurements

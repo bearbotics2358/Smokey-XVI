@@ -13,7 +13,7 @@
 class SwerveModule // Handles steering and driving of each Swerve Module
 {
     public:
-        SwerveModule(int driveID, int steerID, AbsoluteEncoder&& absEncoder); // CAN IDs, analog port for steer encoder
+        SwerveModule(int driveID, int steerID, AbsoluteEncoder&& absEncoder, int CANCoderID); // CAN IDs, analog port for steer encoder
     
         // Returns position of the distance encoder in meters
         float getDistance();
@@ -77,10 +77,12 @@ class SwerveModule // Handles steering and driving of each Swerve Module
         TalonFXSensorCollection driveEnc; // built in TalonFX sensors
         TalonFXSensorCollection steerEncFalcon;
         AbsoluteEncoder absSteerEnc;
+        CANCoder m_CANCoder;
 
         frc2::PIDController steerPID;
 
         int _steerID = 0;
+        int _CANCoderID = 0;
         // how many degrees away from the actual zero degrees
         // that the relative encoder's zero point is
         double encZeroPoint { 0.0 };

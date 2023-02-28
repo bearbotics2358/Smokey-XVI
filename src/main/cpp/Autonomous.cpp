@@ -5,16 +5,17 @@
 #include <math.h>
 
 
-Autonomous::Autonomous(Gyro *Gyro, frc::XboxController *Xbox_Controller, SwerveDrive *SwerveDrive):
+Autonomous::Autonomous(Gyro *Gyro, frc::XboxController *Xbox_Controller, SwerveDrive *SwerveDrive, Arm *Arm):
 a_Gyro(Gyro),
 a_SwerveDrive(SwerveDrive),
 a_Xbox(Xbox_Controller),
-a_AutoState0(kAutoIdle0),
-a_AutoState1(kAutoIdle1),
-a_AutoState2(kAutoIdle2) {
+a_Arm(Arm),
+a_AutoState0(kBlueAutoIdle0),
+a_AutoState1(kBlueAutoIdle1),
+a_AutoState2(kBlueAutoIdle2) {
     autoPathMaster = k5Ball;
 }
-
+/*
 void Autonomous::DecidePath() {
     if (a_Xbox->GetRawAxis(OperatorJoystick::LeftTrigger) > 0.5) {
         if (a_Xbox->GetRawButtonPressed(OperatorButton::Y)) {
@@ -33,7 +34,8 @@ void Autonomous::DecidePath() {
         }
     }
 }
-
+*/
+/*
 const char *Autonomous::GetCurrentPath() {
     switch (autoPathMaster) {
         case k0Ball:
@@ -56,7 +58,8 @@ const char *Autonomous::GetCurrentPath() {
             return "no autonous selected, this shouldn't happen";
     }
 }
-
+*/
+/*
 void Autonomous::StartAuto() {
     switch (autoPathMaster) {
         case k0Ball:
@@ -77,11 +80,12 @@ void Autonomous::StartAuto() {
         case k3Ball:
         case k5Ball:
         case k5BallVision:
-            Start35Ball();
+           
             break;
     }
 }
-
+*/
+/*
 void Autonomous::PeriodicAuto() {
     switch (autoPathMaster) {
         case k0Ball:
@@ -106,287 +110,411 @@ void Autonomous::PeriodicAuto() {
             break;
     }
 }
+*/
 
 // ----------------------------------AUTONOMOUS ROUTINES---------------------------------------- //
 
-void Autonomous::Start0Ball() {
-    a_AutoState0 = kDriveAway0;
-    a_Gyro->Zero();
+void Autonomous::BDGL() {
+    a_AutoState0 = kBlueExtend0;
+    a_Arm->ArmPistonUp();
 }
 
-void Autonomous::Periodic0Ball() {
-
+void Autonomous::PeriodicBDGL() {
+    
     AutoState0 nextState = a_AutoState0;
 
     switch (a_AutoState0) {
 
-        case kAutoIdle0:
-            IDontLikeExercise();
-
+        case kBlueDrop0:
+            a_Arm->ClawOpen();
             break;
-
-        case kDriveAway0:
-            if (DriveDirection(1.0, 0, 0.25, false)) {
-                nextState = kAutoIdle0;
+        case kBlueRetract0:
+            a_Arm->ArmPistonDown();
+            break;
+        case kBlueDriveAway0:
+            if (DriveDirection(4.2926, 0, 0.25, false)) {
+                nextState = kBlueAutoIdle0;
             }
             break;
     }
     a_AutoState0 = nextState;
 }
 
-void Autonomous::StartLeft1Ball() {
-    a_AutoState1 = kStartShooter1;
-    a_Gyro->Zero(-21);
+void Autonomous::BCSL() {
+    a_AutoState1 = kBlueExtend1;
+    a_Arm->ArmPistonUp();
 }
 
-void Autonomous::StartMiddle1Ball() {
-    a_AutoState1 = kStartShooter1;
-    a_Gyro->Zero();
-}
-
-void Autonomous::StartRight1Ball() {
-    a_AutoState1 = kStartShooter1;
-    a_Gyro->Zero(69);
-}
-
-void Autonomous::Periodic1Ball() {
+void Autonomous::PeriodicBCSL() {
 
     AutoState1 nextState = a_AutoState1;
 
     switch (a_AutoState1) {
 
-        case kAutoIdle1:
-            IDontLikeExercise();
+        case kBlueDrop1:
+             a_Arm->ClawOpen();
             break;
 
-        case kStartShooter1:
-            StartTimer();
-            nextState = kWaitShooter1;
+        case kBlueRetract1:
+           a_Arm->ArmPistonDown();
             break;
 
-        case kWaitShooter1:
-            if (WaitForTime(2)) {
-                nextState = kShoot1;
+        case kBlueDriveAway1:
+            if (DriveDirection(4.2926, 0, 0.25, false)) {
+                nextState = kBlueAutoIdle1;
             }
+            //need to actually use drivedirection
             break;
 
-        case kShoot1:
-            nextState = kStartTimer1;
+        case kBlueGoToStation1:
+            if (DriveDirection(2.54, 90, 0.25, false)) {
+                nextState = kBlueAutoIdle1;
+            }
+            //need to actually use drivedirection
             break;
 
-        case kStartTimer1:
-            StartTimer();
-            nextState = kWait1;
+        case kBlueBalance1:
+            Balance(90);
             break;
 
-        case kWait1:
+        case kBlueWait1:
             if (WaitForTime(1)) {
-                nextState = kDoneShooting1;
-            }
-            break;
-
-        case kDoneShooting1:
-            IDontLikeExercise();
-            nextState = kTaxi1;
-            break;
-
-        case kTaxi1:
-            if (DriveDirection(2.4, 180, 0.25, false)) {
-                nextState = kAutoIdle1;
+                nextState = kBlueAutoIdle1;
             }
             break;
     }
     a_AutoState1 = nextState;
 }
 
-void Autonomous::Start2Ball() {
-    a_AutoState2 = kDriveBackThroughBall2;
+void Autonomous::BDGM() {
+    a_AutoState2 = kBlueExtend2;
     a_Gyro->Zero(133);
 }
 
-void Autonomous::Periodic2Ball() {
+void Autonomous::PeriodicBDGM() {
 
     AutoState2 nextState = a_AutoState2;
 
     switch (a_AutoState2) {
-        case kAutoIdle2:
-            IDontLikeExercise();
+        case kBlueAutoIdle2:
+            StopSwerves();
 
             break;
 
-        case kDriveBackThroughBall2:
-            if (DriveDirection(1.32, 133, 0.25, true)) {
-                nextState = kTurn2;
-            }
+        case kBlueDrop2:
+            a_Arm->ClawOpen();
             break;
 
-        case kTurn2:
-            if (TurnToAngle(-21)) {
-                nextState = kDriveToWall2;
-                StartTimer();
-            }
+        case kBlueRetract2:
+            a_Arm->ArmPistonDown();
             break;
 
-        case kDriveToWall2:
+        case kBlueDriveAway2:
             // we might be stuck on the wall, so move to the next state after some time
-            if (DriveDirection(2.23, -37, 0.25, true) || WaitForTime(5)) {
-                nextState = kShoot2;
+            if (DriveDirection(4.2926, 0, 0.4, false)) {
+                nextState = kBlueAutoIdle2;
             }
-            break;
-
-        case kShoot2:
-            StartTimer();
-            nextState = kWait2;
-            break;
-
-        case kWait2:
-            if (WaitForTime(3)) {
-                nextState = kAutoIdle2;
-            }
-            break;
+            break;     
     }
     a_AutoState2 = nextState;
 }
 
-void Autonomous::Start35Ball() {
-    a_AutoState3 = A3::SpoolShooter;
-    a_AutoState5 = A5::SpoolShooter;
-    a_AutoState5Vision = A5V::SpoolShooter;
-    a_Gyro->Zero(69);
-    a_SwerveDrive->setPosition(AUTO35_START_POS);
-    // TEMP
-    autoStartTime = misc::getSeconds();
+
+void Autonomous::BCSM() 
+{
+    a_AutoState3 = kBlueExtend3;
+    a_Arm->ArmPistonUp();
 }
 
-void Autonomous::Periodic3Ball() {
-    A3 nextState = a_AutoState3;
-
-    switch (nextState) {
-        case A3::Idle:
-            IDontLikeExercise();
+void Autonomous::PeriodicBCSM() {
+    AutoState3 nextState = a_AutoState3;
+   
+    switch (a_AutoState3) {
+        case kBlueDrop3:
+            a_Arm->ClawOpen();
             break;
-        case A3::SpoolShooter:
-            StartTimer();
-            nextState = A3::WaitShooter;
+        case kBlueRetract3:
+            a_Arm -> ArmPistonDown();
+            
             break;
-        case A3::WaitShooter:
-            if (WaitForTime(0.5)) {
-                StartTimer();
-                nextState = A3::Shoot1;
+        case kBlueDriveAway3:
+            if (DriveDirection(4.2926, 0, 0.4, false)) {
+                nextState = kBlueAutoIdle3;
+                //need the actual numbers
             }
             break;
-        case A3::Shoot1:
-            if (WaitForTime(0.5)) {
-                nextState = A3::Pickup2;
+        case kBlueGoToStation3:
+            if(DriveDirection(.2, 180, .25, false)) {
+                nextState = kBlueAutoIdle3;
+                //need the actual numbers
             }
-            break;
-        case A3::Pickup2:
-            if (a_SwerveDrive->goToPosition(Vec2(7.70, 7.57), 270, 0.25)) {
-                nextState = A3::Pickup3;
-            }
-            break;
-        case A3::Pickup3:
-            if (a_SwerveDrive->goToPosition(Vec2(6.36, 5.05), 155, 0.4)) {
-                nextState = A3::GoToShoot23;
-            }
-            break;
-        case A3::GoToShoot23:
-            if (a_SwerveDrive->goToPosition(AUTO35_START_POS, 69, 0.4)) {
-                a_SwerveDrive->stop();
-                StartTimer();
-                nextState = A3::Shoot23;
-            }
-            break;
-        case A3::Shoot23:
-            if (WaitForTime(5)) {
-                nextState = A3::Idle;
-            }
+            break; 
+        case kBlueBalance3:
+            Balance(180);
+            
             break;
     }
-
     a_AutoState3 = nextState;
 }
 
-void Autonomous::Periodic5Ball() {
-    A5 nextState = a_AutoState5;
+void Autonomous::BDGR(){
+    a_Arm->ArmPistonUp();
+}
 
-    // TEMP
-    auto tempSeconds = misc::getSeconds();
-    frc::SmartDashboard::PutNumber("auto time remaining", 15 - (tempSeconds - autoStartTime));
-    if (misc::getSeconds() > autoStartTime + 15.0) {
-        nextState = A5::Idle;
-    }
+void Autonomous::PeriodicBDGR() {
 
-    switch (nextState) {
-        case A5::Idle:
-            IDontLikeExercise();
+    AutoState4 nextState = a_AutoState4;
+
+    switch (a_AutoState4) {
+
+        case kBlueDrop4:
+            a_Arm->ClawOpen();
             break;
-        case A5::SpoolShooter:
-            StartTimer();
-            nextState = A5::WaitShooter;
+
+        case kBlueRetract4:
+            a_Arm->ArmPistonDown();
+            
             break;
-        case A5::Shoot1:
-            if (WaitForTime(0.2)) {
-                nextState = A5::Pickup2;
-            }
-            break;
-        case A5::Pickup2:
-            if (a_SwerveDrive->goToPosition(Vec2(7.70, 7.57), 270, 0.25)) {
-                nextState = A5::Pickup3;
-            }
-            break;
-        case A5::Pickup3:
-            // slow speed good: Vec2(6.65, 5.05)
-            if (a_SwerveDrive->goToPosition(Vec2(6.5, 5.05), 155, autoScale * 0.6)) {
-                nextState = A5::GoToShoot23;
-            }
-            break;
-        case A5::GoToShoot23:
-            if (a_SwerveDrive->goToPosition(AUTO35_START_POS + Vec2(0.2, 0.4), 69, autoScale * 0.5)) {
-                a_SwerveDrive->stop();
-                StartTimer();
-                nextState = A5::Shoot23;
-            }
-            break;
-        case A5::Shoot23:
-            if (WaitForTime(1.4)) {
-                nextState = A5::Pickup4;
-            }
-            break;
-        case A5::Pickup4:
-            // slow speed good: Vec2(7.15, 1.8)
-            if (a_SwerveDrive->goToPosition(Vec2(6.7, 2.0), 205, autoScale * 0.75)) {
-                a_SwerveDrive->stop();
-                StartTimer();
-                nextState = A5::GoToShoot45;
-            }
-            break;
-        case A5::WaitPickup5:
-            // wait for the human player to put the ball out
-            if (WaitForTime(1)) {
-                nextState = A5::GoToShoot45;
-            }
-            break;
-        case A5::GoToShoot45:
-            if (a_SwerveDrive->goToPosition(AUTO35_START_POS + Vec2(0.2, 1.1), 69, autoScale * 0.75)) {
-                a_SwerveDrive->stop();
-                StartTimer();
-                nextState = A5::Shoot45;
-            }
-            break;
-        case A5::Shoot45:
-            if (WaitForTime(5)) {
-                nextState = A5::Idle;
+
+        case kBlueDriveAway4:
+            // need the real drive numbers
+            if (DriveDirection(4.2926, 0, 0.3, true)) {
+                nextState = kBlueRetract4;
             }
             break;
     }
+    a_AutoState4 = nextState;
+ }
+ void Autonomous::BCSR() 
+{
+    a_AutoState5 = kBlueExtend5;
+    a_Arm->ArmPistonUp();
+}
+    
+void Autonomous::PeriodicBCSR() {
 
+    AutoState5 nextState = a_AutoState5;
+
+    switch (a_AutoState5) {
+        case kBlueDrop5:
+            a_Arm->ClawOpen();
+            break;
+
+        case kBlueRetract5:
+           //arm close code
+           a_Arm->ArmPistonDown();
+            break;
+
+        case kBlueDriveAway5:
+            if (DriveDirection(4.2926, 0, 0.3, false)) {
+                nextState = kBlueRetract5;
+            }
+            break;
+
+        case kBlueGoToStation5:
+             if (DriveDirection(2.667, -90, 0.25, false)) {
+                nextState = kBlueRetract5;
+            }
+            break;
+
+        case kBlueBalance5:
+            Balance(-90);
+            break;
+
+    }
     a_AutoState5 = nextState;
 }
 
-void Autonomous::Periodic5BallVision() {}
+void Autonomous::RDGL(){
+    a_AutoState6 = kRedExtend6;
+    a_Arm->ArmPistonUp();
+}
 
-void Autonomous::IDontLikeExercise() {
+void Autonomous::PeriodicRDGL() {
+    AutoState6 nextState = a_AutoState6;
+
+    switch(a_AutoState6){
+        case kRedDrop6:
+            a_Arm->ClawOpen();
+            break;
+        case kRedRetract6:
+            a_Arm->ArmPistonDown();
+            break;
+        case kRedDriveAway6:
+            if(DriveDirection(4.2926, 0, .3, false)) { // need real numbers
+                nextState = kRedRetract6;
+            }
+    }
+    a_AutoState6 = nextState;
+}
+
+void Autonomous::RCSL() 
+{
+    a_AutoState7 = kRedExtend7;
+    a_Arm->ArmPistonUp();
+}
+
+void Autonomous::PeriodicRCSL() {
+    AutoState7 nextState = a_AutoState7;
+   
+    switch (a_AutoState7) {
+        case kRedDrop7:
+            a_Arm->ClawOpen();
+            break;
+        case kRedRetract7:
+            a_Arm -> ArmPistonDown();
+            
+            break;
+        case kRedDriveAway7:
+            if (DriveDirection(4.2926, 0, 0.3, false)) {
+                nextState = kRedAutoIdle7;
+                //need the actual numbers
+            }
+            break;
+        case kRedGoToStation7:
+            if (DriveDirection(2.667, 90, 0.25, false)) {
+                nextState = kRedAutoIdle7;
+                //need the actual numbers
+            }
+            break; 
+        case kRedBalance7:
+            Balance(90);
+            
+            break;
+    }
+    a_AutoState7 = nextState;
+}
+
+void Autonomous::RDGM(){
+    a_AutoState8 =  kRedExtend8;
+    a_Arm->ArmPistonUp();
+}
+
+void Autonomous::PeriodicRDGM(){
+    AutoState8 nextState = a_AutoState8;
+   
+    switch (a_AutoState8) {
+        case kRedDrop8:
+            a_Arm->ClawOpen();
+            break;
+        case kRedRetract8:
+            a_Arm->ArmPistonDown();
+            break;
+        case kRedDriveAway8:
+         if (DriveDirection(4.2926, 0, 0.4, false)) {
+                nextState = kRedAutoIdle8;
+                //need the actual numbers
+            }
+            break;
+    }
+    a_AutoState8 = nextState;
+}
+
+
+void Autonomous::RCSM() {
+    a_AutoState9 = kRedExtend9;
+    a_Arm->ArmPistonUp();
+}
+
+void Autonomous::PeriodicRCSM() {
+    
+    AutoState9 nextState = a_AutoState9;
+    
+    switch(a_AutoState9){
+        case kRedDrop9:
+            a_Arm->ClawOpen();
+            break;
+            
+        case kRedRetract9:
+            a_Arm->ArmPistonDown();
+            break;
+
+        case kRedDriveAway9:
+            if(DriveDirection(4.2926, 0, .4, false)) { // need real numbers please & ty
+                nextState = kRedRetract9;
+            }
+            break;
+            
+        case kRedGoToStation9:
+            if(DriveDirection(.2, 180, .25, false)) { // need real numbers please & ty
+                nextState = kRedRetract9;
+            }
+            break;
+        
+        case kRedBalance9:
+           Balance(180);
+            break;
+    }   
+    a_AutoState9 = nextState;
+}
+
+void Autonomous::RDGR(){
+    a_AutoState10 = kRedExtend10;
+    a_Arm->ArmPistonUp();
+}
+
+void Autonomous::PeriodicRDGR() {
+
+    AutoState10 nextState = a_AutoState10;
+
+    switch (a_AutoState10) {
+
+        case kRedDrop10:
+            a_Arm->ClawOpen();
+            break;
+
+        case kRedRetract10:
+            a_Arm->ArmPistonDown();
+            
+            break;
+
+        case kRedDriveAway10:
+            // need the real drive numbers
+            if (DriveDirection(4.2926, 0, 0.25, false)) {
+                nextState = kRedAutoIdle10;
+            }
+            break;
+    }
+    a_AutoState10 = nextState;
+ }
+
+void Autonomous::RCSR() {
+    a_AutoState11 = kRedExtend11;
+    a_Arm->ArmPistonUp();
+}
+
+void Autonomous::PeriodicRCSR() {
+    AutoState11 nextState = a_AutoState11;
+
+    switch(a_AutoState11){
+        case kRedDrop11:
+            a_Arm->ClawOpen();
+            break;
+        case kRedRetract11:
+            a_Arm->ArmPistonDown();
+            break;
+        case kRedDriveAway11:
+            if(DriveDirection(4.2926, 0, .25, false)) { // need real numbers
+                nextState = kRedRetract11;
+            }
+            break;
+        case kRedGoToStation11:
+            if(DriveDirection(2.54, -90, .25,false)) { // need real numbers
+                nextState = kRedRetract11;
+            }//18ft wide by 11 ft 3/8 
+            break;
+        case kRedBalance11:
+        Balance(-90);
+           //need code
+           break; 
+        
+    }
+a_AutoState11 = nextState;
+
+}
+
+
+void Autonomous::StopSwerves() {
     a_SwerveDrive->stop();
 }
 
@@ -427,5 +555,34 @@ bool Autonomous::DriveDirection(double dist, double angle, double speed, bool fi
         a_SwerveDrive->stop();
         a_SwerveDrive->unsetHoldAngle();
         return true;
+    }
+}
+
+
+
+
+
+bool Autonomous::Balance(float direction) {
+    a_SwerveDrive->brakeOnStop();
+    float currentTime = frc::Timer::GetFPGATimestamp().value();
+    double tiltAngle = a_Gyro->getPitch();
+    double percentTilt = tiltAngle / 15;
+    double speed = percentTilt * MAX_CLIMB_PERCENT * MAX_FREE_SPEED;
+    if(startedClimb) {
+        a_SwerveDrive->driveDirectionVelocity(speed, direction);
+        if(abs(tiltAngle) < 1) {
+            startTime = frc::Timer::GetFPGATimestamp().value();
+        }
+        return false;
+    }
+    if ((currentTime - startTime > 0.5) && (abs(tiltAngle) < 1) && startedClimb){
+        return true;
+    }
+    else{
+        a_SwerveDrive->driveDirection(MAX_CLIMB_PERCENT, direction);
+        if(abs(tiltAngle) > 1){
+            startedClimb = true;
+        }
+        return false;
     }
 }

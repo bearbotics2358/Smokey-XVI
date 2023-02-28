@@ -52,14 +52,13 @@ class Robot : public frc::TimedRobot {
         bool a_doEnabledInit { true };
 
         Gyro a_Gyro;
+        Arm a_Arm;
 
         SwerveModule a_FLModule;
         SwerveModule a_FRModule;
         SwerveModule a_BLModule;
         SwerveModule a_BRModule;
         SwerveDrive a_SwerveDrive;
-
-        BeamBreak beamBoi = BeamBreak(1); //int port = 1
 
         // speed multiplier for driver controls for the swerve
         bool a_slowSpeed { false };
@@ -74,8 +73,7 @@ class Robot : public frc::TimedRobot {
         // CanHandler a_canHandler;
 
         // stuff that autonomous needs
-
-
+        
         double pChange;
         double iChange;
         double dChange;

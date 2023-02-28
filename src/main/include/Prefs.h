@@ -10,7 +10,18 @@
 //#define NEW_SWERVE
 
 #define GYRO_ID 0 // TODO: UPDATE TO CORRECT NUMBER
+#define ARM_PUSH_SOLENOID_MODULE 25 // Need to update to correct ID
+#define ARM_PULL_SOLENOID_MODULE 26 // Need to update to correct ID
+#define ARM_OPEN_SOLENOID_MODULE 27
+#define ARM_CLOSE_SOLENOID_MODULE 28
+#define ARM_CARRIAGE_MOTOR 29
+#define ARM_CLAW_MOTOR 30
+#define ARM_CARRIAGE_CANCODER 31
 
+#define MAX_CLIMB_PERCENT 0.2
+#define MAX_FREE_SPEED 16.3
+
+#define TICKS_STEERING 18.0 // roughly 18 "position" units per steering rotation
 
 /*====== SWERVE MOTOR CONTROLLER IDS ======*/
 
@@ -22,20 +33,30 @@ m = number engraved on module
 
     - Drive ID: 2m - 1
     - Steering ID: 2m
+    - Encoder ID: 16 + m
 
 */
 
-#define FL_DRIVE_ID 13
-#define FL_STEER_ID 14
+#define FL_ID 7
+#define FR_ID 2
+#define BL_ID 1
+#define BR_ID 6
 
-#define FR_DRIVE_ID 3
-#define FR_STEER_ID 4
+// #define FL_DRIVE_ID 15
+// #define FL_STEER_ID 16
+// #define FL_CANCODER_ID 24
 
-#define BL_DRIVE_ID 1
-#define BL_STEER_ID 2
+// #define FR_DRIVE_ID 7
+// #define FR_STEER_ID 8
+// #define FR_CANCODER_ID 20
 
-#define BR_DRIVE_ID 11
-#define BR_STEER_ID 12
+// #define BL_DRIVE_ID 9
+// #define BL_STEER_ID 10
+// #define BL_CANCODER_ID 21
+
+// #define BR_DRIVE_ID 5
+// #define BR_STEER_ID 6
+// #define BR_CANCODER_ID 19
 
 
 /*======= ENCODER CONSTANTS =======*/
@@ -74,6 +95,25 @@ m = number engraved on module
 #define FR_SWERVE_ABS_ENC_OFFSET 276.11
 #define BL_SWERVE_ABS_ENC_OFFSET 0.0
 #define BR_SWERVE_ABS_ENC_OFFSET 0.0
+
+#define CANCODER_OFFSET_1 0
+#define CANCODER_OFFSET_2 0
+#define CANCODER_OFFSET_3 0
+#define CANCODER_OFFSET_4 0
+#define CANCODER_OFFSET_5 0
+#define CANCODER_OFFSET_6 0
+#define CANCODER_OFFSET_7 0
+#define CANCODER_OFFSET_8 0
+static int CANCODER_OFFSETS[] = {
+    CANCODER_OFFSET_1, 
+    CANCODER_OFFSET_2, 
+    CANCODER_OFFSET_3, 
+    CANCODER_OFFSET_4, 
+    CANCODER_OFFSET_5, 
+    CANCODER_OFFSET_6, 
+    CANCODER_OFFSET_7, 
+    CANCODER_OFFSET_8,
+    };
 
 
 /* ========== Joystick Ports ========= */
