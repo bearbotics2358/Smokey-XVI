@@ -563,6 +563,7 @@ bool Autonomous::DriveDirection(double dist, double angle, double speed, bool fi
 
 
 bool Autonomous::Balance(float direction) {
+    a_SwerveDrive->brakeOnStop();
     float currentTime = frc::Timer::GetFPGATimestamp().value();
     double tiltAngle = a_Gyro->getPitch();
     double percentTilt = tiltAngle / 15;
