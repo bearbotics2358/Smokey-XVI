@@ -164,6 +164,7 @@ void Robot::TeleopPeriodic() {
     } else if (joystickOne.GetRawButtonReleased(DriverButton::Button9)) {
         dChange -= 0.01;
     }
+    
     a_FRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
     a_FLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
     a_BRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
