@@ -104,6 +104,7 @@ m = number engraved on module
 #define CANCODER_OFFSET_6 0
 #define CANCODER_OFFSET_7 0
 #define CANCODER_OFFSET_8 0
+#define CANCODER_OFFSET_ARM 0
 static int CANCODER_OFFSETS[] = {
     CANCODER_OFFSET_1, 
     CANCODER_OFFSET_2, 
@@ -113,6 +114,7 @@ static int CANCODER_OFFSETS[] = {
     CANCODER_OFFSET_6, 
     CANCODER_OFFSET_7, 
     CANCODER_OFFSET_8,
+    CANCODER_OFFSET_ARM
     };
 
 

@@ -1,4 +1,5 @@
 #include "Arm.h"
+#include "Prefs.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 Arm::Arm(int pushSolenoidModule, int pullSolenoidModule, int openSolenoidModule, int closeSolenoidModule, int carriageID, int clawID, int carriageCANCoderID):
@@ -6,7 +7,9 @@ a_armSolenoid(frc::PneumaticsModuleType::REVPH, pushSolenoidModule, pullSolenoid
 a_clawSolenoid(frc::PneumaticsModuleType::REVPH, openSolenoidModule, closeSolenoidModule),
 a_carriageMotor(carriageID, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
 a_clawMotor(clawID, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
-a_CANCoder(carriageCANCoderID) {}
+a_CANCoder(carriageCANCoderID) {
+    _CANCoderID = carriageCANCoderID;
+}
 
 void Arm::updateDashboard(){
     frc::SmartDashboard::PutNumber("claw motor position: ", a_clawMotor.GetEncoder().GetPosition());
@@ -20,6 +23,11 @@ void Arm::updateDashboard(){
     }
     
 }
+
+double Arm::getAngle(){
+    return (a_CANCoder.GetAbsolutePosition() * -1) - CANCODER_OFFSETS[_CANCoderID];
+}
+
 
 void Arm::setSolenoid(bool deployed) {
     if (deployed) {
