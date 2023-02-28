@@ -1,11 +1,25 @@
 #include "Arm.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 Arm::Arm(int pushSolenoidModule, int pullSolenoidModule, int openSolenoidModule, int closeSolenoidModule, int carriageID, int clawID, int carriageCANCoderID):
-    a_armSolenoid(frc::PneumaticsModuleType::REVPH, pushSolenoidModule, pullSolenoidModule),
-    a_clawSolenoid(frc::PneumaticsModuleType::REVPH, openSolenoidModule, closeSolenoidModule),
-    a_carriageMotor(carriageID, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
-    a_clawMotor(clawID, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
-    a_CANCoder(carriageCANCoderID) {}
+a_armSolenoid(frc::PneumaticsModuleType::REVPH, pushSolenoidModule, pullSolenoidModule),
+a_clawSolenoid(frc::PneumaticsModuleType::REVPH, openSolenoidModule, closeSolenoidModule),
+a_carriageMotor(carriageID, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
+a_clawMotor(clawID, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
+a_CANCoder(carriageCANCoderID) {}
+
+void Arm::updateDashboard(){
+    frc::SmartDashboard::PutNumber("claw motor position: ", a_clawMotor.GetEncoder().GetPosition());
+    frc::SmartDashboard::PutNumber("shuttle motor position: ", a_carriageMotor.GetEncoder().GetPosition());
+    if (a_armSolenoid.Get() == frc::DoubleSolenoid::Value::kReverse){
+        frc::SmartDashboard::PutString("arm solenoid position: ", "reverse");
+    } else if (a_armSolenoid.Get() == frc::DoubleSolenoid::Value::kForward){
+        frc::SmartDashboard::PutString("arm solenoid position: ", "forward");
+    } else {
+        frc::SmartDashboard::PutString("arm solenoid position: ", "off");
+    }
+    
+}
 
 void Arm::setSolenoid(bool deployed) {
     if (deployed) {

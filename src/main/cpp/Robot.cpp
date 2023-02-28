@@ -60,6 +60,7 @@ void Robot::RobotInit() {
 
 void Robot::RobotPeriodic() {
     a_Gyro.Update();
+    a_Arm.updateDashboard();
     //a_SwerveDrive.updatePosition();
 
 //testing code block for PID tuning

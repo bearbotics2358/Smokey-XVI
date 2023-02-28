@@ -17,6 +17,7 @@ class Arm {
         void ClawClose();
         void ClawMotorUp();
         void ClawMotorDown();
+        void updateDashboard();
 
     private:
         frc::DoubleSolenoid a_clawSolenoid;
