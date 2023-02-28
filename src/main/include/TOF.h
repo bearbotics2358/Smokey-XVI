@@ -6,8 +6,8 @@
 #ifndef H_TOF
 #define H_TOF
 
-#include <WPILib.h>
 #include "TOF_protocol.h"
+#include <frc/SerialPort.h>
 
 #define BUFF_SIZE 256
 
@@ -21,11 +21,17 @@ class TOF
 	void Init();
 	void Update();
 
-	int GetMM(int port);
-	float GetInches(int port);
+	void ProcessReport();
+	enum target_range_enum GetTargetRangeIndicator();
+	void SetTargetType(target_type_enum target_type_param);
+	void EnableHistogram(int enable);
+	void EnableRawPixelData(int enable);
+
+	int GetMM();
+	float GetInches();
 
  private:
-	SerialPort a_TOF;
+	frc::SerialPort m_serial;
 	char rx_buff[BUFF_SIZE];
 	int rx_index = 0;
 	int range = 9999; // range in mm

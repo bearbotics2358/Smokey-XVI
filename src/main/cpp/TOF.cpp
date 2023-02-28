@@ -5,10 +5,12 @@
 
 #include <stdio.h> // printf
 #include <stdlib.h> // atoi
+#include <Prefs.h>
 #include "TOF.h"
 
 TOF::TOF():
-	a_Ultra(BAUD_RATE_TOF, USB_PORT_TOF, DATA_BITS_TOF, PARITY_TOF, STOP_BITS_TOF)
+	m_serial(BAUD_RATE_TOF, USB_PORT_TOF, DATA_BITS_TOF, PARITY_TOF, STOP_BITS_TOF)
+	// comments from 2018:
 	// USB1 is the onboard port closest to the center of the rio
 	// I dunno which one USB2 is yet. (Rio docs aren't very helpful)
 
@@ -16,7 +18,7 @@ TOF::TOF():
 	Init();
 }
 
-TOF::Init()
+void TOF::Init()
 {
 	int i;
 
@@ -25,11 +27,12 @@ TOF::Init()
 		rx_buff[i] = 0;
 	}
 	range = 9999; 
-	target_range = target_range_enum::TARGET_NOT_PRESENT;
+	target_range_indicator = target_range_enum::TARGET_NOT_PRESENT;
 	target_type = target_type_enum::CONE;
 }
 
-void TOF::Update(){
+void TOF::Update()
+{
 	// call this routine periodically to check for any readings and store
 	// into result registers
 
@@ -38,8 +41,8 @@ void TOF::Update(){
 	// and add to rx buffer
   // when '\r' (or '\t') found, process reading
 	
-	while (a_Ultra.GetBytesReceived() > 0) {
-		a_Ultra.Read(&rx_buff[rx_index], 1);
+	while (m_serial.GetBytesReceived() > 0) {
+		m_serial.Read(&rx_buff[rx_index], 1);
     if((rx_buff[rx_index] == '\r') 
 			 || (rx_buff[rx_index] == '\n')) {
 
@@ -98,7 +101,7 @@ void TOF::ProcessReport()
 	}
 }
 
-target_range_enum TOF:GetTargetRangeIndicator()
+enum target_range_enum TOF::GetTargetRangeIndicator()
 {
 	return target_range_indicator;
 }
@@ -111,30 +114,34 @@ int TOF::GetMM()
 
 float TOF::GetInches()
 {
-	return ((float)range)/25.4);
+	return (1.0 * range)/25.4;
 }
 
 void TOF::SetTargetType(target_type_enum target_type_param)
 {
+	char cmd[8];
+	strncpy(cmd, "1,1,1\r\n", 8);
 	target_type = target_type_param;
 	// lazy way to build a message
-	char cmd = target_type ? "1,1,1\r\n" : "1,1,0\r\n";
-	a_Ultra.Write(cmd, strlen(cmd);
-	a_Ultra.Flush();
+	cmd[4] = target_type ? '1' : '0';
+	m_serial.Write(cmd, strlen(cmd));
+	m_serial.Flush();
 }
 
 void TOF::EnableHistogram(int enable)
 {
-	// lazy way to build a message
-	char cmd = enable ? "2,1,1\r\n" : "2,1,0\r\n";
-	a_Ultra.Write(cmd, strlen(cmd);
-	a_Ultra.Flush();
+	char cmd[8];
+	strncpy(cmd, "2,1,1\r\n", 8);
+	cmd[4] = enable ? '1' : '0';
+	m_serial.Write(cmd, strlen(cmd));
+	m_serial.Flush();
 }
 
 void TOF::EnableRawPixelData(int enable)
 {
-	// lazy way to build a message
-	char cmd = enable ? "4,1,1\r\n" : "4,1,0\r\n";
-	a_Ultra.Write(cmd, strlen(cmd);
-	a_Ultra.Flush();
+	char cmd[8];
+	strncpy(cmd, "4,1,1\r\n", 8);
+	cmd[4] = enable ? '1' : '0';
+	m_serial.Write(cmd, strlen(cmd));
+	m_serial.Flush();
 }
