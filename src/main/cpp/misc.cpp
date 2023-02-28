@@ -84,6 +84,11 @@ int misc::GetFLCANCoder(){
     int trueID = 16 + FL_ID;
     return trueID;
 }
+int misc::GetFLCANCoderOffset(){
+    if((FL_ID >= 1) && (FL_ID <= 8)){
+        return CANCODER_OFFSETS[FL_ID - 1];
+    }
+}
 
 int misc::GetFRDrive(){
     int trueID = 2 * FR_ID - 1;
@@ -100,6 +105,12 @@ int misc::GetFRCANCoder(){
     return trueID;
 }
 
+int misc::GetFRCANCoderOffset(){
+    if((FR_ID >= 1) && (FR_ID <= 8)){
+        return CANCODER_OFFSETS[FR_ID - 1];
+    }
+}
+
 int misc::GetBLDrive(){
     int trueID = 2 * BL_ID - 1;
     return trueID;
@@ -113,6 +124,11 @@ int misc::GetBLSteer(){
 int misc::GetBLCANCoder(){
     int trueID = 16 + BL_ID;
     return trueID;
+}
+int misc::GetBLCANCoderOffset(){
+    if((BL_ID >= 1) && (BL_ID <= 8)){
+        return CANCODER_OFFSETS[BL_ID - 1];
+    }
 }
 
 int misc::GetBRDrive(){
@@ -128,4 +144,10 @@ int misc::GetBRSteer(){
 int misc::GetBRCANCoder(){
     int trueID = 16 + BR_ID;
     return trueID;
+}
+
+int misc::GetBRCANCoderOffset(){
+    if((BR_ID >= 1) && (BR_ID <= 8)){
+        return CANCODER_OFFSETS[BR_ID - 1];
+    }
 }
