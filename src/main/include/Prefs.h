@@ -141,3 +141,18 @@ constexpr units::angle::radian_t TARGET_PITCH = units::angle::radian_t(0.0);
 // mdns name of camera
 #define SHOOTER_CAMERA_NAME "photonvision"
 #define BALL_CAMERA_NAME "temp"
+
+/* ============= Arduino ============= */
+
+#define BAUD_RATE_TOF 115200
+#define USB_PORT_TOF SerialPort::kUSB1
+#define DATA_BITS_TOF 8
+#define PARITY_TOF SerialPort::kParity_None
+#define STOP_BITS_TOF SerialPort::kStopBits_One
+
+#define BAUD_RATE_ARDUINO 9600
+#define USB_PORT_ARDUINO SerialPort::kUSB2
+#define DATA_BITS_ARDUINO 8
+#define PARITY_ARDUINO SerialPort::kParity_None
+#define STOP_BITS_ARDUINO SerialPort::kStopBits_One
+
