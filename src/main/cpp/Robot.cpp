@@ -109,7 +109,7 @@ void Robot::DisabledPeriodic() {
 }
 
 void Robot::EnabledInit() {
-    a_SwerveDrive.coastOnStop();
+
 }
 
 void Robot::EnabledPeriodic() {
@@ -206,10 +206,8 @@ void Robot::TeleopPeriodic() {
     // down for half speed
     if (a_XboxController.GetPOV() == 0) {
         a_slowSpeed = false;
-        a_SwerveDrive.coastOnStop();
     } else if (a_XboxController.GetPOV() == 180) {
         a_slowSpeed = true;
-        a_SwerveDrive.brakeOnStop();
     }
 
     float multiplier = 1.0;
