@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <frc/interfaces/Gyro.h>
 #include "Arm.h"
+#include <photonlib/PhotonUtils.h>
+#include <photonlib/PhotonTrackedTarget.h>
 
 //TODO: FIX LINES 68, 152-164, AND 241-261
 
@@ -203,25 +205,23 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
 
-    if((a_DriverXboxController.GetPOV() == 270) || (a_DriverXboxController.GetPOV() == 0) || (a_DriverXboxController.GetPOV() == 90)) {
+    if((a_DriverXboxController.GetPOV() == 270) || (a_DriverXboxController.GetPOV() == 0) || (a_DriverXboxController.GetPOV() == 90)) { //same as nick's
+
+        float turn;
+        // Query the latest result from PhotonVision
         photonlib::PhotonPipelineResult result = a_camera.GetLatestResult();
-        double angle = a_Gyro.getAngle();
-        if(result.HasTargets()){
-            units::meter_t range = photonlib::PhotonUtils::CalculateDistanceToTarget(TARGET_CAMERA_HEIGHT, TARGET_HEIGHT, TARGET_CAMERA_PITCH, units::degree_t{result.GetBestTarget().GetPitch()});
-            units::meter_t xComponent = range * sin(angle);
-            units::meter_t yComponent = (range * cos(angle)) - units::meter_t(0.36195);
-            if(a_DriverXboxController.GetPOV() == 270){ // go to cone spot to left of target
-                newXComponent = xComponent - units::meter_t(.5588);
-            }
-            else if(a_DriverXboxController.GetPOV() == 0){ // go to cube spot in line with target
-                newXComponent = xComponent;
-            }
-            else if(a_DriverXboxController.GetPOV() == 90){ // go to cone spot to right of target
-                newXComponent = xComponent + units::meter_t(.5588);
-            }
-            a_SwerveDrive.goToPosition(Vec2(double(newXComponent), double(yComponent)), 0, 0.2);
+        frc::Transform3d translation;
+
+        if (result.HasTargets()) { 
+            turn = a_Gyro.getAngle(); 
+            photonlib::PhotonTrackedTarget target = result.GetBestTarget();
+            translation = target.GetBestCameraToTarget();
+            //frc::Translation2d translation = photonlib::PhotonUtils::EstimateCameraToTargetTranslation(distance, 
+            //frc::Rotation2d(units::degree_t(-target.GetYaw())));
         }
-    }
+
+        a_SwerveDrive.goToPosition(Vec2(double(translation.X()), double(translation.Y())), turn, 50); //maxspeed 50 idk :P 
+    } //else, Manual Driver Mode
 
     /* =-=-=-=-=-=-=-=-=-=-= Swerve Controls =-=-=-=-=-=-=-=-=-=-= */
 
