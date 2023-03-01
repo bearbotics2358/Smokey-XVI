@@ -14,6 +14,7 @@
 #include <frc/Timer.h>
 #include <frc/XboxController.h>
 #include <photonlib/PhotonCamera.h>
+#include <photonlib/PhotonUtils.h>
 #include "BeamBreak.h"
 
 enum class DriveBackState {
@@ -65,8 +66,8 @@ class Robot : public frc::TimedRobot {
 
         Autonomous a_Autonomous;
 
-        frc::Joystick joystickOne; // 3D flightstick (Logitech Attack 3?)
-        frc::XboxController a_XboxController;
+        frc::XboxController a_DriverXboxController; // 3D flightstick (Logitech Attack 3?)
+        frc::XboxController a_OperatorXboxController;
 
         CompressorController a_CompressorController;
 
@@ -77,6 +78,8 @@ class Robot : public frc::TimedRobot {
         double pChange;
         double iChange;
         double dChange;
+
+        units::meter_t newXComponent;
 
         //--------------photonvision-------------//
         const units::meter_t CAMERA_HEIGHT = 24_in;
