@@ -14,14 +14,12 @@
 
 
 enum AutoType {
-    k0Ball = 0,
-    kLeft1Ball = 1,
-    kMiddle1Ball = 2,
-    kRight1Ball = 3,
-    k2Ball = 4,
-    k3Ball = 5,
-    k5Ball = 6,
-    k5BallVision = 7,
+    BlueDropAndGoLeft = 0,
+    BCSL = 1,
+    BDGM = 2,
+    BCSM = 3,
+    BDGR = 4,
+    BCSR = 5,
 };
 enum AutoState0 { // Encoders
     kBlueAutoIdle0 = 0,
@@ -148,8 +146,8 @@ class Autonomous {
         void StartAuto();
         void PeriodicAuto();
 
-        void BDGL(); //Blue Drop and Go AutoState0
-        void PeriodicBDGL(); //Periodic Blue Drop and Go AutoState0
+        void BDGL(); //Blue Drop and Go Left AutoState0
+        void PeriodicBDGL(); //Periodic Blue Drop and Go Left AutoState0
 
         void BCSL(); //Blue Charge Station Left AutoState1
         void PeriodicBCSL(); //Periodic Blue Charge Station Left AutoState1

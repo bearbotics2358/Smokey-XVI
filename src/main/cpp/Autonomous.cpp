@@ -12,9 +12,16 @@ a_Xbox(Xbox_Controller),
 a_Arm(Arm),
 a_AutoState0(kBlueAutoIdle0),
 a_AutoState1(kBlueAutoIdle1),
-a_AutoState2(kBlueAutoIdle2) {
-    autoPathMaster = k5Ball;
+a_AutoState2(kBlueAutoIdle2){
+    autoPathMaster = BlueDropAndGoLeft;
+    
 }
+void Autonomous::DecidePath() {
+    if(autoPathMaster == BlueDropAndGoLeft){
+        BDGL();
+    }
+}
+
 /*
 void Autonomous::DecidePath() {
     if (a_Xbox->GetRawAxis(OperatorJoystick::LeftTrigger) > 0.5) {
@@ -132,7 +139,7 @@ void Autonomous::PeriodicBDGL() {
             a_Arm->ArmPistonDown();
             break;
         case kBlueDriveAway0:
-            if (DriveDirection(4.2926, 0, 0.25, false)) {
+            if (DriveDirection(4.2926, 0, 0.05, false)) {
                 nextState = kBlueAutoIdle0;
             }
             break;
