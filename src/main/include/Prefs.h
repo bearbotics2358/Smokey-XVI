@@ -11,13 +11,13 @@
 //#define NEW_SWERVE
 
 #define GYRO_ID 0 // TODO: UPDATE TO CORRECT NUMBER
-#define ARM_PUSH_SOLENOID_MODULE 0 // Need to update to correct ID
-#define ARM_PULL_SOLENOID_MODULE 0 // Need to update to correct ID
-#define ARM_OPEN_SOLENOID_MODULE 0
-#define ARM_CLOSE_SOLENOID_MODULE 0
-#define ARM_CARRIAGE_MOTOR 0
-#define ARM_CLAW_MOTOR 0
-#define ARM_CARRIAGE_CANCODER 0
+#define ARM_PUSH_SOLENOID_MODULE 25 // Need to update to correct ID
+#define ARM_PULL_SOLENOID_MODULE 26 // Need to update to correct ID
+#define ARM_OPEN_SOLENOID_MODULE 27
+#define ARM_CLOSE_SOLENOID_MODULE 28
+#define ARM_CARRIAGE_MOTOR 29
+#define ARM_CLAW_MOTOR 30
+#define ARM_CARRIAGE_CANCODER 31
 
 #define MAX_CLIMB_PERCENT 0.2
 #define MAX_FREE_SPEED 16.3
@@ -105,6 +105,7 @@ m = number engraved on module
 #define CANCODER_OFFSET_6 0
 #define CANCODER_OFFSET_7 0
 #define CANCODER_OFFSET_8 0
+#define CANCODER_OFFSET_ARM 0
 static int CANCODER_OFFSETS[] = {
     CANCODER_OFFSET_1, 
     CANCODER_OFFSET_2, 
@@ -114,6 +115,7 @@ static int CANCODER_OFFSETS[] = {
     CANCODER_OFFSET_6, 
     CANCODER_OFFSET_7, 
     CANCODER_OFFSET_8,
+    CANCODER_OFFSET_ARM
     };
 
 
