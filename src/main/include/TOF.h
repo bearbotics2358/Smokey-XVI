@@ -35,7 +35,7 @@ class TOF
 	char rx_buff[BUFF_SIZE];
 	int rx_index = 0;
 	int range = 9999; // range in mm
-	int target_range_indicator = target_range_enum::TARGET_NOT_PRESENT;
+	target_range_enum target_range_indicator = target_range_enum::TARGET_NOT_PRESENT;
 	target_type_enum target_type = target_type_enum::CONE;
 } ;
 
