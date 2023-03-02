@@ -24,6 +24,7 @@ class TOF
 	void ProcessReport();
 	enum target_range_enum GetTargetRangeIndicator();
 	void SetTargetType(target_type_enum target_type_param);
+	target_type_enum GetTargetType();
 	void EnableHistogram(int enable);
 	void EnableRawPixelData(int enable);
 

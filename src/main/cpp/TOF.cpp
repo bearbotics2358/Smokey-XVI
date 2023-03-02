@@ -128,6 +128,11 @@ void TOF::SetTargetType(target_type_enum target_type_param)
 	m_serial.Flush();
 }
 
+target_type_enum TOF::GetTargetType()
+{
+	return target_type;
+}
+
 void TOF::EnableHistogram(int enable)
 {
 	char cmd[8];
