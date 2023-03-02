@@ -35,27 +35,31 @@ void Claw::closeClaw(){
     a_Claw.Set(frc::DoubleSolenoid::Value::kForward);
 }
 
-void Claw::transformClaw(double angle, bool extend, double shuttle) {
+bool Claw::transformClaw(double angle, bool extend, double shuttle) {
+
+    double armMotorSpeed = 0.2;
+    double shuttleMotorSpeed = 0.2;
+
     // forward = true, reverse = false
     if (extend == false){
-        a_Piston.Set(frc::DoubleSolenoid::Value::kReverse);
+        a_Piston.Set(frc::DoubleSolenoid::Value::kReverse); // retract piston if needed
     }
 
     int stage = 0;
     switch(stage){
-        case 0: // rotate (0 - 175 degrees)
-        if (angle < armEncoder.GetPosition()){
-            armMotor.Set(-0.2);
-            if (armEncoder.GetPosition() <= 1) {
+        case 0: // rotate (15 - 165 degrees)
+        if (abs(armEncoder.GetPosition() - angle) < 3) {
+            stage = 1;
+        } else if (angle < armEncoder.GetPosition()){
+            armMotor.Set(-armMotorSpeed);
+            if (armEncoder.GetPosition() <= 15) {
                 stage = 1;
             }
         } else if (angle > armEncoder.GetPosition()){
-            armMotor.Set(0.2);
-            if (armEncoder.GetPosition() >= 174) {
+            armMotor.Set(armMotorSpeed);
+            if (armEncoder.GetPosition() >= 165) {
                 stage = 1;
             }
-        } else {
-            stage = 1;
         }
             break; 
 
@@ -67,32 +71,30 @@ void Claw::transformClaw(double angle, bool extend, double shuttle) {
                 stage = 2;
             }
         } else {
-            if (shuttleEncoder.GetPosition() < shuttle){
-                shuttleMotor.Set(0.2);
+            if (abs(shuttleEncoder.GetPosition() - shuttle) < 3){
+            stage = 2;
+            } else if (shuttleEncoder.GetPosition() < shuttle){
+                shuttleMotor.Set(shuttleMotorSpeed);
             } else if (shuttleEncoder.GetPosition() > shuttle){
-                shuttleMotor.Set(-0.2);
+                shuttleMotor.Set(shuttleMotorSpeed);
             }
         }
-        if (abs(shuttleEncoder.GetPosition() - shuttle) < 3 || zeroShuttle() == true){
-            stage = 2;
-        }
-
             break;
         
         case 2: // finish rotation
         shuttleMotor.StopMotor();
-        if (angle < armEncoder.GetPosition()){
-            armMotor.Set(-0.2);
+        if (abs(armEncoder.GetPosition() - angle) < 3) {
+            stage = 1;
+        } else if (angle < armEncoder.GetPosition()){
+            armMotor.Set(-armMotorSpeed);
             if (armEncoder.GetPosition() <= angle) {
                 stage = 3;
             }
         } else if (angle > armEncoder.GetPosition()){
-            armMotor.Set(0.2);
+            armMotor.Set(armMotorSpeed);
             if (armEncoder.GetPosition() >= angle) {
                 stage = 3;
             }
-        } else {
-            stage = 3;
         }
             break;
 
@@ -101,6 +103,9 @@ void Claw::transformClaw(double angle, bool extend, double shuttle) {
         if (extend == true){
             a_Piston.Set(frc::DoubleSolenoid::Value::kForward);
         }
+        return true;
             break;
+
+        return false;
     }
 }

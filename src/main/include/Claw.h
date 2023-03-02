@@ -7,7 +7,7 @@
 class Claw {
     public:
         Claw(int motorPort, int shuttlePort, int pistonPushSolenoidModule, int pistonPullSolenoidModule, int clawPullSolenoidModule, int clawPushSolenoidModule, int limitSwitchId);
-        void transformClaw(double angle, bool extend, double shuttle);
+        bool transformClaw(double angle, bool extend, double shuttle);
         void clawInit();
         bool zeroShuttle();
         void openClaw();
