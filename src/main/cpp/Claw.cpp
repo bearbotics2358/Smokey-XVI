@@ -1,8 +1,9 @@
 #include "Claw.h"
 #include "Prefs.h"
 
-Claw::Claw(int armMotorId, int shuttleMotorId, int pistonPushSolenoidModule, int pistonPullSolenoidModule, int limitSwitchId):
+Claw::Claw(int armMotorId, int shuttleMotorId, int pistonPushSolenoidModule, int pistonPullSolenoidModule, int clawPushSolenoidModule, int clawPullSolenoidModule, int limitSwitchId):
 a_Piston(frc::PneumaticsModuleType::REVPH, pistonPushSolenoidModule, pistonPullSolenoidModule),
+a_Claw(frc::PneumaticsModuleType::REVPH, clawPushSolenoidModule, clawPullSolenoidModule),
 armMotor(armMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
 shuttleMotor(shuttleMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
 armEncoder(armMotor.GetEncoder()),
@@ -24,6 +25,14 @@ bool Claw::zeroShuttle() {
         shuttleMotor.Set(0.2);
         return false;
     }
+}
+
+void Claw::openClaw(){
+    a_Claw.Set(frc::DoubleSolenoid::Value::kReverse);
+}
+
+void Claw::closeClaw(){
+    a_Claw.Set(frc::DoubleSolenoid::Value::kForward);
 }
 
 void Claw::transformClaw(double angle, bool extend, double shuttle) {

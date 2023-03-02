@@ -18,6 +18,7 @@ class Arm {
         void ClawMotorUp();
         void ClawMotorDown();
         void updateDashboard();
+        double getAngle();
 
     private:
         frc::DoubleSolenoid a_clawSolenoid;
@@ -25,4 +26,6 @@ class Arm {
         rev::CANSparkMax a_carriageMotor;
         rev::CANSparkMax a_clawMotor;
         CANCoder a_CANCoder;
+        
+        int _CANCoderID;
 };

@@ -11,7 +11,7 @@
 #include <frc/interfaces/Gyro.h>
 #include "Arm.h"
 
-
+//TODO: FIX LINES 68, 152-164, AND 241-261
 
 
 
@@ -24,9 +24,9 @@ a_FRModule(misc::GetFRDrive(), misc::GetFRSteer(), AbsoluteEncoder(FR_SWERVE_ABS
 a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), AbsoluteEncoder(BL_SWERVE_ABS_ENC_PORT, BL_SWERVE_ABS_ENC_MIN_VOLTS, BL_SWERVE_ABS_ENC_MAX_VOLTS, BL_SWERVE_ABS_ENC_OFFSET / 360), misc::GetBLCANCoder()),
 a_BRModule(misc::GetBRDrive(), misc::GetBRSteer(), AbsoluteEncoder(BR_SWERVE_ABS_ENC_PORT, BR_SWERVE_ABS_ENC_MIN_VOLTS, BR_SWERVE_ABS_ENC_MAX_VOLTS, BR_SWERVE_ABS_ENC_OFFSET / 360), misc::GetBRCANCoder()),
 a_SwerveDrive(a_FLModule, a_FRModule, a_BLModule, a_BRModule, a_Gyro),
-a_Autonomous(&a_Gyro, &a_XboxController, &a_SwerveDrive, &a_Arm),
-joystickOne(JOYSTICK_PORT),
-a_XboxController(XBOX_CONTROLLER),
+a_Autonomous(&a_Gyro, &a_SwerveDrive, &a_Arm),
+a_DriverXboxController(JOYSTICK_PORT),
+a_OperatorXboxController(XBOX_CONTROLLER),
 a_CompressorController()
 // NEEDED A PORT, THIS IS PROBABLY WRONG, PLEASE FIX IT LATER
 //  handler("169.254.179.144", "1185", "data"),
@@ -65,7 +65,7 @@ void Robot::RobotPeriodic() {
 
 //testing code block for PID tuning
 
-    if(joystickOne.GetRawButton(3)) {
+    if(a_DriverXboxController.GetRawButton(3)) {
         a_FRModule.steerToAng(120);
         a_FLModule.steerToAng(120);
         a_BRModule.steerToAng(120);
@@ -149,64 +149,87 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
     EnabledPeriodic();
 
-    if (joystickOne.GetRawButtonReleased(DriverButton::Button12)) {
-        pChange += 0.1;
-    } else if (joystickOne.GetRawButtonReleased(DriverButton::Button11)) {
-        pChange -= 0.1;
-    }
-    if (joystickOne.GetRawButtonReleased(DriverButton::Button8)) {
-        iChange += 0.1;
-    } else if (joystickOne.GetRawButtonReleased(DriverButton::Button7)) {
-        iChange -= 0.1;
-    }
-    if (joystickOne.GetRawButtonReleased(DriverButton::Button10)) {
-        dChange += 0.01;
-    } else if (joystickOne.GetRawButtonReleased(DriverButton::Button9)) {
-        dChange -= 0.01;
-    }
-    a_FRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    a_FLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    a_BRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    a_BLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange); //P 0.6, I 1.0 D 0.06
-    frc::SmartDashboard::PutNumber("P value", 0.6 + pChange);
-    frc::SmartDashboard::PutNumber("I value", 1.0 + iChange);
-    frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
+    // if (joystickOne.GetRawButtonReleased(DriverButton::Button12)) {
+    //     pChange += 0.1;
+    // } else if (joystickOne.GetRawButtonReleased(DriverButton::Button11)) {
+    //     pChange -= 0.1;
+    // }
+    // if (joystickOne.GetRawButtonReleased(DriverButton::Button8)) {
+    //     iChange += 0.1;
+    // } else if (joystickOne.GetRawButtonReleased(DriverButton::Button7)) {
+    //     iChange -= 0.1;
+    // }
+    // if (joystickOne.GetRawButtonReleased(DriverButton::Button10)) {
+    //     dChange += 0.01;
+    // } else if (joystickOne.GetRawButtonReleased(DriverButton::Button9)) {
+    //     dChange -= 0.01;
+    // }
+    
+    // a_FRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
+    // a_FLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
+    // a_BRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
+    // a_BLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange); //P 0.6, I 1.0 D 0.06
+    // frc::SmartDashboard::PutNumber("P value", 0.6 + pChange);
+    // frc::SmartDashboard::PutNumber("I value", 1.0 + iChange);
+    // frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Arm Controls =-=-=-=-=-=-=-=-=-=-= */
 
-    if(a_XboxController.GetYButton()) {
+    if(a_OperatorXboxController.GetYButton()) {
         a_Arm.ClawMotorUp();
     }
-    if(a_XboxController.GetAButton()) {
+    if(a_OperatorXboxController.GetAButton()) {
         a_Arm.ClawMotorDown();
     }
-    if(a_XboxController.GetXButton()) {
+    if(a_OperatorXboxController.GetXButton()) {
         a_Arm.ClawOpen();
     }
-    if(a_XboxController.GetBButton()) {
+    if(a_OperatorXboxController.GetBButton()) {
         a_Arm.ClawClose();
     }
 
-    if(a_XboxController.GetPOV() == 90) {
+    if(a_OperatorXboxController.GetPOV() == 90) {
         a_Arm.ArmMotorUp();
     }
-    if(a_XboxController.GetPOV() == 270) {
+    if(a_OperatorXboxController.GetPOV() == 270) {
         a_Arm.ArmMotorDown();
     }
-    if(a_XboxController.GetPOV() == 0) {
+    if(a_OperatorXboxController.GetPOV() == 0) {
         a_Arm.ArmPistonUp();
     }
-    if(a_XboxController.GetPOV() == 180) {
+    if(a_OperatorXboxController.GetPOV() == 180) {
         a_Arm.ArmPistonUp();
+    }
+
+    /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
+
+    if((a_DriverXboxController.GetPOV() == 270) || (a_DriverXboxController.GetPOV() == 0) || (a_DriverXboxController.GetPOV() == 90)) {
+        photonlib::PhotonPipelineResult result = a_camera.GetLatestResult();
+        double angle = a_Gyro.getAngle();
+        if(result.HasTargets()){
+            units::meter_t range = photonlib::PhotonUtils::CalculateDistanceToTarget(TARGET_CAMERA_HEIGHT, TARGET_HEIGHT, TARGET_CAMERA_PITCH, units::degree_t{result.GetBestTarget().GetPitch()});
+            units::meter_t xComponent = range * sin(angle);
+            units::meter_t yComponent = (range * cos(angle)) - units::meter_t(0.36195);
+            if(a_DriverXboxController.GetPOV() == 270){ // go to cone spot to left of target
+                newXComponent = xComponent - units::meter_t(.5588);
+            }
+            else if(a_DriverXboxController.GetPOV() == 0){ // go to cube spot in line with target
+                newXComponent = xComponent;
+            }
+            else if(a_DriverXboxController.GetPOV() == 90){ // go to cone spot to right of target
+                newXComponent = xComponent + units::meter_t(.5588);
+            }
+            a_SwerveDrive.goToPosition(Vec2(double(newXComponent), double(yComponent)), 0, 0.2);
+        }
     }
 
     /* =-=-=-=-=-=-=-=-=-=-= Swerve Controls =-=-=-=-=-=-=-=-=-=-= */
 
     // dpad up for full speed,
     // down for half speed
-    if (a_XboxController.GetPOV() == 0) {
+    if (a_OperatorXboxController.GetPOV() == 0) {
         a_slowSpeed = false;
-    } else if (a_XboxController.GetPOV() == 180) {
+    } else if (a_OperatorXboxController.GetPOV() == 180) {
         a_slowSpeed = true;
     }
 
@@ -215,9 +238,9 @@ void Robot::TeleopPeriodic() {
         multiplier = 0.25;
     }
  
-    float x = a_XboxController.GetLeftX();
-    float y = a_XboxController.GetLeftY();
-    float z = a_XboxController.GetRightX();
+    float x = a_DriverXboxController.GetLeftX();
+    float y = a_DriverXboxController.GetLeftY();
+    float z = a_DriverXboxController.GetRightX();
 
     if (fabs(x) < 0.10) {
         x = 0;
@@ -237,28 +260,18 @@ void Robot::TeleopPeriodic() {
     z *= multiplier;
 
     // turn field oriented mode off if button 3 is pressed
-    bool fieldOreo = !joystickOne.GetRawButton(DriverButton::Button3);
+    bool fieldOreo = true; // !joystickOne.GetRawButton(DriverButton::Button3);
 
     // calibrate gyro
-    if (joystickOne.GetRawButton(DriverButton::Button5)) {
+    if (a_DriverXboxController.GetLeftBumper()) {
         a_Gyro.Cal();
         a_Gyro.Zero();
     }
 
     if (!inDeadzone) {
-        if (joystickOne.GetRawButton(DriverButton::Trigger)) {
-            a_SwerveDrive.swerveUpdate(x, y, 0.5 * z, fieldOreo);
-        } else {
-            a_SwerveDrive.crabUpdate(x, y, fieldOreo);
-        }
+        a_SwerveDrive.swerveUpdate(x, y, 0.5 * z, fieldOreo);
     } else {
-            a_SwerveDrive.swerveUpdate(0, 0, 0, fieldOreo);
-    }
-    
-
-    //turn to the right angle for climbing
-    if (joystickOne.GetRawButton(DriverButton::Button10)) {
-        a_SwerveDrive.turnToAngle(180.0);
+        a_SwerveDrive.swerveUpdate(0, 0, 0, fieldOreo);
     }
 }
 
