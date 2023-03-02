@@ -140,7 +140,7 @@ enum AutoState6 {
 
 class Autonomous {
     public:
-        Autonomous(Gyro *Gyro, frc::XboxController *XboxController, SwerveDrive *SwerveDrive, Arm *Arm);
+        Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Arm *Arm);
 
         void DecidePath();
         const char *GetCurrentPath();
