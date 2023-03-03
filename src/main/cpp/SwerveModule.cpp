@@ -18,7 +18,7 @@ steerPID(0, 0, 0) {
     // by default this selects the ingetrated sensor
     ctre::phoenix::motorcontrol::can::TalonFXConfiguration config;
     _steerID = steerID;
-    _CANCoderID = CANCoderID - 25;
+    _CANCoderID = CANCoderID - 17;
 
     steerMotor.SetInverted(true);
 

@@ -106,15 +106,15 @@ m = number engraved on module
 #define CANCODER_OFFSET_8 0
 #define CANCODER_OFFSET_ARM 0
 
-#define CANCODER_ID_1 25
-#define CANCODER_ID_2 26
-#define CANCODER_ID_3 27
-#define CANCODER_ID_4 28
-#define CANCODER_ID_5 29
-#define CANCODER_ID_6 30
-#define CANCODER_ID_7 31
-#define CANCODER_ID_8 32
-#define CANCODER_ID_ARM 33
+#define CANCODER_ID_1 17
+#define CANCODER_ID_2 18
+#define CANCODER_ID_3 19
+#define CANCODER_ID_4 20
+#define CANCODER_ID_5 21
+#define CANCODER_ID_6 22
+#define CANCODER_ID_7 23
+#define CANCODER_ID_8 24
+#define CANCODER_ID_ARM 25
 
 static int CANCODER_OFFSETS[] = {
     CANCODER_OFFSET_1, 
