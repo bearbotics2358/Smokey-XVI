@@ -17,6 +17,7 @@ a_AutoState1(kBlueAutoIdle1),
 a_AutoState2(kBlueAutoIdle2){}
 
 //-------------------------------------Auto Stuff---------------------------------------------//
+/*
 void Autonomous::DecidePath() {
     if (a_OperatorXboxController.GetLeftStickButtonPressed()) {
         if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::Y)) {
@@ -180,11 +181,15 @@ void Autonomous::PeriodicAuto() {
             break;
     }
 }
+*/
+void Autonomous::StartAuto(const std::string autoMode) {
+    a_AutoSelected = autoMode; 
+}
 
 
 
 
-// ----------------------------------AUTONOMOUS ROUTINES---------------------------------------- //
+// s----------------------------------AUTONOMOUS ROUTINES---------------------------------------- //
 
 void Autonomous::BDGL() {
     a_AutoState0 = kBlueExtend0;
