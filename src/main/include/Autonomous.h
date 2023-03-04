@@ -13,20 +13,21 @@
 #include "Arm.h"
 
 
-enum AutoType {
-    BlueDropAndGoLeft = 0,
-    BlueChargeStationLeft = 1,
-    BlueDropGoMiddle = 2,
-    BlueChargeStationMiddle = 3,
-    BlueDropGoRight = 4,
-    BlueChargeStationRight = 5,
-    RedDropAndGoLeft = 6,
-    RedChargeStationLeft = 7,
-    RedDropGoMiddle = 8,
-    RedChargeStationMiddle = 9,
-    RedDropGoRight = 10,
-    RedChargeStationRight = 11,
-};
+const std::string BlueDropAndGoLeft = "Blue Drop and Go Left";
+const std::string BlueChargeStationLeft = "Blue Charge Station Left";
+const std::string BlueDropAndGoMiddle = "Blue Drop and Go Middle";
+const std::string BlueChargeStationMiddle = "Blue Charge Station Middle";
+const std::string BlueDropAndGoRight = "Blue Drop and Go Right";
+const std::string BlueChargeStationRight = "Blue Charge Station Right";
+const std::string RedDropAndGoLeft = "Red Drop and Go Left";
+const std::string RedChargeStationLeft = "Red Charge Station Left";
+const std::string RedDropAndGoMiddle = "Red Drop and Go Middle";
+const std::string RedChargeStationMiddle = "Red Charge Station Middle";
+const std::string RedDropAndGoRight = "Red Drop and Go Right";
+const std::string RedChargeStationRight = "Red Charge Station Right";
+const std::string RobotDoNothing = "Sit Still";
+const std::string kAutoModeDefault = RobotDoNothing;
+
 enum AutoState0 { // Encoders
     kBlueAutoIdle0 = 0,
     kBlueExtend0,
@@ -148,6 +149,7 @@ enum AutoState6 {
 class Autonomous {
     public:
         void StartAuto(const std::string autoMode);
+        void PeriodicAuto(const std::string periodicAutoMode);
 
     /*  const char * BlueGetCurrentPath();
     void BlueStartAuto();
@@ -242,8 +244,9 @@ private:
 
 
 
-    AutoType autoPathMaster;
+   
     std::string a_AutoSelected;
+    std::string a_PeriodicAutoSelected;
     float drivestart{0.0};
 
     // used for waitForTime method

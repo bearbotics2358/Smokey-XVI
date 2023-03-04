@@ -70,20 +70,7 @@ class Robot : public frc::TimedRobot {
         SwerveModule a_BLModule;
         SwerveModule a_BRModule;
         SwerveDrive a_SwerveDrive;
-        const std::string BlueDropAndGoLeft = "Blue Drop and Go Left";
-        const std::string BlueChargeStationLeft = "Blue Charge Station Left";
-        const std::string BlueDropAndGoMiddle = "Blue Drop and Go Middle";
-        const std::string BlueChargeStationMiddle = "Blue Charge Station Middle";
-        const std::string BlueDropAndGoRight = "Blue Drop and Go Right";
-        const std::string BlueChargeStationRight = "Blue Charge Station Right";
-        const std::string RedDropAndGoLeft = "Red Drop and Go Left";
-        const std::string RedChargeStationLeft = "Red Charge Station Left";
-        const std::string RedDropAndGoMiddle = "Red Drop and Go Middle";
-        const std::string RedChargeStationMiddle = "Red Charge Station Middle";
-        const std::string RedDropAndGoRight = "Red Drop and Go Right";
-        const std::string RedChargeStationRight = "Red Charge Station Right";
-        const std::string RobotDoNothing = "Sit Still";
-        const std::string kAutoModeDefault = RobotDoNothing;
+       
 
         // speed multiplier for driver controls for the swerve
         bool a_slowSpeed { false };
