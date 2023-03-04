@@ -30,7 +30,8 @@ a_Autonomous(&a_Gyro, &a_SwerveDrive, &a_Arm),
 a_DriverXboxController(JOYSTICK_PORT),
 a_OperatorXboxController(XBOX_CONTROLLER),
 a_CompressorController(),
-a_TOF()
+a_TOF(), 
+a_LED()
 // NEEDED A PORT, THIS IS PROBABLY WRONG, PLEASE FIX IT LATER
 //  handler("169.254.179.144", "1185", "data"),
 //  handler("raspberrypi.local", 1883, "PI/CV/SHOOT/DATA"),
@@ -59,11 +60,30 @@ void Robot::RobotInit() {
     frc::SmartDashboard::init();
     a_Gyro.Init();
     a_Gyro.Zero();
+
+    m_AutoModeSelector.SetDefaultOption(RobotDoNothing, RobotDoNothing);
+    m_AutoModeSelector.AddOption(BlueDropAndGoLeft, BlueDropAndGoLeft);
+    m_AutoModeSelector.AddOption(BlueChargeStationLeft, BlueChargeStationLeft);
+    m_AutoModeSelector.AddOption(BlueDropAndGoMiddle, BlueDropAndGoMiddle);
+    m_AutoModeSelector.AddOption(BlueChargeStationMiddle, BlueChargeStationMiddle);
+    m_AutoModeSelector.AddOption(BlueDropAndGoRight, BlueDropAndGoRight);
+    m_AutoModeSelector.AddOption(BlueChargeStationRight, BlueChargeStationRight);
+    m_AutoModeSelector.AddOption(RedDropAndGoLeft, RedDropAndGoLeft);
+    m_AutoModeSelector.AddOption(RedChargeStationLeft, RedChargeStationLeft);
+    m_AutoModeSelector.AddOption(RedDropAndGoMiddle, RedDropAndGoMiddle);
+    m_AutoModeSelector.AddOption(RedChargeStationMiddle, RedChargeStationMiddle);
+    m_AutoModeSelector.AddOption(RedDropAndGoRight, RedDropAndGoRight);
+    m_AutoModeSelector.AddOption(RedChargeStationRight, RedChargeStationRight);
+    frc::SmartDashboard::PutData("Auto Modes", &m_AutoModeSelector); 
+
+    a_LED.Init();
+
 }
 
 void Robot::RobotPeriodic() {
     a_Gyro.Update();
     a_Arm.updateDashboard();
+    a_LED.Update();
     //a_SwerveDrive.updatePosition();
 
 //testing code block for PID tuning
@@ -116,6 +136,7 @@ void Robot::RobotPeriodic() {
         }
         */
     
+    
 
 
 
@@ -123,19 +144,13 @@ void Robot::DisabledInit() {
     a_doEnabledInit = true;
     a_SwerveDrive.resetDrive();
 }
-
-void Robot::DisabledPeriodic() {
-    a_Autonomous.DecidePath();
-    frc::SmartDashboard::PutString("Selected Autonomous", a_Autonomous.GetCurrentPath());
-}
-
-void Robot::EnabledInit() {
-
-}
+void Robot::EnabledInit(){}
 
 void Robot::EnabledPeriodic() {
     a_CompressorController.update();
 }
+void Robot::DisabledPeriodic(){}
+
 
 void Robot::AutonomousInit() {
     if (a_doEnabledInit) {
@@ -145,12 +160,12 @@ void Robot::AutonomousInit() {
 
     a_SwerveDrive.unsetHoldAngle();
     a_Gyro.Zero();
-    a_Autonomous.StartAuto();
+    std::string SelectedRoute = m_AutoModeSelector.GetSelected(); //assigns value frm smart dashboard to a string variable
+    a_Autonomous.StartAuto(SelectedRoute); //starts auto from selected route
 }
 
 void Robot::AutonomousPeriodic() {
     EnabledPeriodic();
-    a_Autonomous.PeriodicAuto();
 }
 
 void Robot::TeleopInit() {
@@ -195,10 +210,12 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Arm Controls =-=-=-=-=-=-=-=-=-=-= */
 
+    a_TOF.Update();
+
     if (a_TOF.GetTargetRangeIndicator() == TARGET_IN_RANGE) {
-
+        a_Arm.ClawClose();
     } else {
-
+        a_Arm.ClawOpen();
     }
 
     if(a_OperatorXboxController.GetYButton()) {
@@ -298,6 +315,15 @@ void Robot::TeleopPeriodic() {
         a_SwerveDrive.swerveUpdate(x, y, 0.5 * z, fieldOreo);
     } else {
         a_SwerveDrive.swerveUpdate(0, 0, 0, fieldOreo);
+    }
+
+    /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
+
+    if(a_OperatorXboxController.GetRawButton(1)) { //can change button later
+        a_LED.SetTargetType(CONE);
+    } 
+    else if(a_OperatorXboxController.GetRawButton(2)) { //can change button later
+        a_LED.SetTargetType(CUBE);
     }
 }
 
