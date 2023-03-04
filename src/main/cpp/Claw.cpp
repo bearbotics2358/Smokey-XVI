@@ -14,7 +14,7 @@ shuttleZeroSwitch(limitSwitchId) {
 }
 
 void Claw::clawInit() {
-    transformClaw(30, false, 0);
+    //transformClaw(30, false, 0);
 }
 
 bool Claw::zeroShuttle() {
