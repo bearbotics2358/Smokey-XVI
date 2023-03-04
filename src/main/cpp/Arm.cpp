@@ -13,7 +13,6 @@ a_CANCoder(carriageCANCoderID) {
 
 void Arm::updateDashboard(){
     frc::SmartDashboard::PutNumber("arm absolute encoder: ", getAngle());
-    frc::SmartDashboard::PutNumber("claw motor position: ", a_clawMotor.GetEncoder().GetPosition());
     frc::SmartDashboard::PutNumber("shuttle motor position: ", a_carriageMotor.GetEncoder().GetPosition());
     if (a_armSolenoid.Get() == frc::DoubleSolenoid::Value::kReverse){
         frc::SmartDashboard::PutString("arm solenoid position: ", "reverse");
@@ -26,7 +25,7 @@ void Arm::updateDashboard(){
 }
 
 double Arm::getAngle(){
-    return (a_CANCoder.GetAbsolutePosition() * -1) - CANCODER_OFFSETS[_CANCoderID];
+    return a_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
 }
 
 

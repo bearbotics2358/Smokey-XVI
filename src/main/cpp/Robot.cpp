@@ -218,9 +218,7 @@ void Robot::TeleopPeriodic() {
 
     if (a_TOF.GetTargetRangeIndicator() == TARGET_IN_RANGE) {
         a_Arm.ClawClose();
-    } else {
-        a_Arm.ClawOpen();
-    }
+    } 
 
     if(a_OperatorXboxController.GetYButton()) {
         a_Arm.ClawMotorUp();
