@@ -16,6 +16,7 @@
 #include <photonlib/PhotonCamera.h>
 #include <photonlib/PhotonUtils.h>
 #include "BeamBreak.h"
+#include "TOF.h"
 
 enum class DriveBackState {
     Inactive,
@@ -70,6 +71,7 @@ class Robot : public frc::TimedRobot {
         frc::XboxController a_OperatorXboxController;
 
         CompressorController a_CompressorController;
+        TOF a_TOF;
 
         // CanHandler a_canHandler;
 

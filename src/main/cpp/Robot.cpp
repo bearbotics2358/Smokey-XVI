@@ -27,7 +27,8 @@ a_SwerveDrive(a_FLModule, a_FRModule, a_BLModule, a_BRModule, a_Gyro),
 a_Autonomous(&a_Gyro, &a_SwerveDrive, &a_Arm),
 a_DriverXboxController(JOYSTICK_PORT),
 a_OperatorXboxController(XBOX_CONTROLLER),
-a_CompressorController()
+a_CompressorController(),
+a_TOF()
 // NEEDED A PORT, THIS IS PROBABLY WRONG, PLEASE FIX IT LATER
 //  handler("169.254.179.144", "1185", "data"),
 //  handler("raspberrypi.local", 1883, "PI/CV/SHOOT/DATA"),
@@ -136,9 +137,9 @@ void Robot::TeleopInit() {
         a_doEnabledInit = false;
     }
 
-    pChange = 0;
-    iChange = 0;
-    dChange = 0;
+    // pChange = 0;
+    // iChange = 0;
+    // dChange = 0;
 
 }
 
@@ -171,6 +172,12 @@ void Robot::TeleopPeriodic() {
     // frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Arm Controls =-=-=-=-=-=-=-=-=-=-= */
+
+    if (a_TOF.GetTargetRangeIndicator() == TARGET_IN_RANGE) {
+
+    } else {
+        
+    }
 
     if(a_OperatorXboxController.GetYButton()) {
         a_Arm.ClawMotorUp();
