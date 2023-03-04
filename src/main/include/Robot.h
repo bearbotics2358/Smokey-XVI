@@ -63,7 +63,7 @@ class Robot : public frc::TimedRobot {
         frc::SendableChooser<std::string> m_AutoModeSelector;
 
         Gyro a_Gyro;
-        Arm a_Arm;
+        //Arm a_Arm;
 
         SwerveModule a_FLModule;
         SwerveModule a_FRModule;
@@ -93,10 +93,10 @@ class Robot : public frc::TimedRobot {
         frc::XboxController a_DriverXboxController; // 3D flightstick (Logitech Attack 3?)
         frc::XboxController a_OperatorXboxController;
 
-        CompressorController a_CompressorController;
-        TOF a_TOF;
+        //CompressorController a_CompressorController;
+        //TOF a_TOF;
 
-        LED a_LED;
+        //LED a_LED;
 
         // CanHandler a_canHandler;
 

@@ -20,18 +20,18 @@
 /*~~ hi :) ~~ */
 Robot::Robot():
 a_Gyro(GYRO_ID),
-a_Arm(ARM_PUSH_SOLENOID_MODULE, ARM_PULL_SOLENOID_MODULE, ARM_OPEN_SOLENOID_MODULE, ARM_CLOSE_SOLENOID_MODULE, ARM_CARRIAGE_MOTOR, ARM_CLAW_MOTOR, ARM_CARRIAGE_CANCODER), //Get the IDs for the arms solenoids
-a_FLModule(misc::GetFLDrive(), misc::GetFLSteer(), AbsoluteEncoder(FL_SWERVE_ABS_ENC_PORT, FL_SWERVE_ABS_ENC_MIN_VOLTS, FL_SWERVE_ABS_ENC_MAX_VOLTS, FL_SWERVE_ABS_ENC_OFFSET / 360), misc::GetFLCANCoder()),
-a_FRModule(misc::GetFRDrive(), misc::GetFRSteer(), AbsoluteEncoder(FR_SWERVE_ABS_ENC_PORT, FR_SWERVE_ABS_ENC_MIN_VOLTS, FR_SWERVE_ABS_ENC_MAX_VOLTS, FR_SWERVE_ABS_ENC_OFFSET / 360), misc::GetFRCANCoder()),
-a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), AbsoluteEncoder(BL_SWERVE_ABS_ENC_PORT, BL_SWERVE_ABS_ENC_MIN_VOLTS, BL_SWERVE_ABS_ENC_MAX_VOLTS, BL_SWERVE_ABS_ENC_OFFSET / 360), misc::GetBLCANCoder()),
-a_BRModule(misc::GetBRDrive(), misc::GetBRSteer(), AbsoluteEncoder(BR_SWERVE_ABS_ENC_PORT, BR_SWERVE_ABS_ENC_MIN_VOLTS, BR_SWERVE_ABS_ENC_MAX_VOLTS, BR_SWERVE_ABS_ENC_OFFSET / 360), misc::GetBRCANCoder()),
+//a_Arm(ARM_PUSH_SOLENOID_MODULE, ARM_PULL_SOLENOID_MODULE, ARM_OPEN_SOLENOID_MODULE, ARM_CLOSE_SOLENOID_MODULE, ARM_CARRIAGE_MOTOR, ARM_CLAW_MOTOR, ARM_CARRIAGE_CANCODER), //Get the IDs for the arms solenoids
+a_FLModule(misc::GetFLDrive(), misc::GetFLSteer(), misc::GetFLCANCoder()),
+a_FRModule(misc::GetFRDrive(), misc::GetFRSteer(), misc::GetFRCANCoder()),
+a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), misc::GetBLCANCoder()),
+a_BRModule(misc::GetBRDrive(), misc::GetBRSteer(), misc::GetBRCANCoder()),
 a_SwerveDrive(a_FLModule, a_FRModule, a_BLModule, a_BRModule, a_Gyro),
-a_Autonomous(&a_Gyro, &a_SwerveDrive, &a_Arm),
+a_Autonomous(&a_Gyro, &a_SwerveDrive),//, &a_Arm),
 a_DriverXboxController(JOYSTICK_PORT),
-a_OperatorXboxController(XBOX_CONTROLLER),
-a_CompressorController(),
-a_TOF(), 
-a_LED()
+a_OperatorXboxController(XBOX_CONTROLLER)
+//a_CompressorController(),
+//a_TOF(), 
+//a_LED()
 // NEEDED A PORT, THIS IS PROBABLY WRONG, PLEASE FIX IT LATER
 //  handler("169.254.179.144", "1185", "data"),
 //  handler("raspberrypi.local", 1883, "PI/CV/SHOOT/DATA"),
@@ -76,14 +76,14 @@ void Robot::RobotInit() {
     m_AutoModeSelector.AddOption(RedChargeStationRight, RedChargeStationRight);
     frc::SmartDashboard::PutData("Auto Modes", &m_AutoModeSelector); 
 
-    a_LED.Init();
+    //a_LED.Init();
 
 }
 
 void Robot::RobotPeriodic() {
     a_Gyro.Update();
-    a_Arm.updateDashboard();
-    a_LED.Update();
+   // a_Arm.updateDashboard();
+    //a_LED.Update();
     //a_SwerveDrive.updatePosition();
 
 //testing code block for PID tuning
@@ -147,7 +147,7 @@ void Robot::DisabledInit() {
 void Robot::EnabledInit(){}
 
 void Robot::EnabledPeriodic() {
-    a_CompressorController.update();
+    //a_CompressorController.update();
 }
 void Robot::DisabledPeriodic(){}
 
@@ -210,38 +210,38 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Arm Controls =-=-=-=-=-=-=-=-=-=-= */
 
-    a_TOF.Update();
+    // a_TOF.Update();
 
-    if (a_TOF.GetTargetRangeIndicator() == TARGET_IN_RANGE) {
-        a_Arm.ClawClose();
-    } else {
-        a_Arm.ClawOpen();
-    }
+    // if (a_TOF.GetTargetRangeIndicator() == TARGET_IN_RANGE) {
+    //    // a_Arm.ClawClose();
+    // } else {
+    //    // a_Arm.ClawOpen();
+    // }
 
     if(a_OperatorXboxController.GetYButton()) {
-        a_Arm.ClawMotorUp();
+       // a_Arm.ClawMotorUp();
     }
     if(a_OperatorXboxController.GetAButton()) {
-        a_Arm.ClawMotorDown();
+       // a_Arm.ClawMotorDown();
     }
     if(a_OperatorXboxController.GetXButton()) {
-        a_Arm.ClawOpen();
+       // a_Arm.ClawOpen();
     }
     if(a_OperatorXboxController.GetBButton()) {
-        a_Arm.ClawClose();
+       // a_Arm.ClawClose();
     }
 
     if(a_OperatorXboxController.GetPOV() == 90) {
-        a_Arm.ArmMotorUp();
+       // a_Arm.ArmMotorUp();
     }
     if(a_OperatorXboxController.GetPOV() == 270) {
-        a_Arm.ArmMotorDown();
+       // a_Arm.ArmMotorDown();
     }
     if(a_OperatorXboxController.GetPOV() == 0) {
-        a_Arm.ArmPistonUp();
+       // a_Arm.ArmPistonUp();
     }
     if(a_OperatorXboxController.GetPOV() == 180) {
-        a_Arm.ArmPistonUp();
+      //  a_Arm.ArmPistonUp();
     }
 
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
@@ -319,12 +319,12 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
 
-    if(a_OperatorXboxController.GetRawButton(1)) { //can change button later
-        a_LED.SetTargetType(CONE);
-    } 
-    else if(a_OperatorXboxController.GetRawButton(2)) { //can change button later
-        a_LED.SetTargetType(CUBE);
-    }
+    // if(a_OperatorXboxController.GetRawButton(1)) { //can change button later
+    //     a_LED.SetTargetType(CONE);
+    // } 
+    // else if(a_OperatorXboxController.GetRawButton(2)) { //can change button later
+    //     a_LED.SetTargetType(CUBE);
+    // }
 }
 
 void Robot::TestInit() {

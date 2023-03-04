@@ -7,12 +7,11 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <ctre/phoenix/sensors/CANCoder.h>
 
-SwerveModule::SwerveModule(int driveID, int steerID, AbsoluteEncoder&& absEncoder, int CANCoderID):
+SwerveModule::SwerveModule(int driveID, int steerID, int CANCoderID):
 driveMotor(driveID),
 steerMotor(steerID),
 driveEnc(driveMotor),
 steerEncFalcon(steerMotor),
-absSteerEnc(std::move(absEncoder)),
 m_CANCoder(CANCoderID),
 steerPID(0, 0, 0) {
     // by default this selects the ingetrated sensor
@@ -47,12 +46,12 @@ void SwerveModule::resetDriveEncoder() {
     driveEnc.SetIntegratedSensorPosition(0);
 }
 
-void SwerveModule::resetSteerEncoder() {
-    // need to subtract from 1 because the encoders face oppoosite direction
-    double absAngle = 360.0 * (1.0 - absSteerEnc.getRotations());
-    float relAngle = getRelativeAngle();
-    encZeroPoint = absAngle - relAngle;
-}
+// void SwerveModule::resetSteerEncoder() {
+//     // need to subtract from 1 because the encoders face oppoosite direction
+//     double absAngle = 360.0 * (1.0 - absSteerEnc.getRotations());
+//     float relAngle = getRelativeAngle();
+//     encZeroPoint = absAngle - relAngle;
+// }
 
 double SwerveModule::getRelativeAngle() {
     float temp = steerEncFalcon.GetIntegratedSensorPosition() * -1;
@@ -78,9 +77,9 @@ float SwerveModule::getAngle() {
     return misc::clampDegrees(getRelativeAngle() + encZeroPoint);
 }
 
-float SwerveModule::getAbsAngleDegrees() {
-    return absSteerEnc.getRotations() * 360.0;
-}
+// float SwerveModule::getAbsAngleDegrees() {
+//     return absSteerEnc.getRotations() * 360.0;
+// }
 
 void SwerveModule::goToPosition(float meters) {
     float ticks = SwerveModule::metersToMotorTicks(-meters);
@@ -216,6 +215,6 @@ double SwerveModule::motorTicksToMeters(double motorTicks) {
     return DISTANCE_ADJUSTMANT_FACTOR * angularPosition * 0.5 * WHEEL_DIAMETER;
 }
 
-double SwerveModule::getAbsEncoderVolts() const {
-    return absSteerEnc.getVolts();
-}
+// double SwerveModule::getAbsEncoderVolts() const {
+//     return absSteerEnc.getVolts();
+// }

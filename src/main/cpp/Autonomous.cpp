@@ -5,11 +5,11 @@
 #include <math.h>
 
 
-Autonomous::Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Arm *Arm):
+Autonomous::Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive):
 a_Gyro(Gyro),
 a_SwerveDrive(SwerveDrive),
 a_OperatorXboxController(XBOX_CONTROLLER),
-a_Arm(Arm),
+//a_Arm(Arm),
 
 
 a_AutoState0(kBlueAutoIdle0),
@@ -17,171 +17,6 @@ a_AutoState1(kBlueAutoIdle1),
 a_AutoState2(kBlueAutoIdle2){}
 
 //-------------------------------------Auto Stuff---------------------------------------------//
-/*
-void Autonomous::DecidePath() {
-    if (a_OperatorXboxController.GetLeftStickButtonPressed()) {
-        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::Y)) {
-            autoPathMaster = BlueDropAndGoLeft;
-        }
-        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::X)) {
-            autoPathMaster = BlueChargeStationLeft;
-        }
-        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::B)) {
-            autoPathMaster = BlueDropGoMiddle;
-        }
-        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::A)) {
-            autoPathMaster = BlueChargeStationMiddle;
-        }
-        if (a_OperatorXboxController.GetLeftBumperPressed()) {
-            autoPathMaster = BlueDropGoRight;
-        }
-        if (a_OperatorXboxController.GetRightBumperPressed()) {
-            autoPathMaster = BlueChargeStationRight;
-        }      
-    }
-    if (a_OperatorXboxController.GetRightStickButtonPressed()) {
-        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::Y)) {
-            autoPathMaster = RedDropAndGoLeft;
-        }
-        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::X)) {
-            autoPathMaster = RedChargeStationLeft;
-        }
-        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::B)) {
-            autoPathMaster = RedDropGoMiddle;
-        }
-        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::A)) {
-            autoPathMaster = RedChargeStationMiddle;
-        }
-        if (a_OperatorXboxController.GetLeftBumperPressed()) {
-            autoPathMaster = RedDropGoRight;
-        }
-        if (a_OperatorXboxController.GetRightBumperPressed()) {
-            autoPathMaster = RedChargeStationRight;
-        }      
-    }
-}
-
-
-const char *Autonomous::GetCurrentPath() {
-    switch (autoPathMaster) {
-        case BlueDropAndGoLeft:
-            return "drop and go left vroom vroom";
-        case BlueChargeStationLeft:
-            return "left charge station";
-        case BlueDropGoMiddle:
-            return "drop and go middle";
-        case BlueChargeStationMiddle:
-            return "charge station from";
-        case BlueDropGoRight:
-            return "drop and go right";
-        case BlueChargeStationRight:
-            return "charge station from right";
-            case RedDropAndGoLeft:
-            return "red drop and go left";
-        case RedChargeStationLeft:
-            return "red left charge station";
-        case RedDropGoMiddle:
-            return "drop and go middle";
-        case RedChargeStationMiddle:
-            return "charge station from";
-        case RedDropGoRight:
-            return "drop and go right";
-        case RedChargeStationRight:
-            return "charge station from right";
-        default:
-            return "no autonomous selected, this shouldn't happen";
-    }
-}
-
-
-void Autonomous::StartAuto() {
-    switch (autoPathMaster) {
-        case BlueDropAndGoLeft:
-            BDGL();
-            break;
-        case BlueChargeStationLeft:
-            BCSL();
-            break;
-        case BlueDropGoMiddle:
-            BDGM();
-            break;
-        case BlueChargeStationMiddle:
-            BCSM();
-            break;
-        case BlueDropGoRight:
-            BDGR();
-            break;
-        case BlueChargeStationRight:
-            BCSR();
-            break;
-            case RedDropAndGoLeft:
-            RDGL();
-            break;
-        case RedChargeStationLeft:
-            RCSL();
-            break;
-        case RedDropGoMiddle:
-            RDGM();
-            break;
-        case RedChargeStationMiddle:
-            RCSM();
-            break;
-        case RedDropGoRight:
-            RDGR();
-            break;
-        case RedChargeStationRight:
-            RCSR();
-            break;
-        default:
-            //"no auto selector";
-            break;
-    }
-}
-
-
-void Autonomous::PeriodicAuto() {
-    switch (autoPathMaster) {
-        case BlueDropAndGoLeft:
-            PeriodicBDGL();
-            break;
-        case BlueChargeStationLeft:
-            PeriodicBCSL();
-            break;
-        case BlueDropGoMiddle:
-            PeriodicBDGM();
-            break;
-        case BlueChargeStationMiddle:
-            PeriodicBCSM();
-            break;
-        case BlueDropGoRight:
-            PeriodicBDGR();
-            break;
-        case BlueChargeStationRight:
-            PeriodicBCSR();
-            break;
-            case RedDropAndGoLeft:
-            PeriodicRDGL();
-            break;
-        case RedChargeStationLeft:
-            PeriodicRCSL();
-            break;
-        case RedDropGoMiddle:
-            PeriodicRDGM();
-            break;
-        case RedChargeStationMiddle:
-            PeriodicRCSM();
-            break;
-        case RedDropGoRight:
-            PeriodicRDGR();
-            break;
-        case RedChargeStationRight:
-            PeriodicRCSR();
-            break;
-        default:
-            break;
-    }
-}
-*/
 void Autonomous::StartAuto(const std::string autoMode) {
     a_AutoSelected = autoMode; 
 }
@@ -204,13 +39,13 @@ void Autonomous::PeriodicBDGL() {
             StopSwerves();
             break;
         case kBlueExtend0:
-            a_Arm->ArmPistonUp();
+            //a_Arm->ArmPistonUp();
             break;
         case kBlueDrop0:
-            a_Arm->ClawOpen();
+            //a_Arm->ClawOpen();
             break;
         case kBlueRetract0:
-            a_Arm->ArmPistonDown();
+            //a_Arm->ArmPistonDown();
             break;
         case kBlueDriveAway0:
             if (DriveDirection(4.8768, 0, .25, false)) {
@@ -234,14 +69,14 @@ void Autonomous::PeriodicBCSL() {
             StopSwerves();
             break;
         case kBlueExtend1:
-            a_Arm->ArmPistonUp();
+            //a_Arm->ArmPistonUp();
             break;
         case kBlueDrop1:
-             a_Arm->ClawOpen();
+            //a_Arm->ClawOpen();
             break;
 
         case kBlueRetract1:
-           a_Arm->ArmPistonDown();
+            //a_Arm->ArmPistonDown();
             break;
 
         case kBlueDriveAway1:
@@ -284,13 +119,13 @@ void Autonomous::PeriodicBDGM() {
             StopSwerves();
             break;
         case kBlueExtend2:
-            a_Arm->ArmPistonUp();
+            //a_Arm->ArmPistonUp();
             break;
         case kBlueDrop2:
-            a_Arm->ClawOpen();
+            //a_Arm->ClawOpen();
             break;
         case kBlueRetract2:
-            a_Arm->ArmPistonDown();
+            //a_Arm->ArmPistonDown();
             break;
 
         case kBlueDriveAway2:
@@ -317,13 +152,13 @@ void Autonomous::PeriodicBCSM() {
             StopSwerves();
             break;
         case kBlueExtend3:
-            a_Arm->ArmPistonUp();
+            //a_Arm->ArmPistonUp();
             break;
         case kBlueDrop3:
-            a_Arm->ClawOpen();
+            //a_Arm->ClawOpen();
             break;
         case kBlueRetract3:
-            a_Arm -> ArmPistonDown();
+            //a_Arm -> ArmPistonDown();
             break;
         case kBlueDriveAway3:
             if (DriveDirection(3.6576, 0, 0.4, false)) {
@@ -358,14 +193,14 @@ void Autonomous::PeriodicBDGR() {
             StopSwerves();
             break;
         case kBlueExtend4:
-            a_Arm->ArmPistonUp();
+            //a_Arm->ArmPistonUp();
             break;
         case kBlueDrop4:
-            a_Arm->ClawOpen();
+            //a_Arm->ClawOpen();
             break;
 
         case kBlueRetract4:
-            a_Arm->ArmPistonDown();
+            //a_Arm->ArmPistonDown();
             
             break;
 
@@ -392,15 +227,15 @@ void Autonomous::PeriodicBCSR() {
             StopSwerves();
             break;
         case kBlueExtend5:
-            a_Arm->ArmPistonUp();
+            //a_Arm->ArmPistonUp();
             break;
         case kBlueDrop5:
-            a_Arm->ClawOpen();
+            //a_Arm->ClawOpen();
             break;
 
         case kBlueRetract5:
            //arm close code
-           a_Arm->ArmPistonDown();
+            //a_Arm->ArmPistonDown();
             break;
 
         case kBlueDriveAway5:
@@ -435,13 +270,13 @@ void Autonomous::PeriodicRDGL() {
             StopSwerves();
             break;
         case kRedExtend6:
-            a_Arm->ArmPistonUp();
+            //a_Arm->ArmPistonUp();
             break;
         case kRedDrop6:
-            a_Arm->ClawOpen();
+            //a_Arm->ClawOpen();
             break;
         case kRedRetract6:
-            a_Arm->ArmPistonDown();
+            //a_Arm->ArmPistonDown();
             break;
         case kRedDriveAway6:
             if(DriveDirection(4.8768, 0, .3, false)) { // need real numbers
@@ -464,13 +299,13 @@ void Autonomous::PeriodicRCSL() {
             StopSwerves();
             break;
         case kRedExtend7:
-            a_Arm->ArmPistonUp();
+            //a_Arm->ArmPistonUp();
             break;
         case kRedDrop7:
-            a_Arm->ClawOpen();
+            //a_Arm->ClawOpen();
             break;
         case kRedRetract7:
-            a_Arm -> ArmPistonDown();
+            //a_Arm -> ArmPistonDown();
             
             break;
         case kRedDriveAway7:
@@ -505,13 +340,13 @@ void Autonomous::PeriodicRDGM(){
             StopSwerves();
             break;
         case kRedExtend8:
-            a_Arm->ArmPistonUp();
+            //a_Arm->ArmPistonUp();
             break;
         case kRedDrop8:
-            a_Arm->ClawOpen();
+            //a_Arm->ClawOpen();
             break;
         case kRedRetract8:
-            a_Arm->ArmPistonDown();
+            //a_Arm->ArmPistonDown();
             break;
         case kRedDriveAway8:
          if (DriveDirection(4.8768, 0, 0.4, false)) {
@@ -537,14 +372,14 @@ void Autonomous::PeriodicRCSM() {
             StopSwerves();
             break;
         case kRedExtend9:
-            a_Arm->ArmPistonUp();
+            //a_Arm->ArmPistonUp();
             break;
         case kRedDrop9:
-            a_Arm->ClawOpen();
+            //a_Arm->ClawOpen();
             break;
             
         case kRedRetract9:
-            a_Arm->ArmPistonDown();
+            //a_Arm->ArmPistonDown();
             break;
 
         case kRedDriveAway9:
@@ -579,15 +414,15 @@ void Autonomous::PeriodicRDGR() {
             StopSwerves();
             break;
         case kRedExtend10:
-            a_Arm->ArmPistonUp();
+            //a_Arm->ArmPistonUp();
             break;
 
         case kRedDrop10:
-            a_Arm->ClawOpen();
+            //a_Arm->ClawOpen();
             break;
 
         case kRedRetract10:
-            a_Arm->ArmPistonDown();
+            //a_Arm->ArmPistonDown();
             
             break;
 
@@ -613,13 +448,13 @@ void Autonomous::PeriodicRCSR() {
             StopSwerves();
             break;
         case kRedExtend11:
-            a_Arm->ArmPistonUp();
+            //a_Arm->ArmPistonUp();
             break;
         case kRedDrop11:
-            a_Arm->ClawOpen();
+            //a_Arm->ClawOpen();
             break;
         case kRedRetract11:
-            a_Arm->ArmPistonDown();
+            //a_Arm->ArmPistonDown();
             break;
         case kRedDriveAway11:
             if(DriveDirection(3.6576, 0, .25, false)) { // need real numbers

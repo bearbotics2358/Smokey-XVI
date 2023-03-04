@@ -157,7 +157,7 @@ class Autonomous {
     void RedPeriodicAuto();
     */
     void DecidePath();
-    Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Arm *Arm);
+    Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive);//, Arm *Arm);
 
    // const char *GetCurrentPath();
     
@@ -221,7 +221,7 @@ class Autonomous {
 
 private:
     Gyro *a_Gyro;
-    Arm *a_Arm;
+    //Arm *a_Arm;
     SwerveDrive *a_SwerveDrive;
     frc::XboxController a_OperatorXboxController;
 
