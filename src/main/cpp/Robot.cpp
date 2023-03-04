@@ -126,7 +126,7 @@ void Robot::AutonomousInit() {
 
 void Robot::AutonomousPeriodic() {
     EnabledPeriodic();
-
+    a_Autonomous.DecidePath();
   //  a_Autonomous.PeriodicAuto();
 }
 

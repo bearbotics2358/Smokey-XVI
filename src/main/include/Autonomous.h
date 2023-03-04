@@ -134,6 +134,9 @@ enum AutoState6 {
         kRedGoToStation11,
         kRedBalance11
     };
+    enum AutoState12{
+        kIdle
+    };
 
 
 class Autonomous {
@@ -182,6 +185,9 @@ class Autonomous {
         void RCSR(); // Red Charge Station Right AutoState11
         void PeriodicRCSR(); // Periodic Red Charge Station Right AutoState11
 
+        void DoNothing();
+        void PeriodicDoNothing();
+
         // ------------------Sub-Routines-------------------------//
 
         void StopSwerves(); // IDLE
@@ -217,6 +223,7 @@ class Autonomous {
         AutoState9 a_AutoState9;
         AutoState10 a_AutoState10;
         AutoState11 a_AutoState11;
+        AutoState12 a_AutoState12;
 
 
         AutoType autoPathMaster;
