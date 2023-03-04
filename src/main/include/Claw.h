@@ -17,8 +17,8 @@ class Claw {
         frc::DoubleSolenoid a_Claw;
         rev::CANSparkMax shuttleMotor;
         rev::CANSparkMax armMotor;
-        rev::SparkMaxRelativeEncoder shuttleEncoder;
-        rev::SparkMaxRelativeEncoder armEncoder;
+        /*rev::SparkMaxRelativeEncoder shuttleEncoder;
+        rev::SparkMaxRelativeEncoder armEncoder;*/
 
         LimitSwitch shuttleZeroSwitch;
 };

@@ -77,9 +77,6 @@ void Robot::RobotPeriodic() {
         a_BRModule.steerToAng(150);
         a_BLModule.steerToAng(150);
     }
-
-
-
     
     //printf("beam: %f/n", bstate);
     /*
