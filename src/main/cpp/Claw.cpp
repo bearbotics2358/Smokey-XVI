@@ -6,15 +6,15 @@ a_Piston(frc::PneumaticsModuleType::REVPH, pistonPushSolenoidModule, pistonPullS
 a_Claw(frc::PneumaticsModuleType::REVPH, clawPushSolenoidModule, clawPullSolenoidModule),
 armMotor(armMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
 shuttleMotor(shuttleMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
-armEncoder(armMotor.GetEncoder()),
-shuttleEncoder(shuttleMotor.GetEncoder()), 
+/*armEncoder(armMotor.GetEncoder()),
+shuttleEncoder(shuttleMotor.GetEncoder()), */
 shuttleZeroSwitch(limitSwitchId) {
-    armEncoder.SetPositionConversionFactor(20); // 360 / 18 (ticks per revolution for the rev encoder)
-    shuttleEncoder.SetPositionConversionFactor(20);
+    /* armEncoder.SetPositionConversionFactor(20); // 360 / 18 (ticks per revolution for the rev encoder)
+    shuttleEncoder.SetPositionConversionFactor(20); */
 }
 
 void Claw::clawInit() {
-    transformClaw(30, false, 0);
+    //transformClaw(30, false, 0);
 }
 
 bool Claw::zeroShuttle() {
@@ -35,7 +35,7 @@ void Claw::closeClaw(){
     a_Claw.Set(frc::DoubleSolenoid::Value::kForward);
 }
 
-bool Claw::transformClaw(double angle, bool extend, double shuttle) {
+/*bool Claw::transformClaw(double angle, bool extend, double shuttle) {
 
     double armMotorSpeed = 0.2;
     double shuttleMotorSpeed = 0.2;
@@ -108,4 +108,6 @@ bool Claw::transformClaw(double angle, bool extend, double shuttle) {
 
         return false;
     }
+    
 }
+*/

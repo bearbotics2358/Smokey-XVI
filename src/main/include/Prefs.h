@@ -3,6 +3,7 @@
 
 #include <units/angle.h>
 #include <units/length.h>
+#include <frc/SerialPort.h>
 
 // Declare constants such as CAN IDs here
 
@@ -10,10 +11,10 @@
 //#define NEW_SWERVE
 
 #define GYRO_ID 0 // TODO: UPDATE TO CORRECT NUMBER
-#define ARM_PUSH_SOLENOID_MODULE 25 // Need to update to correct ID
-#define ARM_PULL_SOLENOID_MODULE 26 // Need to update to correct ID
-#define ARM_OPEN_SOLENOID_MODULE 27
-#define ARM_CLOSE_SOLENOID_MODULE 28
+#define ARM_PUSH_SOLENOID_MODULE 31
+#define ARM_PULL_SOLENOID_MODULE 32
+#define ARM_OPEN_SOLENOID_MODULE 33
+#define ARM_CLOSE_SOLENOID_MODULE 34
 #define ARM_CARRIAGE_MOTOR 29
 #define ARM_CLAW_MOTOR 30
 #define ARM_CARRIAGE_CANCODER 31
@@ -106,15 +107,15 @@ m = number engraved on module
 #define CANCODER_OFFSET_8 0
 #define CANCODER_OFFSET_ARM 0
 
-#define CANCODER_ID_1 25
-#define CANCODER_ID_2 26
-#define CANCODER_ID_3 27
-#define CANCODER_ID_4 28
-#define CANCODER_ID_5 29
-#define CANCODER_ID_6 30
-#define CANCODER_ID_7 31
-#define CANCODER_ID_8 32
-#define CANCODER_ID_ARM 33
+#define CANCODER_ID_1 17
+#define CANCODER_ID_2 18
+#define CANCODER_ID_3 19
+#define CANCODER_ID_4 20
+#define CANCODER_ID_5 21
+#define CANCODER_ID_6 22
+#define CANCODER_ID_7 23
+#define CANCODER_ID_8 24
+#define CANCODER_ID_ARM 25
 
 static int CANCODER_OFFSETS[] = {
     CANCODER_OFFSET_1, 
@@ -184,3 +185,18 @@ constexpr units::angle::radian_t TARGET_PITCH = units::angle::radian_t(0.0);
 // mdns name of camera
 #define SHOOTER_CAMERA_NAME "photonvision"
 #define BALL_CAMERA_NAME "temp"
+
+/* ============= Arduino ============= */
+
+#define BAUD_RATE_TOF 115200
+#define USB_PORT_TOF frc::SerialPort::kUSB1
+#define DATA_BITS_TOF 8
+#define PARITY_TOF frc::SerialPort::kParity_None
+#define STOP_BITS_TOF frc::SerialPort::kStopBits_One
+
+#define BAUD_RATE_ARDUINO 9600
+#define USB_PORT_ARDUINO frc::SerialPort::kUSB2
+#define DATA_BITS_ARDUINO 8
+#define PARITY_ARDUINO frc::SerialPort::kParity_None
+#define STOP_BITS_ARDUINO frc::SerialPort::kStopBits_One
+

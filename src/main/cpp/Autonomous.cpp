@@ -10,6 +10,8 @@ a_Gyro(Gyro),
 a_SwerveDrive(SwerveDrive),
 a_OperatorXboxController(XBOX_CONTROLLER),
 a_Arm(Arm),
+
+
 a_AutoState0(kBlueAutoIdle0),
 a_AutoState1(kBlueAutoIdle1),
 a_AutoState2(kBlueAutoIdle2){}
@@ -186,7 +188,6 @@ void Autonomous::PeriodicAuto() {
 
 void Autonomous::BDGL() {
     a_AutoState0 = kBlueExtend0;
-    a_Arm->ArmPistonUp();
 }
 
 void Autonomous::PeriodicBDGL() {
@@ -194,7 +195,12 @@ void Autonomous::PeriodicBDGL() {
     AutoState0 nextState = a_AutoState0;
 
     switch (a_AutoState0) {
-
+        case kBlueAutoIdle0:
+            StopSwerves();
+            break;
+        case kBlueExtend0:
+            a_Arm->ArmPistonUp();
+            break;
         case kBlueDrop0:
             a_Arm->ClawOpen();
             break;
@@ -202,7 +208,7 @@ void Autonomous::PeriodicBDGL() {
             a_Arm->ArmPistonDown();
             break;
         case kBlueDriveAway0:
-            if (DriveDirection(4.2926, 0, 0.05, false)) {
+            if (DriveDirection(4.8768, 0, .25, false)) {
                 nextState = kBlueAutoIdle0;
             }
             break;
@@ -212,7 +218,6 @@ void Autonomous::PeriodicBDGL() {
 
 void Autonomous::BCSL() {
     a_AutoState1 = kBlueExtend1;
-    a_Arm->ArmPistonUp();
 }
 
 void Autonomous::PeriodicBCSL() {
@@ -220,7 +225,12 @@ void Autonomous::PeriodicBCSL() {
     AutoState1 nextState = a_AutoState1;
 
     switch (a_AutoState1) {
-
+         case kBlueAutoIdle1:
+            StopSwerves();
+            break;
+        case kBlueExtend1:
+            a_Arm->ArmPistonUp();
+            break;
         case kBlueDrop1:
              a_Arm->ClawOpen();
             break;
@@ -230,14 +240,14 @@ void Autonomous::PeriodicBCSL() {
             break;
 
         case kBlueDriveAway1:
-            if (DriveDirection(4.2926, 0, 0.25, false)) {
+            if (DriveDirection(3.6576, 0, 0.25, false)) {
                 nextState = kBlueAutoIdle1;
             }
             //need to actually use drivedirection
             break;
 
         case kBlueGoToStation1:
-            if (DriveDirection(2.54, 90, 0.25, false)) {
+            if (DriveDirection(2.667, 90, 0.25, false)) {
                 nextState = kBlueAutoIdle1;
             }
             //need to actually use drivedirection
@@ -257,8 +267,7 @@ void Autonomous::PeriodicBCSL() {
 }
 
 void Autonomous::BDGM() {
-    a_AutoState2 = kBlueExtend2;
-    a_Gyro->Zero(133);
+    a_AutoState2 = kBlueExtend2;   
 }
 
 void Autonomous::PeriodicBDGM() {
@@ -266,22 +275,22 @@ void Autonomous::PeriodicBDGM() {
     AutoState2 nextState = a_AutoState2;
 
     switch (a_AutoState2) {
-        case kBlueAutoIdle2:
+       case kBlueAutoIdle2:
             StopSwerves();
-
             break;
-
+        case kBlueExtend2:
+            a_Arm->ArmPistonUp();
+            break;
         case kBlueDrop2:
             a_Arm->ClawOpen();
             break;
-
         case kBlueRetract2:
             a_Arm->ArmPistonDown();
             break;
 
         case kBlueDriveAway2:
             // we might be stuck on the wall, so move to the next state after some time
-            if (DriveDirection(4.2926, 0, 0.4, false)) {
+            if (DriveDirection(4.8768, 0, 0.4, false)) {
                 nextState = kBlueAutoIdle2;
             }
             break;     
@@ -293,22 +302,26 @@ void Autonomous::PeriodicBDGM() {
 void Autonomous::BCSM() 
 {
     a_AutoState3 = kBlueExtend3;
-    a_Arm->ArmPistonUp();
 }
 
 void Autonomous::PeriodicBCSM() {
     AutoState3 nextState = a_AutoState3;
    
     switch (a_AutoState3) {
+         case kBlueAutoIdle3:
+            StopSwerves();
+            break;
+        case kBlueExtend3:
+            a_Arm->ArmPistonUp();
+            break;
         case kBlueDrop3:
             a_Arm->ClawOpen();
             break;
         case kBlueRetract3:
             a_Arm -> ArmPistonDown();
-            
             break;
         case kBlueDriveAway3:
-            if (DriveDirection(4.2926, 0, 0.4, false)) {
+            if (DriveDirection(3.6576, 0, 0.4, false)) {
                 nextState = kBlueAutoIdle3;
                 //need the actual numbers
             }
@@ -328,7 +341,7 @@ void Autonomous::PeriodicBCSM() {
 }
 
 void Autonomous::BDGR(){
-    a_Arm->ArmPistonUp();
+    a_AutoState4 = kBlueExtend4;
 }
 
 void Autonomous::PeriodicBDGR() {
@@ -336,7 +349,12 @@ void Autonomous::PeriodicBDGR() {
     AutoState4 nextState = a_AutoState4;
 
     switch (a_AutoState4) {
-
+         case kBlueAutoIdle4:
+            StopSwerves();
+            break;
+        case kBlueExtend4:
+            a_Arm->ArmPistonUp();
+            break;
         case kBlueDrop4:
             a_Arm->ClawOpen();
             break;
@@ -348,7 +366,7 @@ void Autonomous::PeriodicBDGR() {
 
         case kBlueDriveAway4:
             // need the real drive numbers
-            if (DriveDirection(4.2926, 0, 0.3, true)) {
+            if (DriveDirection(4.8768, 0, 0.3, true)) {
                 nextState = kBlueRetract4;
             }
             break;
@@ -358,7 +376,6 @@ void Autonomous::PeriodicBDGR() {
  void Autonomous::BCSR() 
 {
     a_AutoState5 = kBlueExtend5;
-    a_Arm->ArmPistonUp();
 }
     
 void Autonomous::PeriodicBCSR() {
@@ -366,6 +383,12 @@ void Autonomous::PeriodicBCSR() {
     AutoState5 nextState = a_AutoState5;
 
     switch (a_AutoState5) {
+        case kBlueAutoIdle5:
+            StopSwerves();
+            break;
+        case kBlueExtend5:
+            a_Arm->ArmPistonUp();
+            break;
         case kBlueDrop5:
             a_Arm->ClawOpen();
             break;
@@ -376,7 +399,7 @@ void Autonomous::PeriodicBCSR() {
             break;
 
         case kBlueDriveAway5:
-            if (DriveDirection(4.2926, 0, 0.3, false)) {
+            if (DriveDirection(3.6576, 0, 0.3, false)) {
                 nextState = kBlueRetract5;
             }
             break;
@@ -397,13 +420,18 @@ void Autonomous::PeriodicBCSR() {
 
 void Autonomous::RDGL(){
     a_AutoState6 = kRedExtend6;
-    a_Arm->ArmPistonUp();
 }
 
 void Autonomous::PeriodicRDGL() {
     AutoState6 nextState = a_AutoState6;
 
     switch(a_AutoState6){
+         case kRedAutoIdle6:
+            StopSwerves();
+            break;
+        case kRedExtend6:
+            a_Arm->ArmPistonUp();
+            break;
         case kRedDrop6:
             a_Arm->ClawOpen();
             break;
@@ -411,7 +439,7 @@ void Autonomous::PeriodicRDGL() {
             a_Arm->ArmPistonDown();
             break;
         case kRedDriveAway6:
-            if(DriveDirection(4.2926, 0, .3, false)) { // need real numbers
+            if(DriveDirection(4.8768, 0, .3, false)) { // need real numbers
                 nextState = kRedRetract6;
             }
     }
@@ -421,13 +449,18 @@ void Autonomous::PeriodicRDGL() {
 void Autonomous::RCSL() 
 {
     a_AutoState7 = kRedExtend7;
-    a_Arm->ArmPistonUp();
 }
 
 void Autonomous::PeriodicRCSL() {
     AutoState7 nextState = a_AutoState7;
    
     switch (a_AutoState7) {
+        case kRedAutoIdle7:
+            StopSwerves();
+            break;
+        case kRedExtend7:
+            a_Arm->ArmPistonUp();
+            break;
         case kRedDrop7:
             a_Arm->ClawOpen();
             break;
@@ -436,7 +469,7 @@ void Autonomous::PeriodicRCSL() {
             
             break;
         case kRedDriveAway7:
-            if (DriveDirection(4.2926, 0, 0.3, false)) {
+            if (DriveDirection(3.6576, 0, 0.3, false)) {
                 nextState = kRedAutoIdle7;
                 //need the actual numbers
             }
@@ -457,13 +490,18 @@ void Autonomous::PeriodicRCSL() {
 
 void Autonomous::RDGM(){
     a_AutoState8 =  kRedExtend8;
-    a_Arm->ArmPistonUp();
 }
 
 void Autonomous::PeriodicRDGM(){
     AutoState8 nextState = a_AutoState8;
    
     switch (a_AutoState8) {
+        case kRedAutoIdle8:
+            StopSwerves();
+            break;
+        case kRedExtend8:
+            a_Arm->ArmPistonUp();
+            break;
         case kRedDrop8:
             a_Arm->ClawOpen();
             break;
@@ -471,7 +509,7 @@ void Autonomous::PeriodicRDGM(){
             a_Arm->ArmPistonDown();
             break;
         case kRedDriveAway8:
-         if (DriveDirection(4.2926, 0, 0.4, false)) {
+         if (DriveDirection(4.8768, 0, 0.4, false)) {
                 nextState = kRedAutoIdle8;
                 //need the actual numbers
             }
@@ -483,7 +521,6 @@ void Autonomous::PeriodicRDGM(){
 
 void Autonomous::RCSM() {
     a_AutoState9 = kRedExtend9;
-    a_Arm->ArmPistonUp();
 }
 
 void Autonomous::PeriodicRCSM() {
@@ -491,6 +528,12 @@ void Autonomous::PeriodicRCSM() {
     AutoState9 nextState = a_AutoState9;
     
     switch(a_AutoState9){
+        case kRedAutoIdle9:
+            StopSwerves();
+            break;
+        case kRedExtend9:
+            a_Arm->ArmPistonUp();
+            break;
         case kRedDrop9:
             a_Arm->ClawOpen();
             break;
@@ -500,7 +543,7 @@ void Autonomous::PeriodicRCSM() {
             break;
 
         case kRedDriveAway9:
-            if(DriveDirection(4.2926, 0, .4, false)) { // need real numbers please & ty
+            if(DriveDirection(3.6576, 0, .4, false)) { // need real numbers please & ty
                 nextState = kRedRetract9;
             }
             break;
@@ -520,7 +563,6 @@ void Autonomous::PeriodicRCSM() {
 
 void Autonomous::RDGR(){
     a_AutoState10 = kRedExtend10;
-    a_Arm->ArmPistonUp();
 }
 
 void Autonomous::PeriodicRDGR() {
@@ -528,6 +570,12 @@ void Autonomous::PeriodicRDGR() {
     AutoState10 nextState = a_AutoState10;
 
     switch (a_AutoState10) {
+        case kRedAutoIdle10:
+            StopSwerves();
+            break;
+        case kRedExtend10:
+            a_Arm->ArmPistonUp();
+            break;
 
         case kRedDrop10:
             a_Arm->ClawOpen();
@@ -540,7 +588,7 @@ void Autonomous::PeriodicRDGR() {
 
         case kRedDriveAway10:
             // need the real drive numbers
-            if (DriveDirection(4.2926, 0, 0.25, false)) {
+            if (DriveDirection(4.8768, 0, 0.25, false)) {
                 nextState = kRedAutoIdle10;
             }
             break;
@@ -550,13 +598,18 @@ void Autonomous::PeriodicRDGR() {
 
 void Autonomous::RCSR() {
     a_AutoState11 = kRedExtend11;
-    a_Arm->ArmPistonUp();
 }
 
 void Autonomous::PeriodicRCSR() {
     AutoState11 nextState = a_AutoState11;
 
     switch(a_AutoState11){
+        case kRedAutoIdle11:
+            StopSwerves();
+            break;
+        case kRedExtend11:
+            a_Arm->ArmPistonUp();
+            break;
         case kRedDrop11:
             a_Arm->ClawOpen();
             break;
@@ -564,12 +617,12 @@ void Autonomous::PeriodicRCSR() {
             a_Arm->ArmPistonDown();
             break;
         case kRedDriveAway11:
-            if(DriveDirection(4.2926, 0, .25, false)) { // need real numbers
+            if(DriveDirection(3.6576, 0, .25, false)) { // need real numbers
                 nextState = kRedRetract11;
             }
             break;
         case kRedGoToStation11:
-            if(DriveDirection(2.54, -90, .25,false)) { // need real numbers
+            if(DriveDirection(2.667, -90, .25,false)) { // need real numbers
                 nextState = kRedRetract11;
             }//18ft wide by 11 ft 3/8 
             break;
@@ -582,6 +635,23 @@ void Autonomous::PeriodicRCSR() {
 a_AutoState11 = nextState;
 
 }
+
+void Autonomous::DoNothing() {
+    a_AutoState12 = kIdle;
+}
+
+void Autonomous::PeriodicDoNothing() {
+    AutoState12 nextState = a_AutoState12;
+
+    switch(a_AutoState12){
+        case kIdle:
+            StopSwerves();
+            break;
+    }
+a_AutoState12 = nextState;
+
+}
+
 
 
 void Autonomous::StopSwerves() {
