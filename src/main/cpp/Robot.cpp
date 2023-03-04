@@ -144,10 +144,13 @@ void Robot::DisabledInit() {
     a_doEnabledInit = true;
     a_SwerveDrive.resetDrive();
 }
+void Robot::EnabledInit(){}
 
 void Robot::EnabledPeriodic() {
     a_CompressorController.update();
 }
+void Robot::DisabledPeriodic(){}
+
 
 void Robot::AutonomousInit() {
     if (a_doEnabledInit) {
