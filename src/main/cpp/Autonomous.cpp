@@ -40,12 +40,15 @@ void Autonomous::PeriodicBDGL() {
             break;
         case kBlueExtend0:
             //a_Arm->ArmPistonUp();
+            nextState = kBlueDrop0;
             break;
         case kBlueDrop0:
             //a_Arm->ClawOpen();
+            nextState = kBlueRetract0;
             break;
         case kBlueRetract0:
             //a_Arm->ArmPistonDown();
+            nextState = kBlueDriveAway0;
             break;
         case kBlueDriveAway0:
             if (DriveDirection(4.8768, 0, .25, false)) {

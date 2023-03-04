@@ -117,7 +117,7 @@ m = number engraved on module
 #define CANCODER_ID_8 24
 #define CANCODER_ID_ARM 25
 
-static int CANCODER_OFFSETS[] = {
+static double CANCODER_OFFSETS[] = {
     CANCODER_OFFSET_1, 
     CANCODER_OFFSET_2, 
     CANCODER_OFFSET_3, 

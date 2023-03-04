@@ -88,18 +88,18 @@ void Robot::RobotPeriodic() {
 
 //testing code block for PID tuning
 
-    if(a_DriverXboxController.GetRawButton(3)) {
-        a_FRModule.steerToAng(120);
-        a_FLModule.steerToAng(120);
-        a_BRModule.steerToAng(120);
-        a_BLModule.steerToAng(120);
-    } 
-    else {
-        a_FRModule.steerToAng(150);
-        a_FLModule.steerToAng(150);
-        a_BRModule.steerToAng(150);
-        a_BLModule.steerToAng(150);
-    }
+    // if(a_DriverXboxController.GetRawButton(3)) {
+    //     a_FRModule.steerToAng(120);
+    //     a_FLModule.steerToAng(120);
+    //     a_BRModule.steerToAng(120);
+    //     a_BLModule.steerToAng(120);
+    // } 
+    // else {
+    //     a_FRModule.steerToAng(150);
+    //     a_FLModule.steerToAng(150);
+    //     a_BRModule.steerToAng(150);
+    //     a_BLModule.steerToAng(150);
+    // }
     
     //printf("beam: %f/n", bstate);
     /*
@@ -278,20 +278,20 @@ void Robot::TeleopPeriodic() {
 
     float multiplier = 1.0;
     if (a_slowSpeed) {
-        multiplier = 0.25;
+        multiplier = 0.5;
     }
  
-    float x = a_DriverXboxController.GetLeftX();
-    float y = a_DriverXboxController.GetLeftY();
-    float z = a_DriverXboxController.GetRightX();
+    float x = a_OperatorXboxController.GetLeftX();
+    float y = a_OperatorXboxController.GetLeftY();
+    float z = a_OperatorXboxController.GetRightX();
 
-    if (fabs(x) < 0.10) {
+    if (fabs(x) < 0.25) {
         x = 0;
     }
-    if (fabs(y) < 0.10) {
+    if (fabs(y) < 0.25) {
         y = 0;
     }
-    if (fabs(z) < 0.10) {
+    if (fabs(z) < 0.25) {
         z = 0;
     }
 

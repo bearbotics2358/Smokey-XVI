@@ -26,7 +26,7 @@ void Arm::updateDashboard(){
 }
 
 double Arm::getAngle(){
-    return (a_CANCoder.GetAbsolutePosition() * -1) - CANCODER_OFFSETS[_CANCoderID];
+    return a_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
 }
 
 
