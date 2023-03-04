@@ -30,7 +30,8 @@ a_Autonomous(&a_Gyro, &a_SwerveDrive, &a_Arm),
 a_DriverXboxController(JOYSTICK_PORT),
 a_OperatorXboxController(XBOX_CONTROLLER),
 a_CompressorController(),
-a_TOF()
+a_TOF(), 
+a_LED()
 // NEEDED A PORT, THIS IS PROBABLY WRONG, PLEASE FIX IT LATER
 //  handler("169.254.179.144", "1185", "data"),
 //  handler("raspberrypi.local", 1883, "PI/CV/SHOOT/DATA"),
@@ -59,11 +60,14 @@ void Robot::RobotInit() {
     frc::SmartDashboard::init();
     a_Gyro.Init();
     a_Gyro.Zero();
+
+    a_LED.Init();
 }
 
 void Robot::RobotPeriodic() {
     a_Gyro.Update();
     a_Arm.updateDashboard();
+    a_LED.Update();
     //a_SwerveDrive.updatePosition();
 
 //testing code block for PID tuning
@@ -300,6 +304,15 @@ void Robot::TeleopPeriodic() {
         a_SwerveDrive.swerveUpdate(x, y, 0.5 * z, fieldOreo);
     } else {
         a_SwerveDrive.swerveUpdate(0, 0, 0, fieldOreo);
+    }
+
+    /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
+
+    if(a_OperatorXboxController.GetRawButton(1)) { //can change button later
+        a_LED.SetTargetType(CONE);
+    } 
+    else if(a_OperatorXboxController.GetRawButton(2)) { //can change button later
+        a_LED.SetTargetType(CUBE);
     }
 }
 
