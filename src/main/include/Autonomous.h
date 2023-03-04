@@ -155,7 +155,7 @@ class Autonomous {
         const char *RedGetCurrentPath();
         void RedStartAuto();
         void RedPeriodicAuto();
-        Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Arm *Arm, frc::XboxController *Xbox_Controller);
+        Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Arm *Arm);
 
 
         const char *GetCurrentPath();

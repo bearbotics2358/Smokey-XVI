@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-Autonomous::Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Arm *Arm, frc::XboxController *Xbox_Controller):
+Autonomous::Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Arm *Arm):
 a_Gyro(Gyro),
 a_SwerveDrive(SwerveDrive),
 a_OperatorXboxController(XBOX_CONTROLLER),
