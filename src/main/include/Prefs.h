@@ -3,17 +3,18 @@
 
 #include <units/angle.h>
 #include <units/length.h>
+#include <frc/SerialPort.h>
 
 // Declare constants such as CAN IDs here
 
 // uncomment to enable the new swerve
 //#define NEW_SWERVE
 
-#define GYRO_ID 32 // TODO: UPDATE TO CORRECT NUMBER
-#define ARM_PUSH_SOLENOID_MODULE 25 // Need to update to correct ID
-#define ARM_PULL_SOLENOID_MODULE 26 // Need to update to correct ID
-#define ARM_OPEN_SOLENOID_MODULE 27
-#define ARM_CLOSE_SOLENOID_MODULE 28
+#define GYRO_ID 0 // TODO: UPDATE TO CORRECT NUMBER
+#define ARM_PUSH_SOLENOID_MODULE 31
+#define ARM_PULL_SOLENOID_MODULE 32
+#define ARM_OPEN_SOLENOID_MODULE 33
+#define ARM_CLOSE_SOLENOID_MODULE 34
 #define ARM_CARRIAGE_MOTOR 29
 #define ARM_CLAW_MOTOR 30
 #define ARM_CARRIAGE_CANCODER 31
@@ -183,3 +184,18 @@ constexpr units::angle::radian_t TARGET_PITCH = units::angle::radian_t(0.0);
 // mdns name of camera
 #define SHOOTER_CAMERA_NAME "photonvision"
 #define BALL_CAMERA_NAME "temp"
+
+/* ============= Arduino ============= */
+
+#define BAUD_RATE_TOF 115200
+#define USB_PORT_TOF frc::SerialPort::kUSB1
+#define DATA_BITS_TOF 8
+#define PARITY_TOF frc::SerialPort::kParity_None
+#define STOP_BITS_TOF frc::SerialPort::kStopBits_One
+
+#define BAUD_RATE_ARDUINO 9600
+#define USB_PORT_ARDUINO frc::SerialPort::kUSB2
+#define DATA_BITS_ARDUINO 8
+#define PARITY_ARDUINO frc::SerialPort::kParity_None
+#define STOP_BITS_ARDUINO frc::SerialPort::kStopBits_One
+

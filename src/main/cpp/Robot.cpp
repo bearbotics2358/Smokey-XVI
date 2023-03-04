@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <frc/interfaces/Gyro.h>
 #include "Arm.h"
+#include <frc/XboxController.h>
+
 
 //TODO: FIX LINES 68, 152-164, AND 241-261
 
@@ -27,7 +29,8 @@ a_SwerveDrive(a_FLModule, a_FRModule, a_BLModule, a_BRModule, a_Gyro),
 a_Autonomous(&a_Gyro, &a_SwerveDrive, &a_Arm),
 a_DriverXboxController(JOYSTICK_PORT),
 a_OperatorXboxController(XBOX_CONTROLLER),
-a_CompressorController()
+a_CompressorController(),
+a_TOF()
 // NEEDED A PORT, THIS IS PROBABLY WRONG, PLEASE FIX IT LATER
 //  handler("169.254.179.144", "1185", "data"),
 //  handler("raspberrypi.local", 1883, "PI/CV/SHOOT/DATA"),
@@ -77,9 +80,6 @@ void Robot::RobotPeriodic() {
         a_BRModule.steerToAng(150);
         a_BLModule.steerToAng(150);
     }
-
-
-
     
     //printf("beam: %f/n", bstate);
     /*
@@ -98,6 +98,27 @@ void Robot::RobotPeriodic() {
     */
 }
 
+        
+        /*
+        if (a_Xbox->GetRawButtonPressed(OperatorButton::Y)) {
+            if (autoPathMaster == BlueDropAndGoLeft) {
+                autoPathMaster = BlueChargeStationRight;
+            } else {
+                autoPathMaster = (AutoType) (autoPathMaster - 1);
+            }
+        }
+        if (a_Xbox->GetRawButtonPressed(OperatorButton::A)) {
+            if (autoPathMaster == BlueChargeStationRight) {
+                autoPathMaster = BlueDropAndGoLeft;
+            } else {
+                autoPathMaster = (AutoType) (autoPathMaster + 1);
+            }
+        }
+        */
+    
+
+
+
 void Robot::DisabledInit() {
     a_doEnabledInit = true;
     a_SwerveDrive.resetDrive();
@@ -105,7 +126,7 @@ void Robot::DisabledInit() {
 
 void Robot::DisabledPeriodic() {
     a_Autonomous.DecidePath();
-   // frc::SmartDashboard::PutString("Selected Autonomous", a_Autonomous.GetCurrentPath());
+    frc::SmartDashboard::PutString("Selected Autonomous", a_Autonomous.GetCurrentPath());
 }
 
 void Robot::EnabledInit() {
@@ -124,13 +145,12 @@ void Robot::AutonomousInit() {
 
     a_SwerveDrive.unsetHoldAngle();
     a_Gyro.Zero();
-   // a_Autonomous.StartAuto();
+    a_Autonomous.StartAuto();
 }
 
 void Robot::AutonomousPeriodic() {
     EnabledPeriodic();
-    a_Autonomous.DecidePath();
-  //  a_Autonomous.PeriodicAuto();
+    a_Autonomous.PeriodicAuto();
 }
 
 void Robot::TeleopInit() {
@@ -139,9 +159,9 @@ void Robot::TeleopInit() {
         a_doEnabledInit = false;
     }
 
-    pChange = 0;
-    iChange = 0;
-    dChange = 0;
+    // pChange = 0;
+    // iChange = 0;
+    // dChange = 0;
 
 }
 
@@ -174,6 +194,12 @@ void Robot::TeleopPeriodic() {
     // frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Arm Controls =-=-=-=-=-=-=-=-=-=-= */
+
+    if (a_TOF.GetTargetRangeIndicator() == TARGET_IN_RANGE) {
+
+    } else {
+
+    }
 
     if(a_OperatorXboxController.GetYButton()) {
         a_Arm.ClawMotorUp();
