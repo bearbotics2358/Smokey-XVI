@@ -15,11 +15,17 @@
 
 enum AutoType {
     BlueDropAndGoLeft = 0,
-    BCSL = 1,
-    BDGM = 2,
-    BCSM = 3,
-    BDGR = 4,
-    BCSR = 5,
+    BlueChargeStationLeft = 1,
+    BlueDropGoMiddle = 2,
+    BlueChargeStationMiddle = 3,
+    BlueDropGoRight = 4,
+    BlueChargeStationRight = 5,
+    RedDropAndGoLeft = 6,
+    RedChargeStationLeft = 7,
+    RedDropGoMiddle = 8,
+    RedChargeStationMiddle = 9,
+    RedDropGoRight = 10,
+    RedChargeStationRight = 11,
 };
 enum AutoState0 { // Encoders
     kBlueAutoIdle0 = 0,
@@ -138,9 +144,17 @@ enum AutoState6 {
 
 class Autonomous {
     public:
-        Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Arm *Arm);
-
+        
+        const char *BlueGetCurrentPath();
+        void BlueStartAuto();
+        void BluePeriodicAuto();
         void DecidePath();
+        const char *RedGetCurrentPath();
+        void RedStartAuto();
+        void RedPeriodicAuto();
+        Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Arm *Arm, frc::XboxController *Xbox_Controller);
+
+
         const char *GetCurrentPath();
 
         void StartAuto();
@@ -202,7 +216,7 @@ class Autonomous {
         Gyro *a_Gyro;
         Arm *a_Arm;
         SwerveDrive *a_SwerveDrive;
-        frc::XboxController *a_Xbox;
+        frc::XboxController a_OperatorXboxController;
         
 
         AutoState0 a_AutoState0;

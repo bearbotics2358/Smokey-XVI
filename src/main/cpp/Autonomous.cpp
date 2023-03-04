@@ -5,118 +5,182 @@
 #include <math.h>
 
 
-Autonomous::Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Arm *Arm):
+Autonomous::Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Arm *Arm, frc::XboxController *Xbox_Controller):
 a_Gyro(Gyro),
 a_SwerveDrive(SwerveDrive),
+a_OperatorXboxController(XBOX_CONTROLLER),
 a_Arm(Arm),
 a_AutoState0(kBlueAutoIdle0),
 a_AutoState1(kBlueAutoIdle1),
-a_AutoState2(kBlueAutoIdle2){
-    autoPathMaster = BlueDropAndGoLeft;
-    
-}
+a_AutoState2(kBlueAutoIdle2){}
+
+//-------------------------------------Auto Stuff---------------------------------------------//
 void Autonomous::DecidePath() {
-    if(autoPathMaster == BlueDropAndGoLeft){
-        BDGL();
+    if (a_OperatorXboxController.GetLeftStickButtonPressed()) {
+        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::Y)) {
+            autoPathMaster = BlueDropAndGoLeft;
+        }
+        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::X)) {
+            autoPathMaster = BlueChargeStationLeft;
+        }
+        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::B)) {
+            autoPathMaster = BlueDropGoMiddle;
+        }
+        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::A)) {
+            autoPathMaster = BlueChargeStationMiddle;
+        }
+        if (a_OperatorXboxController.GetLeftBumperPressed()) {
+            autoPathMaster = BlueDropGoRight;
+        }
+        if (a_OperatorXboxController.GetRightBumperPressed()) {
+            autoPathMaster = BlueChargeStationRight;
+        }      
+    }
+    if (a_OperatorXboxController.GetRightStickButtonPressed()) {
+        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::Y)) {
+            autoPathMaster = RedDropAndGoLeft;
+        }
+        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::X)) {
+            autoPathMaster = RedChargeStationLeft;
+        }
+        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::B)) {
+            autoPathMaster = RedDropGoMiddle;
+        }
+        if (a_OperatorXboxController.GetRawButtonPressed(OperatorButton::A)) {
+            autoPathMaster = RedChargeStationMiddle;
+        }
+        if (a_OperatorXboxController.GetLeftBumperPressed()) {
+            autoPathMaster = RedDropGoRight;
+        }
+        if (a_OperatorXboxController.GetRightBumperPressed()) {
+            autoPathMaster = RedChargeStationRight;
+        }      
     }
 }
 
-/*
-void Autonomous::DecidePath() {
-    if (a_Xbox->GetRawAxis(OperatorJoystick::LeftTrigger) > 0.5) {
-        if (a_Xbox->GetRawButtonPressed(OperatorButton::Y)) {
-            if (autoPathMaster == k0Ball) {
-                autoPathMaster = k5BallVision;
-            } else {
-                autoPathMaster = (AutoType) (autoPathMaster - 1);
-            }
-        }
-        if (a_Xbox->GetRawButtonPressed(OperatorButton::A)) {
-            if (autoPathMaster == k5BallVision) {
-                autoPathMaster = k0Ball;
-            } else {
-                autoPathMaster = (AutoType) (autoPathMaster + 1);
-            }
-        }
-    }
-}
-*/
-/*
+
 const char *Autonomous::GetCurrentPath() {
     switch (autoPathMaster) {
-        case k0Ball:
-            return "0 ball auto chosen";
-        case kLeft1Ball:
-            return "left 1 ball auto chosen";
-        case kMiddle1Ball:
-            return "middle 1 ball auto chosen";
-        case kRight1Ball:
-            return "right 1 ball auto chosen";
-        case k2Ball:
-            return "2 ball auto chosen";
-        case k3Ball:
-            return "3 ball auto chosen";
-        case k5Ball:
-            return "5 ball auto chosen";
-        case k5BallVision:
-            return "5 ball vision auto chosen";
+        case BlueDropAndGoLeft:
+            return "drop and go left vroom vroom";
+        case BlueChargeStationLeft:
+            return "left charge station";
+        case BlueDropGoMiddle:
+            return "drop and go middle";
+        case BlueChargeStationMiddle:
+            return "charge station from";
+        case BlueDropGoRight:
+            return "drop and go right";
+        case BlueChargeStationRight:
+            return "charge station from right";
+            case RedDropAndGoLeft:
+            return "red drop and go left";
+        case RedChargeStationLeft:
+            return "red left charge station";
+        case RedDropGoMiddle:
+            return "drop and go middle";
+        case RedChargeStationMiddle:
+            return "charge station from";
+        case RedDropGoRight:
+            return "drop and go right";
+        case RedChargeStationRight:
+            return "charge station from right";
         default:
-            return "no autonous selected, this shouldn't happen";
+            return "no autonomous selected, this shouldn't happen";
     }
 }
-*/
-/*
+
+
 void Autonomous::StartAuto() {
     switch (autoPathMaster) {
-        case k0Ball:
-            Start0Ball();
+        case BlueDropAndGoLeft:
+            BDGL();
             break;
-        case kLeft1Ball:
-            StartLeft1Ball();
+        case BlueChargeStationLeft:
+            BCSL();
             break;
-        case kMiddle1Ball:
-            StartMiddle1Ball();
+        case BlueDropGoMiddle:
+            BDGM();
             break;
-        case kRight1Ball:
-            StartRight1Ball();
+        case BlueChargeStationMiddle:
+            BCSM();
             break;
-        case k2Ball:
-            Start2Ball();
+        case BlueDropGoRight:
+            BDGR();
             break;
-        case k3Ball:
-        case k5Ball:
-        case k5BallVision:
-           
+        case BlueChargeStationRight:
+            BCSR();
+            break;
+            case RedDropAndGoLeft:
+            RDGL();
+            break;
+        case RedChargeStationLeft:
+            RCSL();
+            break;
+        case RedDropGoMiddle:
+            RDGM();
+            break;
+        case RedChargeStationMiddle:
+            RCSM();
+            break;
+        case RedDropGoRight:
+            RDGR();
+            break;
+        case RedChargeStationRight:
+            RCSR();
+            break;
+        default:
+            //"no auto selector";
             break;
     }
 }
-*/
-/*
+
+
 void Autonomous::PeriodicAuto() {
     switch (autoPathMaster) {
-        case k0Ball:
-            Periodic0Ball();
+        case BlueDropAndGoLeft:
+            PeriodicBDGL();
             break;
-        case kLeft1Ball:
-        case kMiddle1Ball:
-        case kRight1Ball:
-            Periodic1Ball();
+        case BlueChargeStationLeft:
+            PeriodicBCSL();
             break;
-        case k2Ball:
-            Periodic2Ball();
+        case BlueDropGoMiddle:
+            PeriodicBDGM();
             break;
-        case k3Ball:
-            Periodic3Ball();
+        case BlueChargeStationMiddle:
+            PeriodicBCSM();
             break;
-        case k5Ball:
-            Periodic5Ball();
+        case BlueDropGoRight:
+            PeriodicBDGR();
             break;
-        case k5BallVision:
-            Periodic5BallVision();
+        case BlueChargeStationRight:
+            PeriodicBCSR();
+            break;
+            case RedDropAndGoLeft:
+            PeriodicRDGL();
+            break;
+        case RedChargeStationLeft:
+            PeriodicRCSL();
+            break;
+        case RedDropGoMiddle:
+            PeriodicRDGM();
+            break;
+        case RedChargeStationMiddle:
+            PeriodicRCSM();
+            break;
+        case RedDropGoRight:
+            PeriodicRDGR();
+            break;
+        case RedChargeStationRight:
+            PeriodicRCSR();
+            break;
+        default:
             break;
     }
 }
-*/
+
+
+
 
 // ----------------------------------AUTONOMOUS ROUTINES---------------------------------------- //
 
