@@ -1,4 +1,5 @@
 // TOF protocol version 1.0
+#pragma once
 
 enum TOF_RIO_msgs_enum {
   RESERVED = 0,
