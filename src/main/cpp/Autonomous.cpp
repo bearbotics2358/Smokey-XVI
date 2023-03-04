@@ -183,7 +183,92 @@ void Autonomous::PeriodicAuto() {
 }
 */
 void Autonomous::StartAuto(const std::string autoMode) {
+    if(autoMode == BlueDropAndGoLeft){
+        BDGL();
+    }
+    else if (autoMode == BlueChargeStationLeft){
+        BCSL();
+    }
+    else if (autoMode == BlueDropAndGoMiddle){
+        BDGM();
+    }
+    else if (autoMode == BlueChargeStationMiddle){
+        BCSM();
+    }
+    else if (autoMode == BlueDropAndGoRight){
+        BDGR();
+    }
+    else if (autoMode == BlueChargeStationRight){
+        BCSR();
+    }
+    else if (autoMode == RedDropAndGoLeft){
+        RDGL();
+    }
+    else if (autoMode ==  RedChargeStationLeft){
+        RCSL();
+    }
+    else if (autoMode == RedDropAndGoMiddle){
+        RDGM();
+    }
+    else if (autoMode == RedChargeStationMiddle){
+        RCSM();
+    }
+    else if (autoMode == RedDropAndGoRight ){
+        RDGR();
+    }
+    else if (autoMode == RedChargeStationRight){
+        RCSR();
+    }
+    else if (autoMode == RobotDoNothing){
+        DoNothing();
+    }
+
     a_AutoSelected = autoMode; 
+    
+}
+void Autonomous::PeriodicAuto(const std::string periodicAutoMode) {
+    if(periodicAutoMode == BlueDropAndGoLeft){
+        PeriodicBDGL();
+    }
+    else if (periodicAutoMode == BlueChargeStationLeft){
+        PeriodicBCSL();
+    }
+    else if (periodicAutoMode == BlueDropAndGoMiddle){
+        PeriodicBDGM();
+    }
+    else if (periodicAutoMode == BlueChargeStationMiddle){
+        PeriodicBCSM();
+    }
+    else if (periodicAutoMode == BlueDropAndGoRight){
+        PeriodicBDGR();
+    }
+    else if (periodicAutoMode == BlueChargeStationRight){
+        PeriodicBCSR();
+    }
+    else if (periodicAutoMode == RedDropAndGoLeft){
+        PeriodicRDGL();
+    }
+    else if (periodicAutoMode == RedChargeStationLeft){
+        PeriodicRCSL();
+    }
+    else if (periodicAutoMode == RedDropAndGoMiddle){
+        PeriodicRDGM();
+    }
+    else if (periodicAutoMode == RedChargeStationMiddle){
+        PeriodicRCSM();
+    }
+    else if (periodicAutoMode == RedDropAndGoRight){
+        PeriodicRDGR();
+    }
+    else if (periodicAutoMode == RedChargeStationRight){
+        PeriodicRCSR();
+    }
+    else if (periodicAutoMode == RobotDoNothing){
+        PeriodicDoNothing();
+    }
+
+    a_PeriodicAutoSelected = periodicAutoMode; 
+    
 }
 
 

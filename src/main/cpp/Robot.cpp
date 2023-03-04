@@ -161,10 +161,14 @@ void Robot::AutonomousInit() {
     a_SwerveDrive.unsetHoldAngle();
     a_Gyro.Zero();
     std::string SelectedRoute = m_AutoModeSelector.GetSelected(); //assigns value frm smart dashboard to a string variable
+  
     a_Autonomous.StartAuto(SelectedRoute); //starts auto from selected route
+    
 }
 
 void Robot::AutonomousPeriodic() {
+    std::string SelectedRoute = m_AutoModeSelector.GetSelected(); //assigns value frm smart dashboard to a string variable
+    a_Autonomous.PeriodicAuto(SelectedRoute);
     EnabledPeriodic();
 }
 
