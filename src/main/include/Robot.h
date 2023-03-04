@@ -42,12 +42,14 @@ class Robot : public frc::TimedRobot {
 
         void AutonomousInit();
         void AutonomousPeriodic();
-
+        void DecidePath();
         void TeleopInit();
         void TeleopPeriodic();
 
         void TestInit();
         void TestPeriodic();
+
+        
 
     private:
         // keeps track of when to call enabled init
@@ -69,6 +71,7 @@ class Robot : public frc::TimedRobot {
 
         frc::XboxController a_DriverXboxController; // 3D flightstick (Logitech Attack 3?)
         frc::XboxController a_OperatorXboxController;
+        frc::XboxController a_Xbox;
 
         CompressorController a_CompressorController;
         TOF a_TOF;

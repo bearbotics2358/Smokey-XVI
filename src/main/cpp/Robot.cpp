@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <frc/interfaces/Gyro.h>
 #include "Arm.h"
+#include <frc/XboxController.h>
+
 
 //TODO: FIX LINES 68, 152-164, AND 241-261
 
@@ -24,7 +26,7 @@ a_FRModule(misc::GetFRDrive(), misc::GetFRSteer(), AbsoluteEncoder(FR_SWERVE_ABS
 a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), AbsoluteEncoder(BL_SWERVE_ABS_ENC_PORT, BL_SWERVE_ABS_ENC_MIN_VOLTS, BL_SWERVE_ABS_ENC_MAX_VOLTS, BL_SWERVE_ABS_ENC_OFFSET / 360), misc::GetBLCANCoder()),
 a_BRModule(misc::GetBRDrive(), misc::GetBRSteer(), AbsoluteEncoder(BR_SWERVE_ABS_ENC_PORT, BR_SWERVE_ABS_ENC_MIN_VOLTS, BR_SWERVE_ABS_ENC_MAX_VOLTS, BR_SWERVE_ABS_ENC_OFFSET / 360), misc::GetBRCANCoder()),
 a_SwerveDrive(a_FLModule, a_FRModule, a_BLModule, a_BRModule, a_Gyro),
-a_Autonomous(&a_Gyro, &a_SwerveDrive, &a_Arm),
+a_Autonomous(&a_Gyro, &a_SwerveDrive, &a_Arm, &a_Xbox),
 a_DriverXboxController(JOYSTICK_PORT),
 a_OperatorXboxController(XBOX_CONTROLLER),
 a_CompressorController(),
@@ -96,6 +98,27 @@ void Robot::RobotPeriodic() {
     */
 }
 
+        
+        /*
+        if (a_Xbox->GetRawButtonPressed(OperatorButton::Y)) {
+            if (autoPathMaster == BlueDropAndGoLeft) {
+                autoPathMaster = BlueChargeStationRight;
+            } else {
+                autoPathMaster = (AutoType) (autoPathMaster - 1);
+            }
+        }
+        if (a_Xbox->GetRawButtonPressed(OperatorButton::A)) {
+            if (autoPathMaster == BlueChargeStationRight) {
+                autoPathMaster = BlueDropAndGoLeft;
+            } else {
+                autoPathMaster = (AutoType) (autoPathMaster + 1);
+            }
+        }
+        */
+    
+
+
+
 void Robot::DisabledInit() {
     a_doEnabledInit = true;
     a_SwerveDrive.resetDrive();
@@ -103,7 +126,7 @@ void Robot::DisabledInit() {
 
 void Robot::DisabledPeriodic() {
     a_Autonomous.DecidePath();
-   // frc::SmartDashboard::PutString("Selected Autonomous", a_Autonomous.GetCurrentPath());
+    frc::SmartDashboard::PutString("Selected Autonomous", a_Autonomous.GetCurrentPath());
 }
 
 void Robot::EnabledInit() {
@@ -122,13 +145,12 @@ void Robot::AutonomousInit() {
 
     a_SwerveDrive.unsetHoldAngle();
     a_Gyro.Zero();
-   // a_Autonomous.StartAuto();
+    a_Autonomous.StartAuto();
 }
 
 void Robot::AutonomousPeriodic() {
     EnabledPeriodic();
-    a_Autonomous.DecidePath();
-  //  a_Autonomous.PeriodicAuto();
+    a_Autonomous.PeriodicAuto();
 }
 
 void Robot::TeleopInit() {
@@ -176,7 +198,7 @@ void Robot::TeleopPeriodic() {
     if (a_TOF.GetTargetRangeIndicator() == TARGET_IN_RANGE) {
 
     } else {
-        
+
     }
 
     if(a_OperatorXboxController.GetYButton()) {
