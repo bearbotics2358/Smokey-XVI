@@ -7,14 +7,14 @@ a_armSolenoid(frc::PneumaticsModuleType::REVPH, pushSolenoidModule, pullSolenoid
 a_clawSolenoid(frc::PneumaticsModuleType::REVPH, openSolenoidModule, closeSolenoidModule),
 a_carriageMotor(carriageID, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
 a_clawMotor(clawID, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
-a_CANCoder(carriageCANCoderID) {
+a_CANCoder(carriageCANCoderID),
+a_carriageMotorEncoder(a_carriageMotor.GetEncoder()) {
     _CANCoderID = carriageCANCoderID - 17;
 }
 
 void Arm::updateDashboard(){
     frc::SmartDashboard::PutNumber("arm absolute encoder: ", getAngle());
-    frc::SmartDashboard::PutNumber("claw motor position: ", a_clawMotor.GetEncoder().GetPosition());
-    frc::SmartDashboard::PutNumber("shuttle motor position: ", a_carriageMotor.GetEncoder().GetPosition());
+    frc::SmartDashboard::PutNumber("shuttle motor position: ", a_carriageMotorEncoder.GetPosition());
     if (a_armSolenoid.Get() == frc::DoubleSolenoid::Value::kReverse){
         frc::SmartDashboard::PutString("arm solenoid position: ", "reverse");
     } else if (a_armSolenoid.Get() == frc::DoubleSolenoid::Value::kForward){

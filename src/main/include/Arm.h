@@ -26,6 +26,7 @@ class Arm {
         rev::CANSparkMax a_carriageMotor;
         rev::CANSparkMax a_clawMotor;
         CANCoder a_CANCoder;
+        rev::SparkMaxRelativeEncoder a_carriageMotorEncoder;
         
         int _CANCoderID;
 };

@@ -35,7 +35,7 @@ void Claw::closeClaw(){
     a_Claw.Set(frc::DoubleSolenoid::Value::kForward);
 }
 
-/*bool Claw::transformClaw(double angle, bool extend, double shuttle) {
+/*bool Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle) {
 
     double armMotorSpeed = 0.2;
     double shuttleMotorSpeed = 0.2;
@@ -47,17 +47,18 @@ void Claw::closeClaw(){
 
     int stage = 0;
     switch(stage){
-        case 0: // rotate (15 - 165 degrees)
-        if (abs(armEncoder.GetPosition() - angle) < 3) {
+        case 0: // rotate just enough to not damage the robot (30 - 120 degrees) 
+        // these are placeholder angles that should be changed once we can test the arm's cancoder
+        if (abs(armEncoder.GetPosition() - desiredAngle) < 3) {
             stage = 1;
-        } else if (angle < armEncoder.GetPosition()){
+        } else if (desiredAngle < armEncoder.GetPosition()){
             armMotor.Set(-armMotorSpeed);
-            if (armEncoder.GetPosition() <= 15) {
+            if (armEncoder.GetPosition() <= 30) {
                 stage = 1;
             }
-        } else if (angle > armEncoder.GetPosition()){
+        } else if (desiredAngle > armEncoder.GetPosition()){
             armMotor.Set(armMotorSpeed);
-            if (armEncoder.GetPosition() >= 165) {
+            if (armEncoder.GetPosition() >= 120) {
                 stage = 1;
             }
         }
@@ -65,17 +66,17 @@ void Claw::closeClaw(){
 
         case 1: // shuttle movement
         armMotor.StopMotor();
-        if (shuttle == 0){
+        if (desiredShuttle == 0){
             zeroShuttle();
             if (zeroShuttle() == true){
                 stage = 2;
             }
         } else {
-            if (abs(shuttleEncoder.GetPosition() - shuttle) < 3){
+            if (abs(shuttleEncoder.GetPosition() - desiredShuttle) < 3){
             stage = 2;
-            } else if (shuttleEncoder.GetPosition() < shuttle){
+            } else if (shuttleEncoder.GetPosition() < desiredShuttle){
                 shuttleMotor.Set(shuttleMotorSpeed);
-            } else if (shuttleEncoder.GetPosition() > shuttle){
+            } else if (shuttleEncoder.GetPosition() > desiredShuttle){
                 shuttleMotor.Set(shuttleMotorSpeed);
             }
         }
@@ -83,16 +84,16 @@ void Claw::closeClaw(){
         
         case 2: // finish rotation
         shuttleMotor.StopMotor();
-        if (abs(armEncoder.GetPosition() - angle) < 3) {
+        if (abs(armEncoder.GetPosition() - desiredAngle) < 3) {
             stage = 1;
-        } else if (angle < armEncoder.GetPosition()){
+        } else if (desiredAngle < armEncoder.GetPosition()){
             armMotor.Set(-armMotorSpeed);
-            if (armEncoder.GetPosition() <= angle) {
+            if (armEncoder.GetPosition() <= desiredAngle) {
                 stage = 3;
             }
-        } else if (angle > armEncoder.GetPosition()){
+        } else if (desiredAngle > armEncoder.GetPosition()){
             armMotor.Set(armMotorSpeed);
-            if (armEncoder.GetPosition() >= angle) {
+            if (armEncoder.GetPosition() >= desiredAngle) {
                 stage = 3;
             }
         }
