@@ -320,4 +320,6 @@ void Robot::SetTargetType(target_type_enum target) {
     }
 }
 
+#ifndef RUNNING_FRC_TESTS
 int main() { return frc::StartRobot<Robot>(); } // Initiate main loop
+#endif
