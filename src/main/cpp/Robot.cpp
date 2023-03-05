@@ -61,7 +61,23 @@ void Robot::RobotInit() {
     a_Gyro.Init();
     a_Gyro.Zero();
 
+    m_AutoModeSelector.SetDefaultOption(RobotDoNothing, RobotDoNothing);
+    m_AutoModeSelector.AddOption(BlueDropAndGoLeft, BlueDropAndGoLeft);
+    m_AutoModeSelector.AddOption(BlueChargeStationLeft, BlueChargeStationLeft);
+    m_AutoModeSelector.AddOption(BlueDropAndGoMiddle, BlueDropAndGoMiddle);
+    m_AutoModeSelector.AddOption(BlueChargeStationMiddle, BlueChargeStationMiddle);
+    m_AutoModeSelector.AddOption(BlueDropAndGoRight, BlueDropAndGoRight);
+    m_AutoModeSelector.AddOption(BlueChargeStationRight, BlueChargeStationRight);
+    m_AutoModeSelector.AddOption(RedDropAndGoLeft, RedDropAndGoLeft);
+    m_AutoModeSelector.AddOption(RedChargeStationLeft, RedChargeStationLeft);
+    m_AutoModeSelector.AddOption(RedDropAndGoMiddle, RedDropAndGoMiddle);
+    m_AutoModeSelector.AddOption(RedChargeStationMiddle, RedChargeStationMiddle);
+    m_AutoModeSelector.AddOption(RedDropAndGoRight, RedDropAndGoRight);
+    m_AutoModeSelector.AddOption(RedChargeStationRight, RedChargeStationRight);
+    frc::SmartDashboard::PutData("Auto Modes", &m_AutoModeSelector); 
+
     a_LED.Init();
+
 }
 
 void Robot::RobotPeriodic() {
@@ -121,6 +137,7 @@ void Robot::RobotPeriodic() {
         }
         */
     
+    
 
 
 
@@ -128,19 +145,13 @@ void Robot::DisabledInit() {
     a_doEnabledInit = true;
     a_SwerveDrive.resetDrive();
 }
-
-void Robot::DisabledPeriodic() {
-    a_Autonomous.DecidePath();
-    frc::SmartDashboard::PutString("Selected Autonomous", a_Autonomous.GetCurrentPath());
-}
-
-void Robot::EnabledInit() {
-
-}
+void Robot::EnabledInit(){}
 
 void Robot::EnabledPeriodic() {
     a_CompressorController.update();
 }
+void Robot::DisabledPeriodic(){}
+
 
 void Robot::AutonomousInit() {
     if (a_doEnabledInit) {
@@ -150,12 +161,16 @@ void Robot::AutonomousInit() {
 
     a_SwerveDrive.unsetHoldAngle();
     a_Gyro.Zero();
-    a_Autonomous.StartAuto();
+    std::string SelectedRoute = m_AutoModeSelector.GetSelected(); //assigns value frm smart dashboard to a string variable
+  
+    a_Autonomous.StartAuto(SelectedRoute); //starts auto from selected route
+    
 }
 
 void Robot::AutonomousPeriodic() {
+    std::string SelectedRoute = m_AutoModeSelector.GetSelected(); //assigns value frm smart dashboard to a string variable
+    a_Autonomous.PeriodicAuto(SelectedRoute);
     EnabledPeriodic();
-    a_Autonomous.PeriodicAuto();
 }
 
 void Robot::TeleopInit() {

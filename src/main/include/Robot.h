@@ -17,7 +17,11 @@
 #include <photonlib/PhotonUtils.h>
 #include "BeamBreak.h"
 #include "TOF.h"
+
+#include <frc/smartdashboard/SendableChooser.h>
+
 #include "LED.h"
+
 
 
 enum class DriveBackState {
@@ -56,6 +60,7 @@ class Robot : public frc::TimedRobot {
     private:
         // keeps track of when to call enabled init
         bool a_doEnabledInit { true };
+        frc::SendableChooser<std::string> m_AutoModeSelector;
 
         Gyro a_Gyro;
         Arm a_Arm;
@@ -65,6 +70,7 @@ class Robot : public frc::TimedRobot {
         SwerveModule a_BLModule;
         SwerveModule a_BRModule;
         SwerveDrive a_SwerveDrive;
+       
 
         // speed multiplier for driver controls for the swerve
         bool a_slowSpeed { false };
