@@ -579,8 +579,6 @@ a_AutoState12 = nextState;
 
 }
 
-
-
 void Autonomous::StopSwerves() {
     a_SwerveDrive->stop();
 }
@@ -643,6 +641,8 @@ bool Autonomous::Balance(float direction) {
         return false;
     }
     if ((currentTime - startTime > 0.5) && (abs(tiltAngle) < 1) && startedClimb){
+        a_SwerveDrive->turnToAngle(0);
+        StopSwerves();
         return true;
     }
     else{

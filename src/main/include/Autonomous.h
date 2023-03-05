@@ -145,12 +145,6 @@ enum AutoState6 {
         kIdle
     };
 
-    enum AutoState13{
-        kStartTimer13,
-        kHold13,
-        kIdle13
-    };
-
 
 class Autonomous {
     public:
@@ -212,9 +206,6 @@ class Autonomous {
     void DoNothing();
     void PeriodicDoNothing();
 
-    void TestTimer();
-    void PeriodicTestTimer();
-
     // ------------------Sub-Routines-------------------------//
 
     void StopSwerves(); // IDLE
@@ -249,8 +240,6 @@ private:
     AutoState10 a_AutoState10;
     AutoState11 a_AutoState11;
     AutoState12 a_AutoState12;
-    AutoState13 a_AutoState13;
-
 
 
 
@@ -261,6 +250,7 @@ private:
 
     // used for waitForTime method
     double waitTimeStart{0.0};
+    double startingTime = -1.0;
 
     // TEMP
     double autoStartTime{0.0};
