@@ -84,6 +84,7 @@ void Robot::RobotPeriodic() {
     a_Gyro.Update();
     a_Arm.updateDashboard();
     a_LED.Update();
+    a_TOF.Update();
     //a_SwerveDrive.updatePosition();
 
 //testing code block for PID tuning
@@ -214,10 +215,9 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Arm Controls =-=-=-=-=-=-=-=-=-=-= */
 
-    a_TOF.Update();
-
-    if (a_TOF.GetTargetRangeIndicator() == TARGET_IN_RANGE) {
+    if (a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE && a_OperatorXboxController.GetRawButton(4)) {
         a_Arm.ClawClose();
+        //later: move claw up into scoring position but don't score/ let go
     } 
 
     if(a_OperatorXboxController.GetYButton()) {
@@ -322,10 +322,13 @@ void Robot::TeleopPeriodic() {
     /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
 
     if(a_OperatorXboxController.GetRawButton(1)) { //can change button later
-        a_LED.SetTargetType(CONE);
+        a_LED.SetTargetType(target_type_enum::CONE);
+        a_TOF.SetTargetType(target_type_enum::CONE);
     } 
     else if(a_OperatorXboxController.GetRawButton(2)) { //can change button later
-        a_LED.SetTargetType(CUBE);
+        a_LED.SetTargetType(target_type_enum::CUBE);
+        a_TOF.SetTargetType(target_type_enum::CUBE);
+
     }
 }
 
