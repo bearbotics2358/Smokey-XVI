@@ -54,7 +54,7 @@ class SwerveDrive // Class to handle the kinematics of Swerve Drive
     public:
         SwerveDrive(SwerveModule& flModule, SwerveModule& frModule, SwerveModule& blModule, SwerveModule& brModule, Gyro& gyro);
 
-        // TODO: change the signs of x, because the positive is left thing is wierd
+        // TODO: change the signs of x, because the positive is left thing is weird
         // TODO: use meters/second vector for crabUpdate and swerveUpdate, instead of x and y going from 0 to 1
         // for crab drive update and swerve drive update, +y is forward, -y is backward, x is left, and -x is right
         // crab drive is like swerve drive update, except it maintains a constant turn angle

@@ -102,45 +102,7 @@ void Robot::RobotPeriodic() {
         a_BRModule.steerToAng(150);
         a_BLModule.steerToAng(150);
     }
-    
-    //printf("beam: %f/n", bstate);
-    /*
-
-    frc::SmartDashboard::PutNumber("Distance Driven: ", a_SwerveDrive.getAvgDistance());
-    frc::SmartDashboard::PutNumber("Gyro Angle: ", a_Gyro.getAngle());
-    frc::SmartDashboard::PutNumber("Gyro Yaw: ", a_Gyro.getYaw());
-    frc::SmartDashboard::PutNumber("Gyro Compass: ", a_Gyro.getAbsoluteCompassHeading());
-    frc::SmartDashboard::PutNumber("Robot x Position", a_SwerveDrive.getPosition().x());
-    frc::SmartDashboard::PutNumber("Robot y Position", a_SwerveDrive.getPosition().y());
-
-    frc::SmartDashboard::PutBoolean("Slow speed enabled", a_slowSpeed);
-
-    frc::SmartDashboard::PutNumber("Tank Pressure", a_CompressorController.getTankPressure());
-
-    */
 }
-
-        
-        /*
-        if (a_Xbox->GetRawButtonPressed(OperatorButton::Y)) {
-            if (autoPathMaster == BlueDropAndGoLeft) {
-                autoPathMaster = BlueChargeStationRight;
-            } else {
-                autoPathMaster = (AutoType) (autoPathMaster - 1);
-            }
-        }
-        if (a_Xbox->GetRawButtonPressed(OperatorButton::A)) {
-            if (autoPathMaster == BlueChargeStationRight) {
-                autoPathMaster = BlueDropAndGoLeft;
-            } else {
-                autoPathMaster = (AutoType) (autoPathMaster + 1);
-            }
-        }
-        */
-    
-    
-
-
 
 void Robot::DisabledInit() {
     a_doEnabledInit = true;
@@ -193,30 +155,6 @@ void Robot::TeleopInit() {
 // main loop
 void Robot::TeleopPeriodic() {
     EnabledPeriodic();
-
-    // if (joystickOne.GetRawButtonReleased(DriverButton::Button12)) {
-    //     pChange += 0.1;
-    // } else if (joystickOne.GetRawButtonReleased(DriverButton::Button11)) {
-    //     pChange -= 0.1;
-    // }
-    // if (joystickOne.GetRawButtonReleased(DriverButton::Button8)) {
-    //     iChange += 0.1;
-    // } else if (joystickOne.GetRawButtonReleased(DriverButton::Button7)) {
-    //     iChange -= 0.1;
-    // }
-    // if (joystickOne.GetRawButtonReleased(DriverButton::Button10)) {
-    //     dChange += 0.01;
-    // } else if (joystickOne.GetRawButtonReleased(DriverButton::Button9)) {
-    //     dChange -= 0.01;
-    // }
-    
-    // a_FRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    // a_FLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    // a_BRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    // a_BLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange); //P 0.6, I 1.0 D 0.06
-    // frc::SmartDashboard::PutNumber("P value", 0.6 + pChange);
-    // frc::SmartDashboard::PutNumber("I value", 1.0 + iChange);
-    // frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Arm Controls =-=-=-=-=-=-=-=-=-=-= */
 
