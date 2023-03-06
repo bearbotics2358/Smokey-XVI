@@ -78,6 +78,7 @@ void Robot::RobotInit() {
 
     //a_LED.Init();
 
+    SetTargetType(target_type_enum::CONE);
 }
 
 void Robot::RobotPeriodic() {
@@ -153,6 +154,8 @@ void Robot::DisabledPeriodic(){}
 
 
 void Robot::AutonomousInit() {
+    SetTargetType(target_type_enum::CONE);
+
     if (a_doEnabledInit) {
         EnabledInit();
         a_doEnabledInit = false;
@@ -173,6 +176,8 @@ void Robot::AutonomousPeriodic() {
 }
 
 void Robot::TeleopInit() {
+    SetTargetType(target_type_enum::CONE);
+
     if (a_doEnabledInit) {
         EnabledInit();
         a_doEnabledInit = false;
@@ -324,10 +329,10 @@ void Robot::TeleopPeriodic() {
     /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
 
     // if(a_OperatorXboxController.GetRawButton(1)) { //can change button later
-    //     a_LED.SetTargetType(CONE);
+    //     SetTargetType(target_type_enum::CONE);
     // } 
     // else if(a_OperatorXboxController.GetRawButton(2)) { //can change button later
-    //     a_LED.SetTargetType(CUBE);
+    //     SetTargetType(target_type_enum::CUBE);
     // }
 }
 
@@ -339,6 +344,22 @@ void Robot::TestInit() {
 
 void Robot::TestPeriodic() {
     TeleopPeriodic();
+}
+
+void Robot::SetTargetType(target_type_enum target) {
+    target_type = target;
+    if(target_type == target_type_enum::CONE) {
+        // Set target type to CONE
+        // a_LED.SetTargetType(target_type_enum::CONE);
+        // a_TOF.SetTargetType(target_type_enum::CONE);
+        // a_Arm.ClawConePressure();
+    } else if(target_type == target_type_enum::CUBE) {
+        // Set target type to CUBE
+        // a_LED.SetTargetType(target_type_enum::CUBE);
+        // a_TOF.SetTargetType(target_type_enum::CUBE);
+        // a_Arm.ClawCubePressure();
+
+    }
 }
 
 int main() { return frc::StartRobot<Robot>(); } // Initiate main loop
