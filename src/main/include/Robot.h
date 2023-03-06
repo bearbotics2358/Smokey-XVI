@@ -64,7 +64,7 @@ class Robot : public frc::TimedRobot {
         frc::SendableChooser<std::string> m_AutoModeSelector;
 
         Gyro a_Gyro;
-        Arm a_Arm;
+        Claw a_Claw;
 
         SwerveModule a_FLModule;
         SwerveModule a_FRModule;

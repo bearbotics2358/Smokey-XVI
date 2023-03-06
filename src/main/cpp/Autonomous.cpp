@@ -7,11 +7,11 @@
 #include <sys/time.h>
 
 //left if positive degrees right is negative
-Autonomous::Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Arm *Arm):
+Autonomous::Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Claw *Claw):
 a_Gyro(Gyro),
 a_SwerveDrive(SwerveDrive),
 a_OperatorXboxController(XBOX_CONTROLLER),
-a_Arm(Arm),
+a_Claw(Claw),
 
 
 a_AutoState0(kBlueAutoIdle0),
@@ -310,7 +310,7 @@ void Autonomous::PeriodicBDGL() {
             StopSwerves();
             break;
         case kBlueExtend0:
-            a_Arm->ArmPistonUp();
+            a_Claw->ArmPistonUp();
             if(gettime_d() > state_time + EXTEND_PISTON_TIME) {
                 // reset state time
                 state_time = gettime_d();
@@ -318,7 +318,7 @@ void Autonomous::PeriodicBDGL() {
             }
             break;
         case kBlueDrop0:
-            a_Arm->ClawOpen();
+            a_Claw->ClawOpen();
             if(gettime_d() > state_time + CLAW_PISTON_TIME) {
                 // reset state time
                 state_time = gettime_d();
@@ -326,7 +326,7 @@ void Autonomous::PeriodicBDGL() {
             }
             break;
         case kBlueRetract0:
-            a_Arm->ArmPistonDown();
+            a_Claw->ArmPistonDown();
             if(gettime_d() > state_time + EXTEND_PISTON_TIME) {
                 // reset state time
                 state_time = gettime_d();
@@ -355,16 +355,16 @@ void Autonomous::PeriodicBCSL() {
             StopSwerves();
             break;
         case kBlueExtend1:
-            a_Arm->ArmPistonUp();
+            a_Claw->ArmPistonUp();
             nextState = kBlueDrop1;
             break;
         case kBlueDrop1:
-             a_Arm->ClawOpen();
+             a_Claw->ClawOpen();
              nextState = kBlueRetract1;
             break;
 
         case kBlueRetract1:
-           a_Arm->ArmPistonDown();
+           a_Claw->ArmPistonDown();
            nextState = kBlueDriveAway1;
             break;
 
@@ -404,15 +404,15 @@ void Autonomous::PeriodicBDGM() {
             StopSwerves();
             break;
         case kBlueExtend2:
-            a_Arm->ArmPistonUp();
+            a_Claw->ArmPistonUp();
             nextState = kBlueDrop2;
             break;
         case kBlueDrop2:
-            a_Arm->ClawOpen();
+            a_Claw->ClawOpen();
             nextState = kBlueRetract2;
             break;
         case kBlueRetract2:
-            a_Arm->ArmPistonDown();
+            a_Claw->ArmPistonDown();
             nextState = kBlueDriveAway2;
             break;
 
@@ -440,15 +440,15 @@ void Autonomous::PeriodicBCSM() {
             StopSwerves();
             break;
         case kBlueExtend3:
-            a_Arm->ArmPistonUp();
+            a_Claw->ArmPistonUp();
             nextState = kBlueDrop3;
             break;
         case kBlueDrop3:
-            a_Arm->ClawOpen();
+            a_Claw->ClawOpen();
             nextState = kBlueRetract3;
             break;
         case kBlueRetract3:
-            a_Arm -> ArmPistonDown();
+            a_Claw -> ArmPistonDown();
             nextState = kBlueDriveAway3;
             break;
         case kBlueDriveAway3:
@@ -484,16 +484,16 @@ void Autonomous::PeriodicBDGR() {
             StopSwerves();
             break;
         case kBlueExtend4:
-            a_Arm->ArmPistonUp();
+            a_Claw->ArmPistonUp();
             nextState = kBlueDrop4;
             break;
         case kBlueDrop4:
-            a_Arm->ClawOpen();
+            a_Claw->ClawOpen();
             nextState = kBlueRetract4;
             break;
 
         case kBlueRetract4:
-            a_Arm->ArmPistonDown();
+            a_Claw->ArmPistonDown();
             nextState = kBlueDriveAway4;
             break;
 
@@ -520,17 +520,17 @@ void Autonomous::PeriodicBCSR() {
             StopSwerves();
             break;
         case kBlueExtend5:
-            a_Arm->ArmPistonUp();
+            a_Claw->ArmPistonUp();
             nextState = kBlueDrop5;
             break;
         case kBlueDrop5:
-            a_Arm->ClawOpen();
+            a_Claw->ClawOpen();
             nextState = kBlueRetract5;
             break;
 
         case kBlueRetract5:
-           //arm close code
-           a_Arm->ArmPistonDown();
+           //Claw close code
+           a_Claw->ArmPistonDown();
            nextState = kBlueDriveAway5;
             break;
 
@@ -567,15 +567,15 @@ void Autonomous::PeriodicRDGL() {
             StopSwerves();
             break;
         case kRedExtend6:
-            a_Arm->ArmPistonUp();
+            a_Claw->ArmPistonUp();
             nextState = kRedDrop6;
             break;
         case kRedDrop6:
-            a_Arm->ClawOpen();
+            a_Claw->ClawOpen();
             nextState = kRedRetract6;
             break;
         case kRedRetract6:
-            a_Arm->ArmPistonDown();
+            a_Claw->ArmPistonDown();
             nextState = kRedDriveAway6;
             break;
         case kRedDriveAway6:
@@ -599,15 +599,15 @@ void Autonomous::PeriodicRCSL() {
             StopSwerves();
             break;
         case kRedExtend7:
-            a_Arm->ArmPistonUp();
+            a_Claw->ArmPistonUp();
             nextState = kRedDrop7;
             break;
         case kRedDrop7:
-            a_Arm->ClawOpen();
+            a_Claw->ClawOpen();
             nextState = kRedRetract7;
             break;
         case kRedRetract7:
-            a_Arm -> ArmPistonDown();
+            a_Claw -> ArmPistonDown();
             nextState = kRedDriveAway7;
             break;
         case kRedDriveAway7:
@@ -641,15 +641,15 @@ void Autonomous::PeriodicRDGM(){
             StopSwerves();
             break;
         case kRedExtend8:
-            a_Arm->ArmPistonUp();
+            a_Claw->ArmPistonUp();
             nextState = kRedDrop8;
             break;
         case kRedDrop8:
-            a_Arm->ClawOpen();
+            a_Claw->ClawOpen();
             nextState = kRedRetract8;
             break;
         case kRedRetract8:
-            a_Arm->ArmPistonDown();
+            a_Claw->ArmPistonDown();
             nextState = kRedDriveAway8;
             break;
         case kRedDriveAway8:
@@ -676,15 +676,15 @@ void Autonomous::PeriodicRCSM() {
             StopSwerves();
             break;
         case kRedExtend9:
-            a_Arm->ArmPistonUp();
+            a_Claw->ArmPistonUp();
             nextState = kRedDrop9;
             break;
         case kRedDrop9:
-            a_Arm->ClawOpen();
+            a_Claw->ClawOpen();
             nextState = kRedRetract9;
             break;
         case kRedRetract9:
-            a_Arm->ArmPistonDown();
+            a_Claw->ArmPistonDown();
             nextState = kRedDriveAway9;
             break;
 
@@ -721,16 +721,16 @@ void Autonomous::PeriodicRDGR() {
             StopSwerves();
             break;
         case kRedExtend10:
-            a_Arm->ArmPistonUp();
+            a_Claw->ArmPistonUp();
             nextState = kRedDrop10;
             break;
         case kRedDrop10:
-            a_Arm->ClawOpen();
+            a_Claw->ClawOpen();
             nextState = kRedRetract10;
             break;
 
         case kRedRetract10:
-            a_Arm->ArmPistonDown();
+            a_Claw->ArmPistonDown();
             nextState = kRedDriveAway10;
             break;
 
@@ -756,15 +756,15 @@ void Autonomous::PeriodicRCSR() {
             StopSwerves();
             break;
         case kRedExtend11:
-            a_Arm->ArmPistonUp();
+            a_Claw->ArmPistonUp();
             nextState = kRedDrop11;
             break;
         case kRedDrop11:
-            a_Arm->ClawOpen();
+            a_Claw->ClawOpen();
             nextState = kRedRetract11;
             break;
         case kRedRetract11:
-            a_Arm->ArmPistonDown();
+            a_Claw->ArmPistonDown();
             nextState = kRedDriveAway11;
             break;
         case kRedDriveAway11:
