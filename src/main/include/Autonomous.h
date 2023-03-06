@@ -163,6 +163,7 @@ class Autonomous {
 
    // const char *GetCurrentPath();
     
+    double gettime_d();
 
     void StartAuto();
     void PeriodicAuto();
@@ -249,6 +250,9 @@ private:
     std::string a_PeriodicAutoSelected;
     float drivestart{0.0};
 
+    // Used to measure time duration in Autonomous states
+    double state_time = 0.0;
+ 
     // used for waitForTime method
     double waitTimeStart{0.0};
 

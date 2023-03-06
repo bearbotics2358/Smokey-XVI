@@ -1,8 +1,10 @@
 #include "Autonomous.h"
 #include "buttons.h"
 #include "misc.h"
+#include "Prefs.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <math.h>
+#include <sys/time.h>
 
 //left if positive degrees right is negative
 Autonomous::Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Arm *Arm):
@@ -15,6 +17,22 @@ a_Arm(Arm),
 a_AutoState0(kBlueAutoIdle0),
 a_AutoState1(kBlueAutoIdle1),
 a_AutoState2(kBlueAutoIdle2){}
+
+
+double Autonomous::gettime_d(){
+	// return time in seconds as a double
+	double t0;
+	struct timeval tv0;
+
+	gettimeofday(&tv0, NULL);
+	t0 = 1.0 * tv0.tv_sec + (1.0 * tv0.tv_usec) / 1000000.0;
+	// printf("seconds: %ld\n", tv0.tv_sec);
+	// printf("usecs:   %ld\n", tv0.tv_usec);
+	// printf("time:    %lf\n", t0);
+
+	return t0;
+}
+
 
 //-------------------------------------Auto Stuff---------------------------------------------//
 /*
@@ -278,6 +296,9 @@ void Autonomous::PeriodicAuto(const std::string periodicAutoMode) {
 
 void Autonomous::BDGL() {
     a_AutoState0 = kBlueExtend0;
+
+    // reset state time
+    state_time = gettime_d();
 }
 
 void Autonomous::PeriodicBDGL() {
@@ -290,15 +311,27 @@ void Autonomous::PeriodicBDGL() {
             break;
         case kBlueExtend0:
             a_Arm->ArmPistonUp();
-            nextState = kBlueDrop0;
+            if(gettime_d() > state_time + EXTEND_PISTON_TIME) {
+                // reset state time
+                state_time = gettime_d();
+                nextState = kBlueDrop0;
+            }
             break;
         case kBlueDrop0:
             a_Arm->ClawOpen();
-            nextState = kBlueRetract0;
+            if(gettime_d() > state_time + CLAW_PISTON_TIME) {
+                // reset state time
+                state_time = gettime_d();
+                nextState = kBlueRetract0;
+            }
             break;
         case kBlueRetract0:
             a_Arm->ArmPistonDown();
-            nextState = kBlueDriveAway0;
+            if(gettime_d() > state_time + EXTEND_PISTON_TIME) {
+                // reset state time
+                state_time = gettime_d();
+                nextState = kBlueDriveAway0;
+            }
             break;
         case kBlueDriveAway0:
             if (DriveDirection(4.8768, 0, .25, false)) {
