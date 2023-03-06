@@ -1,6 +1,5 @@
 #pragma once
 
-#include "AbsoluteEncoder.h"
 #include "Prefs.h"
 #include "math/LinAlg.h"
 #include <ctre/Phoenix.h>

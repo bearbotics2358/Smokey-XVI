@@ -34,22 +34,6 @@ double Autonomous::gettime_d(){
 }
 
 
-
-double Autonomous::gettime_d(){
-	// return time in seconds as a double
-	double t0;
-	struct timeval tv0;
-
-	gettimeofday(&tv0, NULL);
-	t0 = 1.0 * tv0.tv_sec + (1.0 * tv0.tv_usec) / 1000000.0;
-	// printf("seconds: %ld\n", tv0.tv_sec);
-	// printf("usecs:   %ld\n", tv0.tv_usec);
-	// printf("time:    %lf\n", t0);
-
-	return t0;
-}
-
-
 //-------------------------------------Auto Stuff---------------------------------------------//
 void Autonomous::StartAuto(const std::string autoMode) {
     if(autoMode == BlueDropAndGoLeft){
