@@ -102,13 +102,13 @@ m = number engraved on module
 #define BL_SWERVE_ABS_ENC_OFFSET 0.0
 #define BR_SWERVE_ABS_ENC_OFFSET 0.0
 
-#define CANCODER_OFFSET_1 0
-#define CANCODER_OFFSET_2 0
+#define CANCODER_OFFSET_1 129.5 - 180
+#define CANCODER_OFFSET_2 115.3 - 180
 #define CANCODER_OFFSET_3 0
 #define CANCODER_OFFSET_4 0
 #define CANCODER_OFFSET_5 0
-#define CANCODER_OFFSET_6 0
-#define CANCODER_OFFSET_7 0
+#define CANCODER_OFFSET_6 127.4 - 180
+#define CANCODER_OFFSET_7 240.7 - 180
 #define CANCODER_OFFSET_8 0
 #define CANCODER_OFFSET_ARM 0
 
@@ -122,7 +122,7 @@ m = number engraved on module
 #define CANCODER_ID_8 24
 #define CANCODER_ID_ARM 25
 
-static int CANCODER_OFFSETS[] = {
+static double CANCODER_OFFSETS[] = {
     CANCODER_OFFSET_1, 
     CANCODER_OFFSET_2, 
     CANCODER_OFFSET_3, 
