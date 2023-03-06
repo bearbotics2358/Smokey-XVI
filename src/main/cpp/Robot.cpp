@@ -20,16 +20,18 @@
 /*~~ hi :) ~~ */
 Robot::Robot():
 a_Gyro(GYRO_ID),
-a_Arm(ARM_PUSH_SOLENOID_MODULE, ARM_PULL_SOLENOID_MODULE, ARM_OPEN_SOLENOID_MODULE, ARM_CLOSE_SOLENOID_MODULE, ARM_CARRIAGE_MOTOR, ARM_CLAW_MOTOR, ARM_CARRIAGE_CANCODER), //Get the IDs for the arms solenoids
-a_FLModule(misc::GetFLDrive(), misc::GetFLSteer(), AbsoluteEncoder(FL_SWERVE_ABS_ENC_PORT, FL_SWERVE_ABS_ENC_MIN_VOLTS, FL_SWERVE_ABS_ENC_MAX_VOLTS, FL_SWERVE_ABS_ENC_OFFSET / 360), misc::GetFLCANCoder()),
-a_FRModule(misc::GetFRDrive(), misc::GetFRSteer(), AbsoluteEncoder(FR_SWERVE_ABS_ENC_PORT, FR_SWERVE_ABS_ENC_MIN_VOLTS, FR_SWERVE_ABS_ENC_MAX_VOLTS, FR_SWERVE_ABS_ENC_OFFSET / 360), misc::GetFRCANCoder()),
-a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), AbsoluteEncoder(BL_SWERVE_ABS_ENC_PORT, BL_SWERVE_ABS_ENC_MIN_VOLTS, BL_SWERVE_ABS_ENC_MAX_VOLTS, BL_SWERVE_ABS_ENC_OFFSET / 360), misc::GetBLCANCoder()),
-a_BRModule(misc::GetBRDrive(), misc::GetBRSteer(), AbsoluteEncoder(BR_SWERVE_ABS_ENC_PORT, BR_SWERVE_ABS_ENC_MIN_VOLTS, BR_SWERVE_ABS_ENC_MAX_VOLTS, BR_SWERVE_ABS_ENC_OFFSET / 360), misc::GetBRCANCoder()),
+a_Arm(ARM_PUSH_SOLENOID_MODULE, ARM_PULL_SOLENOID_MODULE, ARM_OPEN_SOLENOID_MODULE, ARM_CLOSE_SOLENOID_MODULE, ARM_CLAW_PRESSURE_CONE, ARM_CLAW_PRESSURE_CUBE, ARM_CARRIAGE_MOTOR, ARM_CLAW_MOTOR, ARM_CARRIAGE_CANCODER), //Get the IDs for the arms solenoids
+a_FLModule(misc::GetFLDrive(), misc::GetFLSteer(), misc::GetFLCANCoder()),
+a_FRModule(misc::GetFRDrive(), misc::GetFRSteer(), misc::GetFRCANCoder()),
+a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), misc::GetBLCANCoder()),
+a_BRModule(misc::GetBRDrive(), misc::GetBRSteer(), misc::GetBRCANCoder()),
 a_SwerveDrive(a_FLModule, a_FRModule, a_BLModule, a_BRModule, a_Gyro),
 a_Autonomous(&a_Gyro, &a_SwerveDrive, &a_Arm),
 a_DriverXboxController(JOYSTICK_PORT),
 a_OperatorXboxController(XBOX_CONTROLLER),
-a_CompressorController()
+a_CompressorController(),
+a_TOF(), 
+a_LED()
 // NEEDED A PORT, THIS IS PROBABLY WRONG, PLEASE FIX IT LATER
 //  handler("169.254.179.144", "1185", "data"),
 //  handler("raspberrypi.local", 1883, "PI/CV/SHOOT/DATA"),
@@ -58,11 +60,32 @@ void Robot::RobotInit() {
     frc::SmartDashboard::init();
     a_Gyro.Init();
     a_Gyro.Zero();
+
+    m_AutoModeSelector.SetDefaultOption(RobotDoNothing, RobotDoNothing);
+    m_AutoModeSelector.AddOption(BlueDropAndGoLeft, BlueDropAndGoLeft);
+    m_AutoModeSelector.AddOption(BlueChargeStationLeft, BlueChargeStationLeft);
+    m_AutoModeSelector.AddOption(BlueDropAndGoMiddle, BlueDropAndGoMiddle);
+    m_AutoModeSelector.AddOption(BlueChargeStationMiddle, BlueChargeStationMiddle);
+    m_AutoModeSelector.AddOption(BlueDropAndGoRight, BlueDropAndGoRight);
+    m_AutoModeSelector.AddOption(BlueChargeStationRight, BlueChargeStationRight);
+    m_AutoModeSelector.AddOption(RedDropAndGoLeft, RedDropAndGoLeft);
+    m_AutoModeSelector.AddOption(RedChargeStationLeft, RedChargeStationLeft);
+    m_AutoModeSelector.AddOption(RedDropAndGoMiddle, RedDropAndGoMiddle);
+    m_AutoModeSelector.AddOption(RedChargeStationMiddle, RedChargeStationMiddle);
+    m_AutoModeSelector.AddOption(RedDropAndGoRight, RedDropAndGoRight);
+    m_AutoModeSelector.AddOption(RedChargeStationRight, RedChargeStationRight);
+    frc::SmartDashboard::PutData("Auto Modes", &m_AutoModeSelector); 
+
+    a_LED.Init();
+
+    SetTargetType(target_type_enum::CONE);
 }
 
 void Robot::RobotPeriodic() {
     a_Gyro.Update();
     a_Arm.updateDashboard();
+    a_LED.Update();
+    a_TOF.Update();
     //a_SwerveDrive.updatePosition();
 
 //testing code block for PID tuning
@@ -79,46 +102,23 @@ void Robot::RobotPeriodic() {
         a_BRModule.steerToAng(150);
         a_BLModule.steerToAng(150);
     }
-
-
-
-    
-    //printf("beam: %f/n", bstate);
-    /*
-
-    frc::SmartDashboard::PutNumber("Distance Driven: ", a_SwerveDrive.getAvgDistance());
-    frc::SmartDashboard::PutNumber("Gyro Angle: ", a_Gyro.getAngle());
-    frc::SmartDashboard::PutNumber("Gyro Yaw: ", a_Gyro.getYaw());
-    frc::SmartDashboard::PutNumber("Gyro Compass: ", a_Gyro.getAbsoluteCompassHeading());
-    frc::SmartDashboard::PutNumber("Robot x Position", a_SwerveDrive.getPosition().x());
-    frc::SmartDashboard::PutNumber("Robot y Position", a_SwerveDrive.getPosition().y());
-
-    frc::SmartDashboard::PutBoolean("Slow speed enabled", a_slowSpeed);
-
-    frc::SmartDashboard::PutNumber("Tank Pressure", a_CompressorController.getTankPressure());
-
-    */
 }
 
 void Robot::DisabledInit() {
     a_doEnabledInit = true;
     a_SwerveDrive.resetDrive();
 }
-
-void Robot::DisabledPeriodic() {
-    //a_Autonomous.DecidePath();
-   // frc::SmartDashboard::PutString("Selected Autonomous", a_Autonomous.GetCurrentPath());
-}
-
-void Robot::EnabledInit() {
-
-}
+void Robot::EnabledInit(){}
 
 void Robot::EnabledPeriodic() {
     a_CompressorController.update();
 }
+void Robot::DisabledPeriodic(){}
+
 
 void Robot::AutonomousInit() {
+    SetTargetType(target_type_enum::CONE);
+
     if (a_doEnabledInit) {
         EnabledInit();
         a_doEnabledInit = false;
@@ -126,24 +126,29 @@ void Robot::AutonomousInit() {
 
     a_SwerveDrive.unsetHoldAngle();
     a_Gyro.Zero();
-   // a_Autonomous.StartAuto();
+    std::string SelectedRoute = m_AutoModeSelector.GetSelected(); //assigns value frm smart dashboard to a string variable
+  
+    a_Autonomous.StartAuto(SelectedRoute); //starts auto from selected route
+    
 }
 
 void Robot::AutonomousPeriodic() {
+    std::string SelectedRoute = m_AutoModeSelector.GetSelected(); //assigns value frm smart dashboard to a string variable
+    a_Autonomous.PeriodicAuto(SelectedRoute);
     EnabledPeriodic();
-
-  //  a_Autonomous.PeriodicAuto();
 }
 
 void Robot::TeleopInit() {
+    SetTargetType(target_type_enum::CONE);
+
     if (a_doEnabledInit) {
         EnabledInit();
         a_doEnabledInit = false;
     }
 
-    pChange = 0;
-    iChange = 0;
-    dChange = 0;
+    // pChange = 0;
+    // iChange = 0;
+    // dChange = 0;
 
 }
 
@@ -151,31 +156,12 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
     EnabledPeriodic();
 
-    // if (joystickOne.GetRawButtonReleased(DriverButton::Button12)) {
-    //     pChange += 0.1;
-    // } else if (joystickOne.GetRawButtonReleased(DriverButton::Button11)) {
-    //     pChange -= 0.1;
-    // }
-    // if (joystickOne.GetRawButtonReleased(DriverButton::Button8)) {
-    //     iChange += 0.1;
-    // } else if (joystickOne.GetRawButtonReleased(DriverButton::Button7)) {
-    //     iChange -= 0.1;
-    // }
-    // if (joystickOne.GetRawButtonReleased(DriverButton::Button10)) {
-    //     dChange += 0.01;
-    // } else if (joystickOne.GetRawButtonReleased(DriverButton::Button9)) {
-    //     dChange -= 0.01;
-    // }
-    
-    // a_FRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    // a_FLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    // a_BRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    // a_BLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange); //P 0.6, I 1.0 D 0.06
-    // frc::SmartDashboard::PutNumber("P value", 0.6 + pChange);
-    // frc::SmartDashboard::PutNumber("I value", 1.0 + iChange);
-    // frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
-
     /* =-=-=-=-=-=-=-=-=-=-= Arm Controls =-=-=-=-=-=-=-=-=-=-= */
+
+    if (a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE && a_OperatorXboxController.GetRawButton(4)) {
+        a_Arm.ClawClose();
+        //later: move claw up into scoring position but don't score/ let go
+    } 
 
     if(a_OperatorXboxController.GetYButton()) {
         a_Arm.ClawMotorUp();
@@ -273,6 +259,15 @@ void Robot::TeleopPeriodic() {
     } else {
         a_SwerveDrive.swerveUpdate(0, 0, 0, fieldOreo);
     }
+
+    /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
+
+    if(a_OperatorXboxController.GetRawButton(1)) { //can change button later
+        SetTargetType(target_type_enum::CONE);
+    } 
+    else if(a_OperatorXboxController.GetRawButton(2)) { //can change button later
+        SetTargetType(target_type_enum::CUBE);
+    }
 }
 
 void Robot::TestInit() {
@@ -283,6 +278,22 @@ void Robot::TestInit() {
 
 void Robot::TestPeriodic() {
     TeleopPeriodic();
+}
+
+void Robot::SetTargetType(target_type_enum target) {
+    target_type = target;
+    if(target_type == target_type_enum::CONE) {
+        // Set target type to CONE
+        a_LED.SetTargetType(target_type_enum::CONE);
+        a_TOF.SetTargetType(target_type_enum::CONE);
+        a_Arm.ClawConePressure();
+    } else if(target_type == target_type_enum::CUBE) {
+        // Set target type to CUBE
+        a_LED.SetTargetType(target_type_enum::CUBE);
+        a_TOF.SetTargetType(target_type_enum::CUBE);
+        a_Arm.ClawCubePressure();
+
+    }
 }
 
 int main() { return frc::StartRobot<Robot>(); } // Initiate main loop

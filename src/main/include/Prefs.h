@@ -3,21 +3,27 @@
 
 #include <units/angle.h>
 #include <units/length.h>
+#include <frc/SerialPort.h>
 
 // Declare constants such as CAN IDs here
 
 // uncomment to enable the new swerve
 //#define NEW_SWERVE
 
-#define GYRO_ID 0 // TODO: UPDATE TO CORRECT NUMBER
-#define ARM_PUSH_SOLENOID_MODULE 25 // Need to update to correct ID
-#define ARM_PULL_SOLENOID_MODULE 26 // Need to update to correct ID
-#define ARM_OPEN_SOLENOID_MODULE 27
-#define ARM_CLOSE_SOLENOID_MODULE 28
+#define GYRO_ID 35 // TODO: UPDATE TO CORRECT NUMBER
+#define ARM_PUSH_SOLENOID_MODULE 1
+#define ARM_PULL_SOLENOID_MODULE 2
+#define ARM_OPEN_SOLENOID_MODULE 3
+#define ARM_CLOSE_SOLENOID_MODULE 4
+#define ARM_CLAW_PRESSURE_CONE 5
+#define ARM_CLAW_PRESSURE_CUBE 6
+
+#define EXTEND_PISTON_TIME 0.5
+#define CLAW_PISTON_TIME 0.5
+
 #define ARM_CARRIAGE_MOTOR 29
 #define ARM_CLAW_MOTOR 30
 #define ARM_CARRIAGE_CANCODER 31
-
 #define MAX_CLIMB_PERCENT 0.2
 #define MAX_FREE_SPEED 16.3
 
@@ -41,22 +47,6 @@ m = number engraved on module
 #define FR_ID 2
 #define BL_ID 1
 #define BR_ID 6
-
-// #define FL_DRIVE_ID 15
-// #define FL_STEER_ID 16
-// #define FL_CANCODER_ID 24
-
-// #define FR_DRIVE_ID 7
-// #define FR_STEER_ID 8
-// #define FR_CANCODER_ID 20
-
-// #define BL_DRIVE_ID 9
-// #define BL_STEER_ID 10
-// #define BL_CANCODER_ID 21
-
-// #define BR_DRIVE_ID 5
-// #define BR_STEER_ID 6
-// #define BR_CANCODER_ID 19
 
 
 /*======= ENCODER CONSTANTS =======*/
@@ -86,26 +76,27 @@ m = number engraved on module
 #define BR_SWERVE_ABS_ENC_MIN_VOLTS 0.010986
 #define BR_SWERVE_ABS_ENC_MAX_VOLTS 4.963378
 
-// offset from 0 of the absolute encders
-//#define FL_SWERVE_ABS_ENC_OFFSET 16.24
-//#define FR_SWERVE_ABS_ENC_OFFSET 85.76
-//#define BL_SWERVE_ABS_ENC_OFFSET 0.22
-//#define BR_SWERVE_ABS_ENC_OFFSET 179.77
-#define FL_SWERVE_ABS_ENC_OFFSET 342.33
-#define FR_SWERVE_ABS_ENC_OFFSET 276.11
-#define BL_SWERVE_ABS_ENC_OFFSET 0.0
-#define BR_SWERVE_ABS_ENC_OFFSET 0.0
-
-#define CANCODER_OFFSET_1 0
-#define CANCODER_OFFSET_2 0
+#define CANCODER_OFFSET_1 129.5 - 180
+#define CANCODER_OFFSET_2 115.3 - 180
 #define CANCODER_OFFSET_3 0
 #define CANCODER_OFFSET_4 0
 #define CANCODER_OFFSET_5 0
-#define CANCODER_OFFSET_6 0
-#define CANCODER_OFFSET_7 0
+#define CANCODER_OFFSET_6 127.4 - 180
+#define CANCODER_OFFSET_7 240.7 - 180
 #define CANCODER_OFFSET_8 0
 #define CANCODER_OFFSET_ARM 0
-static int CANCODER_OFFSETS[] = {
+
+#define CANCODER_ID_1 17
+#define CANCODER_ID_2 18
+#define CANCODER_ID_3 19
+#define CANCODER_ID_4 20
+#define CANCODER_ID_5 21
+#define CANCODER_ID_6 22
+#define CANCODER_ID_7 23
+#define CANCODER_ID_8 24
+#define CANCODER_ID_ARM 25
+
+static double CANCODER_OFFSETS[] = {
     CANCODER_OFFSET_1, 
     CANCODER_OFFSET_2, 
     CANCODER_OFFSET_3, 
@@ -173,3 +164,18 @@ constexpr units::angle::radian_t TARGET_PITCH = units::angle::radian_t(0.0);
 // mdns name of camera
 #define SHOOTER_CAMERA_NAME "photonvision"
 #define BALL_CAMERA_NAME "temp"
+
+/* ============= Arduino ============= */
+
+#define BAUD_RATE_TOF 115200
+#define USB_PORT_TOF frc::SerialPort::kUSB1
+#define DATA_BITS_TOF 8
+#define PARITY_TOF frc::SerialPort::kParity_None
+#define STOP_BITS_TOF frc::SerialPort::kStopBits_One
+
+#define BAUD_RATE_ARDUINO 9600
+#define USB_PORT_ARDUINO frc::SerialPort::kUSB2
+#define DATA_BITS_ARDUINO 8
+#define PARITY_ARDUINO frc::SerialPort::kParity_None
+#define STOP_BITS_ARDUINO frc::SerialPort::kStopBits_One
+

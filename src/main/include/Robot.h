@@ -16,6 +16,13 @@
 #include <photonlib/PhotonCamera.h>
 #include <photonlib/PhotonUtils.h>
 #include "BeamBreak.h"
+#include "TOF.h"
+
+#include <frc/smartdashboard/SendableChooser.h>
+
+#include "LED.h"
+
+
 
 enum class DriveBackState {
     Inactive,
@@ -41,16 +48,20 @@ class Robot : public frc::TimedRobot {
 
         void AutonomousInit();
         void AutonomousPeriodic();
-
+        void DecidePath();
         void TeleopInit();
         void TeleopPeriodic();
 
         void TestInit();
         void TestPeriodic();
 
+        void SetTargetType(target_type_enum target);
+        
+
     private:
         // keeps track of when to call enabled init
         bool a_doEnabledInit { true };
+        frc::SendableChooser<std::string> m_AutoModeSelector;
 
         Gyro a_Gyro;
         Arm a_Arm;
@@ -60,6 +71,7 @@ class Robot : public frc::TimedRobot {
         SwerveModule a_BLModule;
         SwerveModule a_BRModule;
         SwerveDrive a_SwerveDrive;
+       
 
         // speed multiplier for driver controls for the swerve
         bool a_slowSpeed { false };
@@ -70,8 +82,9 @@ class Robot : public frc::TimedRobot {
         frc::XboxController a_OperatorXboxController;
 
         CompressorController a_CompressorController;
+        TOF a_TOF;
 
-        // CanHandler a_canHandler;
+        LED a_LED;
 
         // stuff that autonomous needs
         
@@ -100,4 +113,6 @@ class Robot : public frc::TimedRobot {
         frc2::PIDController turnController{ANGULAR_P, 0.0, ANGULAR_D};
 
         photonlib::PhotonCamera a_camera{"OV5647"}; //name of camera
+
+        enum target_type_enum target_type = target_type_enum::CONE;
 };
