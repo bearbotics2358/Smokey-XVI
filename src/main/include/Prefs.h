@@ -22,6 +22,11 @@
 #define EXTEND_PISTON_TIME 0.5
 #define CLAW_PISTON_TIME 0.5
 
+// #define SHUTTLE_MOTOR 29
+// #define ARM_MOTOR 30
+// #define SHUTTLE_CANCODER 31
+// #define LIMIT_SWITCH 32
+
 #define MAX_CLIMB_PERCENT 0.2
 #define MAX_FREE_SPEED 16.3
 

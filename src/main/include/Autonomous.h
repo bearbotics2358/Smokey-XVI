@@ -10,7 +10,7 @@
 #include <frc/Timer.h>
 #include <frc/XboxController.h>
 #include <units/math.h>
-#include "Arm.h"
+#include "Claw.h"
 
 
 const std::string BlueDropAndGoLeft = "Blue Drop and Go Left";
@@ -152,7 +152,7 @@ class Autonomous {
         void PeriodicAuto(const std::string periodicAutoMode);
 
     void DecidePath();
-    Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive);//, Arm *Arm);
+    Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive);//, Claw *Claw);
 
    // const char *GetCurrentPath();
     
@@ -217,7 +217,7 @@ class Autonomous {
 
 private:
     Gyro *a_Gyro;
-    //Arm *a_Arm;
+    //Claw *a_Claw;
     SwerveDrive *a_SwerveDrive;
     frc::XboxController a_OperatorXboxController;
 
