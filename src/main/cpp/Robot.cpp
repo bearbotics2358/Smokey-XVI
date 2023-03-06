@@ -20,7 +20,7 @@
 /*~~ hi :) ~~ */
 Robot::Robot():
 a_Gyro(GYRO_ID),
-a_Arm(ARM_PUSH_SOLENOID_MODULE, ARM_PULL_SOLENOID_MODULE, ARM_OPEN_SOLENOID_MODULE, ARM_CLOSE_SOLENOID_MODULE, ARM_CARRIAGE_MOTOR, ARM_CLAW_MOTOR, ARM_CARRIAGE_CANCODER), //Get the IDs for the arms solenoids
+a_Arm(ARM_PUSH_SOLENOID_MODULE, ARM_PULL_SOLENOID_MODULE, ARM_OPEN_SOLENOID_MODULE, ARM_CLOSE_SOLENOID_MODULE, ARM_CLAW_PRESSURE_CONE, ARM_CLAW_PRESSURE_CUBE, ARM_CARRIAGE_MOTOR, ARM_CLAW_MOTOR, ARM_CARRIAGE_CANCODER), //Get the IDs for the arms solenoids
 a_FLModule(misc::GetFLDrive(), misc::GetFLSteer(), AbsoluteEncoder(FL_SWERVE_ABS_ENC_PORT, FL_SWERVE_ABS_ENC_MIN_VOLTS, FL_SWERVE_ABS_ENC_MAX_VOLTS, FL_SWERVE_ABS_ENC_OFFSET / 360), misc::GetFLCANCoder()),
 a_FRModule(misc::GetFRDrive(), misc::GetFRSteer(), AbsoluteEncoder(FR_SWERVE_ABS_ENC_PORT, FR_SWERVE_ABS_ENC_MIN_VOLTS, FR_SWERVE_ABS_ENC_MAX_VOLTS, FR_SWERVE_ABS_ENC_OFFSET / 360), misc::GetFRCANCoder()),
 a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), AbsoluteEncoder(BL_SWERVE_ABS_ENC_PORT, BL_SWERVE_ABS_ENC_MIN_VOLTS, BL_SWERVE_ABS_ENC_MAX_VOLTS, BL_SWERVE_ABS_ENC_OFFSET / 360), misc::GetBLCANCoder()),
@@ -78,6 +78,7 @@ void Robot::RobotInit() {
 
     a_LED.Init();
 
+    SetTargetType(target_type_enum::CONE);
 }
 
 void Robot::RobotPeriodic() {
@@ -154,6 +155,8 @@ void Robot::DisabledPeriodic(){}
 
 
 void Robot::AutonomousInit() {
+    SetTargetType(target_type_enum::CONE);
+
     if (a_doEnabledInit) {
         EnabledInit();
         a_doEnabledInit = false;
@@ -174,6 +177,8 @@ void Robot::AutonomousPeriodic() {
 }
 
 void Robot::TeleopInit() {
+    SetTargetType(target_type_enum::CONE);
+
     if (a_doEnabledInit) {
         EnabledInit();
         a_doEnabledInit = false;
@@ -322,13 +327,10 @@ void Robot::TeleopPeriodic() {
     /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
 
     if(a_OperatorXboxController.GetRawButton(1)) { //can change button later
-        a_LED.SetTargetType(target_type_enum::CONE);
-        a_TOF.SetTargetType(target_type_enum::CONE);
+        SetTargetType(target_type_enum::CONE);
     } 
     else if(a_OperatorXboxController.GetRawButton(2)) { //can change button later
-        a_LED.SetTargetType(target_type_enum::CUBE);
-        a_TOF.SetTargetType(target_type_enum::CUBE);
-
+        SetTargetType(target_type_enum::CUBE);
     }
 }
 
@@ -340,6 +342,22 @@ void Robot::TestInit() {
 
 void Robot::TestPeriodic() {
     TeleopPeriodic();
+}
+
+void Robot::SetTargetType(target_type_enum target) {
+    target_type = target;
+    if(target_type == target_type_enum::CONE) {
+        // Set target type to CONE
+        a_LED.SetTargetType(target_type_enum::CONE);
+        a_TOF.SetTargetType(target_type_enum::CONE);
+        a_Arm.ClawConePressure();
+    } else if(target_type == target_type_enum::CUBE) {
+        // Set target type to CUBE
+        a_LED.SetTargetType(target_type_enum::CUBE);
+        a_TOF.SetTargetType(target_type_enum::CUBE);
+        a_Arm.ClawCubePressure();
+
+    }
 }
 
 int main() { return frc::StartRobot<Robot>(); } // Initiate main loop
