@@ -55,6 +55,7 @@ class Robot : public frc::TimedRobot {
         void TestInit();
         void TestPeriodic();
 
+        void SetTargetType(target_type_enum target);
         
 
     private:
@@ -114,4 +115,6 @@ class Robot : public frc::TimedRobot {
         frc2::PIDController turnController{ANGULAR_P, 0.0, ANGULAR_D};
 
         photonlib::PhotonCamera a_camera{"OV5647"}; //name of camera
+
+        enum target_type_enum target_type = target_type_enum::CONE;
 };

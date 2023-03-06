@@ -7,7 +7,10 @@
 
 class Arm {
     public:
-        Arm(int pushSolenoidModule, int pullSolenoidModule, int openSolenoidModule, int closeSolenoidModule, int carriageID, int clawID, int carriageCANCoderID);
+        Arm(int pushSolenoidModule, int pullSolenoidModule, // Extend and retract piston control
+            int openSolenoidModule, int closeSolenoidModule, // Open and Close Claw
+            int coneSolenoidModule, int cubeColenoidModule, // Select pressure for Claw piston
+            int carriageID, int clawID, int carriageCANCoderID);
         void setSolenoid(bool deployed);
         void ArmPistonUp();
         void ArmPistonDown();
@@ -15,6 +18,8 @@ class Arm {
         void ArmMotorDown();
         void ClawOpen();
         void ClawClose();
+        void ClawConePressure();
+        void ClawCubePressure();
         void ClawMotorUp();
         void ClawMotorDown();
         void updateDashboard();
@@ -23,6 +28,7 @@ class Arm {
     private:
         frc::DoubleSolenoid a_clawSolenoid;
         frc::DoubleSolenoid a_armSolenoid;
+        frc::DoubleSolenoid a_clawPressureSolenoid;
         rev::CANSparkMax a_carriageMotor;
         rev::CANSparkMax a_clawMotor;
         CANCoder a_CANCoder;
