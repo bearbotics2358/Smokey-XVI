@@ -9,9 +9,11 @@
 #include <iostream>
 #include <stdio.h>
 #include <frc/interfaces/Gyro.h>
-#include "Arm.h"
 #include <photonlib/PhotonUtils.h>
 #include <photonlib/PhotonTrackedTarget.h>
+#include "Claw.h"
+#include <frc/XboxController.h>
+
 
 //TODO: FIX LINES 68, 152-164, AND 241-261
 
@@ -20,13 +22,13 @@
 /*~~ hi :) ~~ */
 Robot::Robot():
 a_Gyro(GYRO_ID),
-a_Arm(ARM_PUSH_SOLENOID_MODULE, ARM_PULL_SOLENOID_MODULE, ARM_OPEN_SOLENOID_MODULE, ARM_CLOSE_SOLENOID_MODULE, ARM_CLAW_PRESSURE_CONE, ARM_CLAW_PRESSURE_CUBE, ARM_CARRIAGE_MOTOR, ARM_CLAW_MOTOR, ARM_CARRIAGE_CANCODER), //Get the IDs for the arms solenoids
+a_Claw(ARM_MOTOR, SHUTTLE_MOTOR, PISTON_PUSH_SOLENOID_MODULE, PISTON_PULL_SOLENOID_MODULE, CLAW_OPEN_SOLENOID_MODULE, CLAW_CLOSE_SOLENOID_MODULE, CONE_PRESSURE_SOLENOID, CUBE_PRESSURE_SOLENOID, LIMIT_SWITCH, SHUTTLE_CANCODER), //Get the IDs for the arms solenoids
 a_FLModule(misc::GetFLDrive(), misc::GetFLSteer(), misc::GetFLCANCoder()),
 a_FRModule(misc::GetFRDrive(), misc::GetFRSteer(), misc::GetFRCANCoder()),
 a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), misc::GetBLCANCoder()),
 a_BRModule(misc::GetBRDrive(), misc::GetBRSteer(), misc::GetBRCANCoder()),
 a_SwerveDrive(a_FLModule, a_FRModule, a_BLModule, a_BRModule, a_Gyro),
-a_Autonomous(&a_Gyro, &a_SwerveDrive, &a_Arm),
+a_Autonomous(&a_Gyro, &a_SwerveDrive, &a_Claw),
 a_DriverXboxController(JOYSTICK_PORT),
 a_OperatorXboxController(XBOX_CONTROLLER),
 a_CompressorController(),
@@ -83,7 +85,7 @@ void Robot::RobotInit() {
 
 void Robot::RobotPeriodic() {
     a_Gyro.Update();
-    a_Arm.updateDashboard();
+    a_Claw.updateDashboard();
     a_LED.Update();
     a_TOF.Update();
     //a_SwerveDrive.updatePosition();
@@ -156,37 +158,62 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
     EnabledPeriodic();
 
-    /* =-=-=-=-=-=-=-=-=-=-= Arm Controls =-=-=-=-=-=-=-=-=-=-= */
+    // if (joystickOne.GetRawButtonReleased(DriverButton::Button12)) {
+    //     pChange += 0.1;
+    // } else if (joystickOne.GetRawButtonReleased(DriverButton::Button11)) {
+    //     pChange -= 0.1;
+    // }
+    // if (joystickOne.GetRawButtonReleased(DriverButton::Button8)) {
+    //     iChange += 0.1;
+    // } else if (joystickOne.GetRawButtonReleased(DriverButton::Button7)) {
+    //     iChange -= 0.1;
+    // }
+    // if (joystickOne.GetRawButtonReleased(DriverButton::Button10)) {
+    //     dChange += 0.01;
+    // } else if (joystickOne.GetRawButtonReleased(DriverButton::Button9)) {
+    //     dChange -= 0.01;
+    // }
+    
+    // a_FRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
+    // a_FLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
+    // a_BRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
+    // a_BLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange); //P 0.6, I 1.0 D 0.06
+    // frc::SmartDashboard::PutNumber("P value", 0.6 + pChange);
+    // frc::SmartDashboard::PutNumber("I value", 1.0 + iChange);
+    // frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
 
-    if (a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE && a_OperatorXboxController.GetRawButton(4)) {
-        a_Arm.ClawClose();
-        //later: move claw up into scoring position but don't score/ let go
+    /* =-=-=-=-=-=-=-=-=-=-= Claw Controls =-=-=-=-=-=-=-=-=-=-= */
+
+    if (a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE && a_DriverXboxController.GetYButton()) {
+        a_Claw.ClawClose();
+        //later: move claw up into scoring position but 
+        // don't score/ let go
     } 
 
     if(a_OperatorXboxController.GetYButton()) {
-        a_Arm.ClawMotorUp();
+        a_Claw.ArmMotorUp();
     }
     if(a_OperatorXboxController.GetAButton()) {
-        a_Arm.ClawMotorDown();
+        a_Claw.ArmMotorDown();
     }
     if(a_OperatorXboxController.GetXButton()) {
-        a_Arm.ClawOpen();
+        a_Claw.ClawOpen();
     }
     if(a_OperatorXboxController.GetBButton()) {
-        a_Arm.ClawClose();
+        a_Claw.ClawClose();
     }
 
     if(a_OperatorXboxController.GetPOV() == 90) {
-        a_Arm.ArmMotorUp();
+        a_Claw.ArmMotorUp();
     }
     if(a_OperatorXboxController.GetPOV() == 270) {
-        a_Arm.ArmMotorDown();
+        a_Claw.ArmMotorDown();
     }
     if(a_OperatorXboxController.GetPOV() == 0) {
-        a_Arm.ArmPistonUp();
+        a_Claw.ArmPistonUp();
     }
     if(a_OperatorXboxController.GetPOV() == 180) {
-        a_Arm.ArmPistonUp();
+        a_Claw.ArmPistonUp();
     }
 
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
@@ -286,12 +313,12 @@ void Robot::SetTargetType(target_type_enum target) {
         // Set target type to CONE
         a_LED.SetTargetType(target_type_enum::CONE);
         a_TOF.SetTargetType(target_type_enum::CONE);
-        a_Arm.ClawConePressure();
+        a_Claw.ConePressure();
     } else if(target_type == target_type_enum::CUBE) {
         // Set target type to CUBE
         a_LED.SetTargetType(target_type_enum::CUBE);
         a_TOF.SetTargetType(target_type_enum::CUBE);
-        a_Arm.ClawCubePressure();
+        a_Claw.CubePressure();
 
     }
 }
