@@ -35,6 +35,7 @@ double Autonomous::gettime_d(){
 
 
 //-------------------------------------Auto Stuff---------------------------------------------//
+
 void Autonomous::StartAuto(const std::string autoMode) {
     if(autoMode == BlueDropAndGoLeft){
         BDGL();

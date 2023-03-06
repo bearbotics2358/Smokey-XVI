@@ -151,13 +151,6 @@ class Autonomous {
         void StartAuto(const std::string autoMode);
         void PeriodicAuto(const std::string periodicAutoMode);
 
-    /*  const char * BlueGetCurrentPath();
-    void BlueStartAuto();
-    void BluePeriodicAuto();
-    const char *RedGetCurrentPath();
-    void RedStartAuto();
-    void RedPeriodicAuto();
-    */
     void DecidePath();
     Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive);//, Arm *Arm);
 

@@ -46,22 +46,6 @@ m = number engraved on module
 #define BL_ID 1
 #define BR_ID 6
 
-// #define FL_DRIVE_ID 15
-// #define FL_STEER_ID 16
-// #define FL_CANCODER_ID 24
-
-// #define FR_DRIVE_ID 7
-// #define FR_STEER_ID 8
-// #define FR_CANCODER_ID 20
-
-// #define BL_DRIVE_ID 9
-// #define BL_STEER_ID 10
-// #define BL_CANCODER_ID 21
-
-// #define BR_DRIVE_ID 5
-// #define BR_STEER_ID 6
-// #define BR_CANCODER_ID 19
-
 
 /*======= ENCODER CONSTANTS =======*/
 
@@ -89,16 +73,6 @@ m = number engraved on module
 
 #define BR_SWERVE_ABS_ENC_MIN_VOLTS 0.010986
 #define BR_SWERVE_ABS_ENC_MAX_VOLTS 4.963378
-
-// offset from 0 of the absolute encders
-//#define FL_SWERVE_ABS_ENC_OFFSET 16.24
-//#define FR_SWERVE_ABS_ENC_OFFSET 85.76
-//#define BL_SWERVE_ABS_ENC_OFFSET 0.22
-//#define BR_SWERVE_ABS_ENC_OFFSET 179.77
-#define FL_SWERVE_ABS_ENC_OFFSET 342.33
-#define FR_SWERVE_ABS_ENC_OFFSET 276.11
-#define BL_SWERVE_ABS_ENC_OFFSET 0.0
-#define BR_SWERVE_ABS_ENC_OFFSET 0.0
 
 #define CANCODER_OFFSET_1 129.5 - 180
 #define CANCODER_OFFSET_2 115.3 - 180

@@ -86,8 +86,6 @@ class Robot : public frc::TimedRobot {
 
         //LED a_LED;
 
-        // CanHandler a_canHandler;
-
         // stuff that autonomous needs
         
         double pChange;

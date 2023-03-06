@@ -20,27 +20,19 @@
 /*~~ hi :) ~~ */
 Robot::Robot():
 a_Gyro(GYRO_ID),
-//a_Arm(ARM_PUSH_SOLENOID_MODULE, ARM_PULL_SOLENOID_MODULE, ARM_OPEN_SOLENOID_MODULE, ARM_CLOSE_SOLENOID_MODULE, ARM_CARRIAGE_MOTOR, ARM_CLAW_MOTOR, ARM_CARRIAGE_CANCODER), //Get the IDs for the arms solenoids
+//a_Arm(ARM_PUSH_SOLENOID_MODULE, ARM_PULL_SOLENOID_MODULE, ARM_OPEN_SOLENOID_MODULE, ARM_CLOSE_SOLENOID_MODULE, ARM_CLAW_PRESSURE_CONE, ARM_CLAW_PRESSURE_CUBE, ARM_CARRIAGE_MOTOR, ARM_CLAW_MOTOR, ARM_CARRIAGE_CANCODER), //Get the IDs for the arms solenoids
 a_FLModule(misc::GetFLDrive(), misc::GetFLSteer(), misc::GetFLCANCoder()),
 a_FRModule(misc::GetFRDrive(), misc::GetFRSteer(), misc::GetFRCANCoder()),
 a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), misc::GetBLCANCoder()),
 a_BRModule(misc::GetBRDrive(), misc::GetBRSteer(), misc::GetBRCANCoder()),
 a_SwerveDrive(a_FLModule, a_FRModule, a_BLModule, a_BRModule, a_Gyro),
-a_Autonomous(&a_Gyro, &a_SwerveDrive),//, &a_Arm),
+a_Autonomous(&a_Gyro, &a_SwerveDrive),
 a_DriverXboxController(JOYSTICK_PORT),
 a_OperatorXboxController(XBOX_CONTROLLER)
-//a_CompressorController(),
-//a_TOF(), 
-//a_LED()
-// NEEDED A PORT, THIS IS PROBABLY WRONG, PLEASE FIX IT LATER
-//  handler("169.254.179.144", "1185", "data"),
-//  handler("raspberrypi.local", 1883, "PI/CV/SHOOT/DATA"),
-//  a_canHandler(CanHandler::layout2022()),
+// a_CompressorController(),
+// a_TOF(), 
+// a_LED()
 {
-    /*if (!handler.ready()) {
-        // do something if handler failed to connect
-    }*/
-
     a_FLModule.setDrivePID(0.001, 0, 0);
     a_FLModule.setSteerPID(0.6, 1.0, 0.06);
 
@@ -83,63 +75,26 @@ void Robot::RobotInit() {
 
 void Robot::RobotPeriodic() {
     a_Gyro.Update();
-   // a_Arm.updateDashboard();
-    //a_LED.Update();
+    // a_Arm.updateDashboard();
+    // a_LED.Update();
+    // a_TOF.Update();
     //a_SwerveDrive.updatePosition();
 
 //testing code block for PID tuning
 
-    // if(a_DriverXboxController.GetRawButton(3)) {
-    //     a_FRModule.steerToAng(120);
-    //     a_FLModule.steerToAng(120);
-    //     a_BRModule.steerToAng(120);
-    //     a_BLModule.steerToAng(120);
-    // } 
-    // else {
-    //     a_FRModule.steerToAng(150);
-    //     a_FLModule.steerToAng(150);
-    //     a_BRModule.steerToAng(150);
-    //     a_BLModule.steerToAng(150);
-    // }
-    
-    //printf("beam: %f/n", bstate);
-    /*
-
-    frc::SmartDashboard::PutNumber("Distance Driven: ", a_SwerveDrive.getAvgDistance());
-    frc::SmartDashboard::PutNumber("Gyro Angle: ", a_Gyro.getAngle());
-    frc::SmartDashboard::PutNumber("Gyro Yaw: ", a_Gyro.getYaw());
-    frc::SmartDashboard::PutNumber("Gyro Compass: ", a_Gyro.getAbsoluteCompassHeading());
-    frc::SmartDashboard::PutNumber("Robot x Position", a_SwerveDrive.getPosition().x());
-    frc::SmartDashboard::PutNumber("Robot y Position", a_SwerveDrive.getPosition().y());
-
-    frc::SmartDashboard::PutBoolean("Slow speed enabled", a_slowSpeed);
-
-    frc::SmartDashboard::PutNumber("Tank Pressure", a_CompressorController.getTankPressure());
-
-    */
+    if(a_DriverXboxController.GetRawButton(3)) {
+        a_FRModule.steerToAng(120);
+        a_FLModule.steerToAng(120);
+        a_BRModule.steerToAng(120);
+        a_BLModule.steerToAng(120);
+    } 
+    else {
+        a_FRModule.steerToAng(150);
+        a_FLModule.steerToAng(150);
+        a_BRModule.steerToAng(150);
+        a_BLModule.steerToAng(150);
+    }
 }
-
-        
-        /*
-        if (a_Xbox->GetRawButtonPressed(OperatorButton::Y)) {
-            if (autoPathMaster == BlueDropAndGoLeft) {
-                autoPathMaster = BlueChargeStationRight;
-            } else {
-                autoPathMaster = (AutoType) (autoPathMaster - 1);
-            }
-        }
-        if (a_Xbox->GetRawButtonPressed(OperatorButton::A)) {
-            if (autoPathMaster == BlueChargeStationRight) {
-                autoPathMaster = BlueDropAndGoLeft;
-            } else {
-                autoPathMaster = (AutoType) (autoPathMaster + 1);
-            }
-        }
-        */
-    
-    
-
-
 
 void Robot::DisabledInit() {
     a_doEnabledInit = true;
@@ -219,38 +174,35 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Arm Controls =-=-=-=-=-=-=-=-=-=-= */
 
-    // a_TOF.Update();
-
-    // if (a_TOF.GetTargetRangeIndicator() == TARGET_IN_RANGE) {
-    //    // a_Arm.ClawClose();
-    // } else {
-    //    // a_Arm.ClawOpen();
-    // }
+    // if (a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE && a_OperatorXboxController.GetRawButton(4)) {
+    //     a_Arm.ClawClose();
+    //     //later: move claw up into scoring position but don't score/ let go
+    // } 
 
     if(a_OperatorXboxController.GetYButton()) {
-       // a_Arm.ClawMotorUp();
+        // a_Arm.ClawMotorUp();
     }
     if(a_OperatorXboxController.GetAButton()) {
-       // a_Arm.ClawMotorDown();
+        // a_Arm.ClawMotorDown();
     }
     if(a_OperatorXboxController.GetXButton()) {
-       // a_Arm.ClawOpen();
+        // a_Arm.ClawOpen();
     }
     if(a_OperatorXboxController.GetBButton()) {
-       // a_Arm.ClawClose();
+        // a_Arm.ClawClose();
     }
 
     if(a_OperatorXboxController.GetPOV() == 90) {
-       // a_Arm.ArmMotorUp();
+        // a_Arm.ArmMotorUp();
     }
     if(a_OperatorXboxController.GetPOV() == 270) {
-       // a_Arm.ArmMotorDown();
+        // a_Arm.ArmMotorDown();
     }
     if(a_OperatorXboxController.GetPOV() == 0) {
-       // a_Arm.ArmPistonUp();
+        // a_Arm.ArmPistonUp();
     }
     if(a_OperatorXboxController.GetPOV() == 180) {
-      //  a_Arm.ArmPistonUp();
+        // a_Arm.ArmPistonUp();
     }
 
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
@@ -287,20 +239,20 @@ void Robot::TeleopPeriodic() {
 
     float multiplier = 1.0;
     if (a_slowSpeed) {
-        multiplier = 0.5;
+        multiplier = 0.25;
     }
  
-    float x = a_OperatorXboxController.GetLeftX();
-    float y = a_OperatorXboxController.GetLeftY();
-    float z = a_OperatorXboxController.GetRightX();
+    float x = a_DriverXboxController.GetLeftX();
+    float y = a_DriverXboxController.GetLeftY();
+    float z = a_DriverXboxController.GetRightX();
 
-    if (fabs(x) < 0.25) {
+    if (fabs(x) < 0.10) {
         x = 0;
     }
-    if (fabs(y) < 0.25) {
+    if (fabs(y) < 0.10) {
         y = 0;
     }
-    if (fabs(z) < 0.25) {
+    if (fabs(z) < 0.10) {
         z = 0;
     }
 
@@ -328,12 +280,12 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
 
-    // if(a_OperatorXboxController.GetRawButton(1)) { //can change button later
-    //     SetTargetType(target_type_enum::CONE);
-    // } 
-    // else if(a_OperatorXboxController.GetRawButton(2)) { //can change button later
-    //     SetTargetType(target_type_enum::CUBE);
-    // }
+    if(a_OperatorXboxController.GetRawButton(1)) { //can change button later
+        SetTargetType(target_type_enum::CONE);
+    } 
+    else if(a_OperatorXboxController.GetRawButton(2)) { //can change button later
+        SetTargetType(target_type_enum::CUBE);
+    }
 }
 
 void Robot::TestInit() {

@@ -18,16 +18,10 @@ class SwerveModule // Handles steering and driving of each Swerve Module
         // sets the drive encoder to 0 ticks
         void resetDriveEncoder();
 
-        // recalibrates the relative steering encoder using the absolute steering encoder
-        void resetSteerEncoder();
-
         // scaled angle between 0 and 360
         float getAngle();
         // get angle from relative encoder in degrees, does not take into consideration currently set zero point
         double getRelativeAngle();
-        // TEMP
-        // TODO: remove
-        float getAbsAngleDegrees();
 
         void goToPosition(float meters); // Position PID control, moves drive wheel to specified position
         void steerToAng(float degrees); // Angle PID control
@@ -55,10 +49,6 @@ class SwerveModule // Handles steering and driving of each Swerve Module
         // drives in the direction of the vector
         // the magnitude of the vector is the speed in meters per second
         void driveDirection(Vec2 direction);
-
-        // temp
-        // TODO: remove
-        double getAbsEncoderVolts() const;
 
         void debugSteer(float angle);
 

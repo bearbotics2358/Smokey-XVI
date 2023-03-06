@@ -46,13 +46,6 @@ void SwerveModule::resetDriveEncoder() {
     driveEnc.SetIntegratedSensorPosition(0);
 }
 
-// void SwerveModule::resetSteerEncoder() {
-//     // need to subtract from 1 because the encoders face oppoosite direction
-//     double absAngle = 360.0 * (1.0 - absSteerEnc.getRotations());
-//     float relAngle = getRelativeAngle();
-//     encZeroPoint = absAngle - relAngle;
-// }
-
 double SwerveModule::getRelativeAngle() {
     //float temp = steerEncFalcon.GetIntegratedSensorPosition() * -1;
     double angle = m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
@@ -77,10 +70,6 @@ float SwerveModule::getAngle() {
     return misc::clampDegrees(getRelativeAngle() + encZeroPoint);
 }
 
-// float SwerveModule::getAbsAngleDegrees() {
-//     return absSteerEnc.getRotations() * 360.0;
-// }
-
 void SwerveModule::goToPosition(float meters) {
     float ticks = SwerveModule::metersToMotorTicks(-meters);
     driveMotor.Set(TalonFXControlMode::Position, ticks);
@@ -93,9 +82,6 @@ void SwerveModule::steerToAng(float degrees) {
     //float trueangle = (fmod(trueticks, 44000) / 44000) * 360;
     float speed = std::clamp(steerPID.Calculate(getAngle(), degrees) / 270.0, -0.5, 0.5);
     steerMotor.Set(TalonFXControlMode::PercentOutput, speed);
-    /*if (_steerID == 8) { 
-        printf("angle: %6.2f    trueangle: %6.2f   ticks: %6.2f  trueticks: %6.2f    speed: %6.2f\n", degrees, trueangle, ticks, trueticks, speed);
-    }*/
     /*if(_CANCoderID == misc::GetBLCANCoder()) {
         int position = m_CANCoder.GetAbsolutePosition();
         printf("position: %6.2f \n", position);
@@ -214,7 +200,3 @@ double SwerveModule::motorTicksToMeters(double motorTicks) {
     double angularPosition = rotations * 2 * M_PI;
     return DISTANCE_ADJUSTMANT_FACTOR * angularPosition * 0.5 * WHEEL_DIAMETER;
 }
-
-// double SwerveModule::getAbsEncoderVolts() const {
-//     return absSteerEnc.getVolts();
-// }
