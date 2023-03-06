@@ -102,45 +102,7 @@ void Robot::RobotPeriodic() {
         a_BRModule.steerToAng(150);
         a_BLModule.steerToAng(150);
     }
-    
-    //printf("beam: %f/n", bstate);
-    /*
-
-    frc::SmartDashboard::PutNumber("Distance Driven: ", a_SwerveDrive.getAvgDistance());
-    frc::SmartDashboard::PutNumber("Gyro Angle: ", a_Gyro.getAngle());
-    frc::SmartDashboard::PutNumber("Gyro Yaw: ", a_Gyro.getYaw());
-    frc::SmartDashboard::PutNumber("Gyro Compass: ", a_Gyro.getAbsoluteCompassHeading());
-    frc::SmartDashboard::PutNumber("Robot x Position", a_SwerveDrive.getPosition().x());
-    frc::SmartDashboard::PutNumber("Robot y Position", a_SwerveDrive.getPosition().y());
-
-    frc::SmartDashboard::PutBoolean("Slow speed enabled", a_slowSpeed);
-
-    frc::SmartDashboard::PutNumber("Tank Pressure", a_CompressorController.getTankPressure());
-
-    */
 }
-
-        
-        /*
-        if (a_Xbox->GetRawButtonPressed(OperatorButton::Y)) {
-            if (autoPathMaster == BlueDropAndGoLeft) {
-                autoPathMaster = BlueChargeStationRight;
-            } else {
-                autoPathMaster = (AutoType) (autoPathMaster - 1);
-            }
-        }
-        if (a_Xbox->GetRawButtonPressed(OperatorButton::A)) {
-            if (autoPathMaster == BlueChargeStationRight) {
-                autoPathMaster = BlueDropAndGoLeft;
-            } else {
-                autoPathMaster = (AutoType) (autoPathMaster + 1);
-            }
-        }
-        */
-    
-    
-
-
 
 void Robot::DisabledInit() {
     a_doEnabledInit = true;

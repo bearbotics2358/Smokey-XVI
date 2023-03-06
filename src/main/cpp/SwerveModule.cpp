@@ -82,9 +82,6 @@ void SwerveModule::steerToAng(float degrees) {
     float trueangle = (fmod(trueticks, 44000) / 44000) * 360;
     float speed = std::clamp(steerPID.Calculate(getAngle(), degrees) / 270.0, -0.5, 0.5);
     steerMotor.Set(TalonFXControlMode::PercentOutput, speed);
-    /*if (_steerID == 8) { 
-        printf("angle: %6.2f    trueangle: %6.2f   ticks: %6.2f  trueticks: %6.2f    speed: %6.2f\n", degrees, trueangle, ticks, trueticks, speed);
-    }*/
     /*if(_CANCoderID == misc::GetBLCANCoder()) {
         int position = m_CANCoder.GetAbsolutePosition();
         printf("position: %6.2f \n", position);
