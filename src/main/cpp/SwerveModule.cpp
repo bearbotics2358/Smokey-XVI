@@ -7,12 +7,11 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <ctre/phoenix/sensors/CANCoder.h>
 
-SwerveModule::SwerveModule(int driveID, int steerID, AbsoluteEncoder&& absEncoder, int CANCoderID):
+SwerveModule::SwerveModule(int driveID, int steerID, int CANCoderID):
 driveMotor(driveID),
 steerMotor(steerID),
 driveEnc(driveMotor),
 steerEncFalcon(steerMotor),
-absSteerEnc(std::move(absEncoder)),
 m_CANCoder(CANCoderID),
 steerPID(0, 0, 0) {
     // by default this selects the ingetrated sensor
@@ -47,13 +46,6 @@ void SwerveModule::resetDriveEncoder() {
     driveEnc.SetIntegratedSensorPosition(0);
 }
 
-void SwerveModule::resetSteerEncoder() {
-    // need to subtract from 1 because the encoders face oppoosite direction
-    double absAngle = 360.0 * (1.0 - absSteerEnc.getRotations());
-    float relAngle = getRelativeAngle();
-    encZeroPoint = absAngle - relAngle;
-}
-
 double SwerveModule::getRelativeAngle() {
     float temp = steerEncFalcon.GetIntegratedSensorPosition() * -1;
     double CANticks = (m_CANCoder.GetAbsolutePosition() * -1) - CANCODER_OFFSETS[_CANCoderID];
@@ -76,10 +68,6 @@ float SwerveModule::getAngle() {
         printf("position: %6.2f \n", position);
     }
     return misc::clampDegrees(getRelativeAngle() + encZeroPoint);
-}
-
-float SwerveModule::getAbsAngleDegrees() {
-    return absSteerEnc.getRotations() * 360.0;
 }
 
 void SwerveModule::goToPosition(float meters) {
@@ -214,8 +202,4 @@ double SwerveModule::motorTicksToMeters(double motorTicks) {
     // angular position in radians
     double angularPosition = rotations * 2 * M_PI;
     return DISTANCE_ADJUSTMANT_FACTOR * angularPosition * 0.5 * WHEEL_DIAMETER;
-}
-
-double SwerveModule::getAbsEncoderVolts() const {
-    return absSteerEnc.getVolts();
 }
