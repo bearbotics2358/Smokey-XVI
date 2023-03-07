@@ -41,9 +41,9 @@ void Gyro::Cal() {
 
     WaitForValues();
     Update();
-    angleBias[0] += XAxis;
-    angleBias[1] += YAxis;
-    angleBias[2] += ZAxis;
+    // angleBias[0] += XAxis;
+    // angleBias[1] += YAxis;
+    // angleBias[2] += ZAxis;
 }
 
 void Gyro::Update() {
@@ -52,24 +52,26 @@ void Gyro::Update() {
         return;
     }
     double time = frc::Timer::GetFPGATimestamp().value();
-    double timeDelta = (time - lastUpdate);
+    // double timeDelta = (time - lastUpdate);
 
-    double storeAngles[3];
+    // double storeAngles[3];
 
-    a_PigeonIMU.GetAccelerometerAngles(storeAngles);
+    // a_PigeonIMU.GetAccelerometerAngles(storeAngles);
 
-    XAxis = storeAngles[0];
-    XAxis = XAxis / 14.375;
+    // XAxis = storeAngles[0];
+    // XAxis = XAxis / 14.375;
 
-    YAxis = storeAngles[1];
-    YAxis = YAxis / 14.375;
+    // YAxis = storeAngles[1];
+    // YAxis = YAxis / 14.375;
 
-    ZAxis = storeAngles[2];
-    ZAxis = ZAxis / 14.375;
+    // ZAxis = storeAngles[2];
+    // ZAxis = ZAxis / 14.375;
 
-    angle[0] += ((XAxis - angleBias[0]) * timeDelta);
-    angle[1] += ((YAxis - angleBias[1]) * timeDelta);
-    angle[2] += ((ZAxis - angleBias[2]) * timeDelta);
+    // angle[0] += ((XAxis - angleBias[0]) * timeDelta);
+    // angle[1] += ((YAxis - angleBias[1]) * timeDelta);
+    // angle[2] += ((ZAxis - angleBias[2]) * timeDelta);
+
+    Zero();
 
     lastUpdate = time;
 }
