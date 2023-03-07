@@ -185,7 +185,7 @@ void Autonomous::PeriodicBCSL() {
     AutoState1 nextState = a_AutoState1;
 
     switch (a_AutoState1) {
-         case kBlueAutoIdle1:
+        case kBlueAutoIdle1:
             StopSwerves();
             break;
         case kBlueExtend1:
@@ -209,22 +209,21 @@ void Autonomous::PeriodicBCSL() {
                 state_time = gettime_d();
                 nextState = kBlueDriveAway1;
             }
-           nextState = kBlueDriveAway1;
             break;
 
         case kBlueDriveAway1:
-            if (DriveDirection(3.6576, 0, 0.25, false)) {
-                  if (DriveDirection(2.667, 270, 0.25, false)) {
-                
-                nextState = kBlueAutoIdle1;
-            
-            }
+            if (DriveDirection(3.6576, 90, 0.25, false)) {
+                nextState = kBlueGoToStation1;
             }
             //need to actually use drivedirection
             break;
 
         case kBlueGoToStation1:
-          
+           if (DriveDirection(2.667, 270, 0.25, false)) {
+                
+                nextState = kBlueAutoIdle1;
+             
+            }
             //need to actually use drivedirection
             break;
 
