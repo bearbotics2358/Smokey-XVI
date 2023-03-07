@@ -12,15 +12,12 @@
 #include "Claw.h"
 #include <frc/XboxController.h>
 
-
 //TODO: FIX LINES 68, 152-164, AND 241-261
-
-
 
 /*~~ hi :) ~~ */
 Robot::Robot():
 a_Gyro(GYRO_ID),
-a_Claw(ARM_MOTOR, SHUTTLE_MOTOR, PISTON_PUSH_SOLENOID_MODULE, PISTON_PULL_SOLENOID_MODULE, CLAW_OPEN_SOLENOID_MODULE, CLAW_CLOSE_SOLENOID_MODULE, CONE_PRESSURE_SOLENOID, CUBE_PRESSURE_SOLENOID, LIMIT_SWITCH, SHUTTLE_CANCODER), //Get the IDs for the arms solenoids
+a_Claw(ARM_MOTOR, SHUTTLE_MOTOR, PISTON_PUSH_SOLENOID_MODULE, PISTON_PULL_SOLENOID_MODULE, CLAW_OPEN_SOLENOID_MODULE, CLAW_CLOSE_SOLENOID_MODULE, CONE_PRESSURE_SOLENOID, CUBE_PRESSURE_SOLENOID, LIMIT_SWITCH, CANCODER_ID_ARM), //Get the IDs for the arms solenoids
 a_FLModule(misc::GetFLDrive(), misc::GetFLSteer(), misc::GetFLCANCoder()),
 a_FRModule(misc::GetFRDrive(), misc::GetFRSteer(), misc::GetFRCANCoder()),
 a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), misc::GetBLCANCoder()),

@@ -67,6 +67,8 @@ int Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle,
                 }
             }
 
+            break;
+
             case 1: // shuttle movement
             armMotor.StopMotor();
             if (desiredShuttle == 0){
@@ -83,6 +85,8 @@ int Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle,
                     shuttleMotor.Set(shuttleMotorSpeed);
                 }
             }
+
+            break;
             
             case 2: // finish rotation
             shuttleMotor.StopMotor();
@@ -100,12 +104,15 @@ int Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle,
                 }
             }
 
+            break;
+
             case 3: // extend piston if needed
             armMotor.StopMotor();
             if (extend == true){
                 a_Piston.Set(frc::DoubleSolenoid::Value::kForward);
             }
             stage = 4;
+            break;
         }
     } 
 }
