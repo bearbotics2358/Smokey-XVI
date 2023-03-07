@@ -82,18 +82,18 @@ void Robot::RobotPeriodic() {
 
 //testing code block for PID tuning
 
-    if(a_DriverXboxController.GetRawButton(3)) {
-        a_FRModule.steerToAng(120);
-        a_FLModule.steerToAng(120);
-        a_BRModule.steerToAng(120);
-        a_BLModule.steerToAng(120);
-    } 
-    else {
-        a_FRModule.steerToAng(150);
-        a_FLModule.steerToAng(150);
-        a_BRModule.steerToAng(150);
-        a_BLModule.steerToAng(150);
-    }
+    // if(a_DriverXboxController.GetRawButton(3)) {
+    //     a_FRModule.steerToAng(120);
+    //     a_FLModule.steerToAng(120);
+    //     a_BRModule.steerToAng(120);
+    //     a_BLModule.steerToAng(120);
+    // } 
+    // else {
+    //     a_FRModule.steerToAng(150);
+    //     a_FLModule.steerToAng(150);
+    //     a_BRModule.steerToAng(150);
+    //     a_BLModule.steerToAng(150);
+    // }
 }
 
 void Robot::DisabledInit() {
@@ -243,9 +243,9 @@ void Robot::TeleopPeriodic() {
         multiplier = 0.25;
     }
  
-    float x = a_DriverXboxController.GetLeftX();
-    float y = a_DriverXboxController.GetLeftY();
-    float z = a_DriverXboxController.GetRightX();
+    float x = a_OperatorXboxController.GetLeftX();
+    float y = a_OperatorXboxController.GetLeftY();
+    float z = a_OperatorXboxController.GetRightX();
 
     if (fabs(x) < 0.10) {
         x = 0;

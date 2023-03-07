@@ -194,32 +194,44 @@ void Autonomous::PeriodicBCSL() {
             break;
         case kBlueDrop1:
              //a_Claw->ClawOpen();
-             nextState = kBlueRetract1;
+             if(gettime_d() > state_time + CLAW_PISTON_TIME) {
+                // reset state time
+                state_time = gettime_d();
+                nextState = kBlueRetract1;
+            }
+             
             break;
 
         case kBlueRetract1:
            //a_Claw->ArmPistonDown();
+           if(gettime_d() > state_time + CLAW_PISTON_TIME) {
+                // reset state time
+                state_time = gettime_d();
+                nextState = kBlueDriveAway1;
+            }
            nextState = kBlueDriveAway1;
             break;
 
         case kBlueDriveAway1:
             if (DriveDirection(3.6576, 0, 0.25, false)) {
-                nextState = kBlueGoToStation1;
+                  if (DriveDirection(2.667, 270, 0.25, false)) {
+                
+                nextState = kBlueAutoIdle1;
+            
+            }
             }
             //need to actually use drivedirection
             break;
 
         case kBlueGoToStation1:
-            if (DriveDirection(2.667, -90, 0.25, false)) {
-                nextState = kBlueBalance1;
-            }
+          
             //need to actually use drivedirection
             break;
 
-        case kBlueBalance1:
-            Balance(-90);
-            nextState = kBlueAutoIdle1;
-            break;
+        // case kBlueBalance1:
+        //     Balance(-90);
+        //     nextState = kBlueAutoIdle1;
+        //     break;
 
        }
     a_AutoState1 = nextState;
