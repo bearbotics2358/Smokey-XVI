@@ -63,7 +63,7 @@ double SwerveModule::getRelativeAngle() {
 }
 
 float SwerveModule::getAngle() {
-    if(_CANCoderID == misc::GetFLCANCoder()) {
+    if((_CANCoderID + 17) == misc::GetFLCANCoder()) {
         double position = m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
         printf("position: %6.2f \n", position);
     }
