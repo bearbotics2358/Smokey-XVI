@@ -4,8 +4,7 @@
 
 Claw::Claw(int armMotorId, int shuttleMotorId, int pistonPushSolenoidModule, 
         int pistonPullSolenoidModule, int clawPushSolenoidModule, int clawPullSolenoidModule, 
-        int conePressureSolenoidModule, int cubePressureSolenoidModule, 
-        int limitSwitchId, int carriageCANCoderID):
+        int conePressureSolenoidModule, int cubePressureSolenoidModule, int carriageCANCoderID):
 a_Piston(frc::PneumaticsModuleType::REVPH, pistonPushSolenoidModule, pistonPullSolenoidModule),
 a_ClawSolenoid(frc::PneumaticsModuleType::REVPH, clawPushSolenoidModule, clawPullSolenoidModule),
 a_PressureSolenoid(frc::PneumaticsModuleType::REVPH, conePressureSolenoidModule, cubePressureSolenoidModule),
@@ -13,18 +12,18 @@ armMotor(armMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
 shuttleMotor(shuttleMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
 armEncoder(armMotor.GetEncoder()),
 shuttleEncoder(shuttleMotor.GetEncoder()), 
-shuttleZeroSwitch(limitSwitchId),
-a_CANCoder(carriageCANCoderID),
-a_carriageMotorEncoder(shuttleMotor.GetEncoder()) {
+/*shuttleZeroSwitch(limitSwitchId)*/
+a_CANCoder(carriageCANCoderID) {
     _CANCoderID = carriageCANCoderID - 17;
     armEncoder.SetPositionConversionFactor(20); // 360 / 18 (ticks per revolution for the rev encoder)
     shuttleEncoder.SetPositionConversionFactor(20); 
 }
 
 void Claw::clawInit() {
-    transformClaw(30, false, 0, 1);
+    transformClaw(30, false, 0);
 }
 
+/*
 bool Claw::zeroShuttle() {
     if (shuttleZeroSwitch.limitSwitchPressed() == true){
         shuttleMotor.StopMotor();
@@ -34,14 +33,15 @@ bool Claw::zeroShuttle() {
         return false;
     }
 }
+*/
 
-int Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle, int startStage) {
+int Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle) {
     // stage denotes the starting stage the function will start at when called. 
     // stage 4 means tells Robot that the transformClaw function has completed the transformation, and 
     // will no longer call it.
     double armMotorSpeed = 0.1;
     double shuttleMotorSpeed = 0.1;
-    int stage = startStage;
+    int stage = 0;
 
     // forward = true, reverse = false
     if (extend == false){
@@ -72,10 +72,10 @@ int Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle,
             case 1: // shuttle movement
             armMotor.StopMotor();
             if (desiredShuttle == 0){
-                zeroShuttle();
-                if (zeroShuttle() == true){
-                    stage = 2;
-                }
+                //zeroShuttle();
+                // if (zeroShuttle() == true){
+                //     stage = 2;
+                // }
             } else {
                 if (abs(shuttleEncoder.GetPosition() - desiredShuttle) < 3){
                     stage = 2;
@@ -119,7 +119,7 @@ int Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle,
 
 void Claw::updateDashboard(){
     frc::SmartDashboard::PutNumber("arm absolute encoder: ", getAngle());
-    frc::SmartDashboard::PutNumber("shuttle motor position: ", a_carriageMotorEncoder.GetPosition());
+    frc::SmartDashboard::PutNumber("shuttle motor position: ", shuttleEncoder.GetPosition());
     if (a_Piston.Get() == frc::DoubleSolenoid::Value::kReverse){
         frc::SmartDashboard::PutString("arm solenoid position: ", "reverse");
     } else if (a_Piston.Get() == frc::DoubleSolenoid::Value::kForward){
@@ -128,6 +128,14 @@ void Claw::updateDashboard(){
         frc::SmartDashboard::PutString("arm solenoid position: ", "off");
     }
     
+}
+
+void Claw::StopShuttle(){
+    shuttleMotor.StopMotor();
+}
+
+void Claw::StopArm(){
+    armMotor.StopMotor();
 }
 
 double Claw::getAngle(){

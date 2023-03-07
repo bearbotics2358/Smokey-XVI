@@ -23,7 +23,7 @@
 
 #define SHUTTLE_MOTOR 22
 #define ARM_MOTOR 12
-#define LIMIT_SWITCH 32
+#define LIMIT_SWITCH 0
 
 #define MAX_CLIMB_PERCENT 0.2
 #define MAX_FREE_SPEED 16.3
