@@ -11,12 +11,13 @@
 //#define NEW_SWERVE
 
 #define GYRO_ID 35 // TODO: UPDATE TO CORRECT NUMBER
-#define PISTON_PUSH_SOLENOID_MODULE 1
-#define PISTON_PULL_SOLENOID_MODULE 2
-#define CLAW_OPEN_SOLENOID_MODULE 3
-#define CLAW_CLOSE_SOLENOID_MODULE 4
-#define CONE_PRESSURE_SOLENOID 5
-#define CUBE_PRESSURE_SOLENOID 6
+#define PISTON_PUSH_SOLENOID_MODULE 10
+#define PISTON_PULL_SOLENOID_MODULE 11
+// UNSURE IF THIS IS THE CORRECT ORDER FOR THE CLAW AND PRESSURE SOLENOIDS
+#define CLAW_OPEN_SOLENOID_MODULE 12
+#define CLAW_CLOSE_SOLENOID_MODULE 13
+#define CONE_PRESSURE_SOLENOID 14
+#define CUBE_PRESSURE_SOLENOID 15
 
 #define EXTEND_PISTON_TIME 0.5
 #define CLAW_PISTON_TIME 0.5
@@ -169,13 +170,13 @@ constexpr units::angle::radian_t TARGET_PITCH = units::angle::radian_t(0.0);
 /* ============= Arduino ============= */
 
 #define BAUD_RATE_TOF 115200
-#define USB_PORT_TOF frc::SerialPort::kUSB1
+#define USB_PORT_TOF frc::SerialPort::kMXP
 #define DATA_BITS_TOF 8
 #define PARITY_TOF frc::SerialPort::kParity_None
 #define STOP_BITS_TOF frc::SerialPort::kStopBits_One
 
 #define BAUD_RATE_ARDUINO 9600
-#define USB_PORT_ARDUINO frc::SerialPort::kUSB2
+#define USB_PORT_ARDUINO frc::SerialPort::kUSB1
 #define DATA_BITS_ARDUINO 8
 #define PARITY_ARDUINO frc::SerialPort::kParity_None
 #define STOP_BITS_ARDUINO frc::SerialPort::kStopBits_One
