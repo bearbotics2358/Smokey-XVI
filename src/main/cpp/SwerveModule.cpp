@@ -48,9 +48,9 @@ void SwerveModule::resetDriveEncoder() {
 
 double SwerveModule::getRelativeAngle() {
     float temp = steerEncFalcon.GetIntegratedSensorPosition() * -1;
-    double CANticks = m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
+    double angle = m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
     //printf("%f\n",temp);
-    float angle = (fmod(temp, 44000) / 44000) * 360; // convert to angle in degrees -- we were getting 44000 ticks per revolution
+    //float angle = (fmod(angle, 44000) / 44000) * 360; // convert to angle in degrees -- we were getting 44000 ticks per revolution
     //if (_steerID == 8){ printf("Raw Angle: %f\n",angle); } //TODO: Delete this
     float adjusted = angle;
     if (angle < 0) {
@@ -82,10 +82,10 @@ void SwerveModule::steerToAng(float degrees) {
     float trueangle = (fmod(trueticks, 44000) / 44000) * 360;
     float speed = std::clamp(steerPID.Calculate(getAngle(), degrees) / 270.0, -0.5, 0.5);
     steerMotor.Set(TalonFXControlMode::PercentOutput, speed);
-    /*if(_CANCoderID == misc::GetBLCANCoder()) {
-        int position = m_CANCoder.GetAbsolutePosition();
-        printf("position: %6.2f \n", position);
-    }*/
+    // if(_CANCoderID == misc::GetBLCANCoder()) {
+    //     int position = m_CANCoder.GetAbsolutePosition();
+    //     printf("position: %6.2f \n", position);
+    // }
 }
 
 void SwerveModule::debugSteer(float angle) {
@@ -93,10 +93,10 @@ void SwerveModule::debugSteer(float angle) {
     float trueticks = steerEncFalcon.GetIntegratedSensorPosition() * -1;
     double CANticks = m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
     float trueangle = (fmod(trueticks, 44000) / 44000) * 360;
-    if (_steerID == 8) { 
-        printf("angle: %6.2f    trueangle: %6.2f   ticks: %6.2f  trueticks: %6.2f\n", angle, trueangle, ticks, trueticks); 
-    }
-    steerMotor.Set(TalonFXControlMode::Position, ticks);
+    // if (_steerID == 5) { 
+    //     printf("angle: %6.2f    trueangle: %6.2f   ticks: %6.2f  trueticks: %6.2f\n", angle, trueangle, ticks, trueticks); 
+    // }
+    steerMotor.Set(TalonFXControlMode::Position, angle);
 }
 
 void SwerveModule::setDrivePercent(float percent) {

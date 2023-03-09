@@ -40,6 +40,10 @@ void LED::Update()
 	
 	while (m_serial.GetBytesReceived() > 0) {
 		m_serial.Read(&rx_buff[rx_index], 1);
+
+		printf("LED LED LED LED: %c\n", rx_buff[rx_index]);
+ 
+		
 		if((rx_buff[rx_index] == '\r') 
 			 || (rx_buff[rx_index] == '\n')) {
 

@@ -15,8 +15,6 @@
 #define PISTON_PULL_SOLENOID_MODULE 11
 #define CLAW_OPEN_SOLENOID_MODULE 12
 #define CLAW_CLOSE_SOLENOID_MODULE 13
-#define CONE_PRESSURE_SOLENOID 14
-#define CUBE_PRESSURE_SOLENOID 15
 
 #define EXTEND_PISTON_TIME 0.5
 #define CLAW_PISTON_TIME 0.5
@@ -44,10 +42,10 @@ m = number engraved on module
 
 */
 
-#define FL_ID 7
-#define FR_ID 2
-#define BL_ID 1
-#define BR_ID 6
+#define FL_ID 8
+#define FR_ID 4
+#define BL_ID 5
+#define BR_ID 3
 
 
 /*======= ENCODER CONSTANTS =======*/
@@ -79,13 +77,13 @@ m = number engraved on module
 
 #define CANCODER_OFFSET_1 129.5 - 180
 #define CANCODER_OFFSET_2 115.3 - 180
-#define CANCODER_OFFSET_3 0
-#define CANCODER_OFFSET_4 0
-#define CANCODER_OFFSET_5 0
+#define CANCODER_OFFSET_3 252.7
+#define CANCODER_OFFSET_4 235.4
+#define CANCODER_OFFSET_5 41.2
 #define CANCODER_OFFSET_6 127.4 - 180
 #define CANCODER_OFFSET_7 240.7 - 180
-#define CANCODER_OFFSET_8 0
-#define CANCODER_OFFSET_ARM 130.34
+#define CANCODER_OFFSET_8 157.6
+#define CANCODER_OFFSET_ARM -130.34
 
 #define CANCODER_ID_1 17
 #define CANCODER_ID_2 18
@@ -169,13 +167,14 @@ constexpr units::angle::radian_t TARGET_PITCH = units::angle::radian_t(0.0);
 /* ============= Arduino ============= */
 
 #define BAUD_RATE_TOF 115200
-#define USB_PORT_TOF frc::SerialPort::kUSB2
+#define USB_PORT_TOF frc::SerialPort::kMXP
+//#define USB_PORT_TOF frc::SerialPort::kUSB1 (seeing TOF print statements and roborio then rebooting)
 #define DATA_BITS_TOF 8
 #define PARITY_TOF frc::SerialPort::kParity_None
 #define STOP_BITS_TOF frc::SerialPort::kStopBits_One
 
 #define BAUD_RATE_ARDUINO 115200
-#define USB_PORT_ARDUINO frc::SerialPort::kUSB1
+#define USB_PORT_ARDUINO frc::SerialPort::kOnboard
 #define DATA_BITS_ARDUINO 8
 #define PARITY_ARDUINO frc::SerialPort::kParity_None
 #define STOP_BITS_ARDUINO frc::SerialPort::kStopBits_One

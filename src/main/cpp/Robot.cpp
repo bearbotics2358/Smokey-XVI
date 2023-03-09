@@ -17,7 +17,7 @@
 /*~~ hi :) ~~ */
 Robot::Robot():
 a_Gyro(GYRO_ID),
-a_Claw(ARM_MOTOR, SHUTTLE_MOTOR, PISTON_PUSH_SOLENOID_MODULE, PISTON_PULL_SOLENOID_MODULE, CLAW_OPEN_SOLENOID_MODULE, CLAW_CLOSE_SOLENOID_MODULE, CONE_PRESSURE_SOLENOID, CUBE_PRESSURE_SOLENOID, CANCODER_ID_ARM), //Get the IDs for the arms solenoids
+a_Claw(ARM_MOTOR, SHUTTLE_MOTOR, PISTON_PUSH_SOLENOID_MODULE, PISTON_PULL_SOLENOID_MODULE, CLAW_OPEN_SOLENOID_MODULE, CLAW_CLOSE_SOLENOID_MODULE, /*CONE_PRESSURE_SOLENOID, CUBE_PRESSURE_SOLENOID,*/ CANCODER_ID_ARM, LIMIT_SWITCH), //Get the IDs for the arms solenoids
 a_FLModule(misc::GetFLDrive(), misc::GetFLSteer(), misc::GetFLCANCoder()),
 a_FRModule(misc::GetFRDrive(), misc::GetFRSteer(), misc::GetFRCANCoder()),
 a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), misc::GetBLCANCoder()),
@@ -83,7 +83,7 @@ void Robot::RobotPeriodic() {
     a_Claw.updateDashboard();
     a_LED.Update();
     a_TOF.Update();
-    //a_SwerveDrive.updatePosition();
+    a_SwerveDrive.updatePosition();
 
 //testing code block for PID tuning
 
@@ -186,10 +186,10 @@ void Robot::TeleopPeriodic() {
     } 
 
     if(a_OperatorXboxController.GetYButton()) {
-        a_Claw.ArmMotorUp();
+        a_Claw.ShuttleMotorUp();
     }
     if(a_OperatorXboxController.GetAButton()) {
-        a_Claw.ArmMotorDown();
+        a_Claw.ShuttleMotorDown();
     }
     if(a_OperatorXboxController.GetXButton()) {
         a_Claw.ClawOpen();
@@ -310,12 +310,12 @@ void Robot::SetTargetType(target_type_enum target) {
         // Set target type to CONE
         a_LED.SetTargetType(target_type_enum::CONE);
         a_TOF.SetTargetType(target_type_enum::CONE);
-        a_Claw.ConePressure();
+        //a_Claw.ConePressure();
     } else if(target_type == target_type_enum::CUBE) {
         // Set target type to CUBE
         a_LED.SetTargetType(target_type_enum::CUBE);
         a_TOF.SetTargetType(target_type_enum::CUBE);
-        a_Claw.CubePressure();
+        //a_Claw.CubePressure();
 
     }
 }

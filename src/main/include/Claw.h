@@ -9,12 +9,12 @@
 class Claw {
     public:
         Claw(int armMotorId, int shuttleMotorId, int pistonPushSolenoidModule, 
-        int pistonPullSolenoidModule, int cubePullSolenoidModule, 
-        int cubePushSolenoidModule, int conePullSolenoidModule, 
-        int conePushSolenoidModule, int carriageCANCoder);
+        int pistonPullSolenoidModule, int clawPushSolenoidModule, 
+        int clawPullSolenoidModule, /*int conePressureSolenoidModule, 
+        int cubePressureSolenoidModule, */ int carriageCANCoder, int limitSwitchId);
         int transformClaw(double angle, bool extend, double shuttle);
         void clawInit();
-        //bool zeroShuttle();
+        bool zeroShuttle();
         void setSolenoid(bool deployed);
         void ArmPistonUp();
         void ArmPistonDown();
@@ -22,18 +22,19 @@ class Claw {
         void ArmMotorDown();
         void ClawOpen();
         void ClawClose();
-        void CubePressure();
-        void ConePressure();
+        // void CubePressure();
+        // void ConePressure();
         void ShuttleMotorUp();
         void ShuttleMotorDown();
         void updateDashboard();
         double getAngle();
         void StopShuttle();
         void StopArm();
+        void UpdateShuttleEncoder();
     private:
         frc::DoubleSolenoid a_Piston;
         frc::DoubleSolenoid a_ClawSolenoid;
-        frc::DoubleSolenoid a_PressureSolenoid;
+        //frc::DoubleSolenoid a_PressureSolenoid;
         rev::CANSparkMax shuttleMotor;
         rev::CANSparkMax armMotor;
         rev::SparkMaxRelativeEncoder shuttleEncoder;
@@ -42,5 +43,5 @@ class Claw {
         
         int _CANCoderID;
 
-        //LimitSwitch shuttleZeroSwitch;
+        LimitSwitch shuttleZeroSwitch;
 };

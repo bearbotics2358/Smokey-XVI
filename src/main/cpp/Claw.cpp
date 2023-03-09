@@ -4,36 +4,50 @@
 
 Claw::Claw(int armMotorId, int shuttleMotorId, int pistonPushSolenoidModule, 
         int pistonPullSolenoidModule, int clawPushSolenoidModule, int clawPullSolenoidModule, 
-        int conePressureSolenoidModule, int cubePressureSolenoidModule, int carriageCANCoderID):
+        /*int conePressureSolenoidModule, int cubePressureSolenoidModule, */int carriageCANCoderID, int limitSwitchId):
 a_Piston(frc::PneumaticsModuleType::REVPH, pistonPushSolenoidModule, pistonPullSolenoidModule),
 a_ClawSolenoid(frc::PneumaticsModuleType::REVPH, clawPushSolenoidModule, clawPullSolenoidModule),
+/*
 a_PressureSolenoid(frc::PneumaticsModuleType::REVPH, conePressureSolenoidModule, cubePressureSolenoidModule),
+*/
 armMotor(armMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
 shuttleMotor(shuttleMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
 armEncoder(armMotor.GetEncoder()),
 shuttleEncoder(shuttleMotor.GetEncoder()), 
-/*shuttleZeroSwitch(limitSwitchId)*/
+shuttleZeroSwitch(limitSwitchId),
 a_CANCoder(carriageCANCoderID) {
+    armMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+
     _CANCoderID = carriageCANCoderID - 17;
     armEncoder.SetPositionConversionFactor(20); // 360 / 18 (ticks per revolution for the rev encoder)
-    shuttleEncoder.SetPositionConversionFactor(20); 
+    shuttleEncoder.SetPositionConversionFactor(20);
+
+    a_CANCoder.ConfigMagnetOffset(CANCODER_OFFSET_ARM);
 }
 
 void Claw::clawInit() {
-    transformClaw(30, false, 0);
+    transformClaw(51.77, false, 0);
 }
 
-/*
+
 bool Claw::zeroShuttle() {
     if (shuttleZeroSwitch.limitSwitchPressed() == true){
         shuttleMotor.StopMotor();
+        shuttleEncoder.SetPosition(0);
         return true;
     } else {
         shuttleMotor.Set(0.2);
         return false;
     }
 }
-*/
+
+void Claw::UpdateShuttleEncoder(){
+    if (shuttleZeroSwitch.limitSwitchPressed() == true){
+        a_CANCoder.SetPosition(0);
+        shuttleMotor.StopMotor();
+    }
+}
+
 
 int Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle) {
     // stage denotes the starting stage the function will start at when called. 
@@ -51,18 +65,18 @@ int Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle)
     while (stage != 4) {
 
         switch(stage) {
-            case 0: // rotate just enough to not damage the robot (30 - 120 degrees) 
+            case 0: // rotate just enough to not damage the robot (51.77 degrees)
             // these are placeholder angles that should be changed once we can test the arm's cancoder
-            if (abs(armEncoder.GetPosition() - desiredAngle) < 3) {
+            if (abs(getAngle() - desiredAngle) < 3) {
                 stage = 1;
-            } else if (desiredAngle < armEncoder.GetPosition()){
+            } else if (desiredAngle < getAngle()){
                 armMotor.Set(-armMotorSpeed);
-                if (armEncoder.GetPosition() <= 30) {
+                if (getAngle() <= -51.77) {
                     stage = 1;
                 }
-            } else if (desiredAngle > armEncoder.GetPosition()){
+            } else if (desiredAngle > getAngle()){
                 armMotor.Set(armMotorSpeed);
-                if (armEncoder.GetPosition() >= 120) {
+                if (getAngle() >= -51.77) {
                     stage = 1;
                 }
             }
@@ -72,10 +86,10 @@ int Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle)
             case 1: // shuttle movement
             armMotor.StopMotor();
             if (desiredShuttle == 0){
-                //zeroShuttle();
-                // if (zeroShuttle() == true){
-                //     stage = 2;
-                // }
+                zeroShuttle();
+                if (zeroShuttle() == true){
+                    stage = 2;
+                }
             } else {
                 if (abs(shuttleEncoder.GetPosition() - desiredShuttle) < 3){
                     stage = 2;
@@ -90,16 +104,16 @@ int Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle)
             
             case 2: // finish rotation
             shuttleMotor.StopMotor();
-            if (abs(armEncoder.GetPosition() - desiredAngle) < 3) {
+            if (abs(getAngle() - desiredAngle) < 3) {
                 stage = 3;
-            } else if (desiredAngle < armEncoder.GetPosition()){
+            } else if (desiredAngle < getAngle()){
                 armMotor.Set(-armMotorSpeed);
-                if (armEncoder.GetPosition() <= desiredAngle) {
+                if (getAngle() <= desiredAngle) {
                     stage = 3;
                 }
-            } else if (desiredAngle > armEncoder.GetPosition()){
+            } else if (desiredAngle > getAngle()){
                 armMotor.Set(armMotorSpeed);
-                if (armEncoder.GetPosition() >= desiredAngle) {
+                if (getAngle() >= desiredAngle) {
                     stage = 3;
                 }
             }
@@ -139,7 +153,7 @@ void Claw::StopArm(){
 }
 
 double Claw::getAngle(){
-    return a_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
+    return a_CANCoder.GetAbsolutePosition();
 }
 
 
@@ -176,6 +190,7 @@ void Claw::ClawClose(){
     a_ClawSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
 }
 
+/*
 void Claw::ConePressure(){
     a_PressureSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
 }
@@ -183,6 +198,7 @@ void Claw::ConePressure(){
 void Claw::CubePressure(){
     a_PressureSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
 }
+*/
 
 void Claw::ShuttleMotorUp() {
     shuttleMotor.Set(0.1);
