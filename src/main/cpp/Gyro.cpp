@@ -76,12 +76,14 @@ void Gyro::Update() {
 
 double Gyro::getAngle() const {
     // update this depending on how the gyro is mounted in future years
-    return angle[2];
+    //return angle[2];
+    return 0;
 }
 
 double Gyro::getAngleClamped() const {
     // update this depending on how gyro is mounted in future years
-    return misc::clampDegrees(angle[2]);
+    //return misc::clampDegrees(angle[2]);
+    return 0;
 }
 double Gyro::getYaw() const {
     return a_PigeonIMU.GetYaw();

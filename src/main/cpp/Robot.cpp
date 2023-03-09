@@ -248,9 +248,9 @@ void Robot::TeleopPeriodic() {
         multiplier = 0.25;
     }
  
-    float x = a_DriverXboxController.GetLeftX();
-    float y = a_DriverXboxController.GetLeftY();
-    float z = a_DriverXboxController.GetRightX();
+    float x = a_OperatorXboxController.GetLeftX();
+    float y = a_OperatorXboxController.GetLeftY();
+    float z = a_OperatorXboxController.GetRightX();
 
     if (fabs(x) < 0.10) {
         x = 0;
@@ -270,7 +270,7 @@ void Robot::TeleopPeriodic() {
     z *= multiplier;
 
     // turn field oriented mode off if button 3 is pressed
-    bool fieldOreo = true; // !joystickOne.GetRawButton(DriverButton::Button3);
+    bool fieldOreo = false; // !joystickOne.GetRawButton(DriverButton::Button3);
 
     // calibrate gyro
     if (a_DriverXboxController.GetLeftBumper()) {
