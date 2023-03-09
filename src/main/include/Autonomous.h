@@ -156,7 +156,7 @@ class Autonomous {
 
    // const char *GetCurrentPath();
     
-    double gettime_d();
+  
 
     void StartAuto();
     void PeriodicAuto();

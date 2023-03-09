@@ -13,7 +13,6 @@
 #define GYRO_ID 35 // TODO: UPDATE TO CORRECT NUMBER
 #define PISTON_PUSH_SOLENOID_MODULE 10
 #define PISTON_PULL_SOLENOID_MODULE 11
-// UNSURE IF THIS IS THE CORRECT ORDER FOR THE CLAW AND PRESSURE SOLENOIDS
 #define CLAW_OPEN_SOLENOID_MODULE 12
 #define CLAW_CLOSE_SOLENOID_MODULE 13
 #define CONE_PRESSURE_SOLENOID 14
@@ -86,7 +85,7 @@ m = number engraved on module
 #define CANCODER_OFFSET_6 127.4 - 180
 #define CANCODER_OFFSET_7 240.7 - 180
 #define CANCODER_OFFSET_8 0
-#define CANCODER_OFFSET_ARM 0
+#define CANCODER_OFFSET_ARM 130.34
 
 #define CANCODER_ID_1 17
 #define CANCODER_ID_2 18
@@ -165,7 +164,7 @@ constexpr units::angle::radian_t TARGET_PITCH = units::angle::radian_t(0.0);
 
 // mdns name of camera
 #define SHOOTER_CAMERA_NAME "photonvision"
-#define BALL_CAMERA_NAME "temp"
+#define BALL_CAMERA_NAME "temp" 
 
 /* ============= Arduino ============= */
 
@@ -176,8 +175,16 @@ constexpr units::angle::radian_t TARGET_PITCH = units::angle::radian_t(0.0);
 #define STOP_BITS_TOF frc::SerialPort::kStopBits_One
 
 #define BAUD_RATE_ARDUINO 9600
-#define USB_PORT_ARDUINO frc::SerialPort::kUSB1
+#define USB_PORT_ARDUINO frc::SerialPort::kUSB
 #define DATA_BITS_ARDUINO 8
 #define PARITY_ARDUINO frc::SerialPort::kParity_None
 #define STOP_BITS_ARDUINO frc::SerialPort::kStopBits_One
 
+/*
+sraight up: 78.57
+"0": 130.34
+back: 319.13
+
+no cone/cube front clearance: 120
+no cone/cube back clearance: 330
+*/
