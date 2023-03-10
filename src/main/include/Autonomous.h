@@ -219,7 +219,7 @@ private:
     Gyro *a_Gyro;
     Claw *a_Claw;
     SwerveDrive *a_SwerveDrive;
-    frc::XboxController a_OperatorXboxController;
+    frc::XboxController a_DriverXboxController;
 
     AutoState0 a_AutoState0;
     AutoState1 a_AutoState1;

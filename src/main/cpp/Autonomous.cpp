@@ -10,7 +10,7 @@
 Autonomous::Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Claw *Claw):
 a_Gyro(Gyro),
 a_SwerveDrive(SwerveDrive),
-a_OperatorXboxController(XBOX_CONTROLLER),
+a_DriverXboxController(DRIVER_PORT),
 a_Claw(Claw),
 
 
