@@ -22,7 +22,7 @@ shuttlePID(1,0,0) {
 
     _CANCoderID = carriageCANCoderID - 17;
     armEncoder.SetPositionConversionFactor(20); // 360 / 18 (ticks per revolution for the rev encoder)
-    shuttleEncoder.SetPositionConversionFactor(1);  // just want ticks
+    shuttleEncoder.SetPositionConversionFactor(42);  // just want ticks
 
     armMotor.StopMotor();
     shuttleMotor.StopMotor();

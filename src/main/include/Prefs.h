@@ -110,7 +110,7 @@ static double CANCODER_OFFSETS[] = {
 /* ========== Shuttle constants ====== */
 
 // Neo is 42 ticks / revolution, geared down, drive chain, ...
-#define SHUTTLE_TICKS_PER_MM 100.0
+#define SHUTTLE_TICKS_PER_MM 2.7306
 
 /* ========== Joystick Ports ========= */
 #define JOYSTICK_PORT 0
