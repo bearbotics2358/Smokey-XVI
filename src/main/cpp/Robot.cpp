@@ -195,13 +195,15 @@ void Robot::TeleopPeriodic() {
     }
 
     // shuttle movement controls
-    if(a_DriverXboxController.GetYButton()) {
-        a_Claw.ShuttleMotorUp();
-    } else if (a_DriverXboxController.GetAButton()) {
-        a_Claw.ShuttleMotorDown();
-    } else {
-        a_Claw.StopShuttle();
-    }
+    if (a_Claw.IsShuttleSafeToMove() == true) {
+        if(a_DriverXboxController.GetYButton()) {
+            a_Claw.ShuttleMotorUp();
+        } else if (a_DriverXboxController.GetAButton()) {
+            a_Claw.ShuttleMotorDown();
+        } else {
+            a_Claw.StopShuttle();
+        }
+    }   
 
     // piston extension controls
     if(a_DriverXboxController.GetPOV() == 270) { // left

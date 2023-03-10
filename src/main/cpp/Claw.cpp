@@ -51,6 +51,92 @@ void Claw::UpdateShuttleEncoder(){
 }
 
 
+void Claw::updateDashboard(){
+    frc::SmartDashboard::PutNumber("arm absolute encoder: ", getAngle());
+    frc::SmartDashboard::PutNumber("shuttle motor position: ", shuttleEncoder.GetPosition());
+    frc::SmartDashboard::PutBoolean("limit switch pressed: ", shuttleZeroSwitch.limitSwitchPressed());
+    if (a_Piston.Get() == frc::DoubleSolenoid::Value::kReverse){
+        frc::SmartDashboard::PutString("arm solenoid position: ", "reverse");
+    } else if (a_Piston.Get() == frc::DoubleSolenoid::Value::kForward){
+        frc::SmartDashboard::PutString("arm solenoid position: ", "forward");
+    } else {
+        frc::SmartDashboard::PutString("arm solenoid position: ", "off");
+    }
+    
+}
+
+void Claw::StopShuttle(){
+    shuttleMotor.StopMotor();
+}
+
+void Claw::StopArm(){
+    armMotor.StopMotor();
+}
+
+double Claw::getAngle(){
+    return a_CANCoder.GetAbsolutePosition();
+}
+
+
+void Claw::setSolenoid(bool deployed) {
+    if (deployed) {
+        a_Piston.Set(frc::DoubleSolenoid::Value::kReverse);
+    } else {
+        a_Piston.Set(frc::DoubleSolenoid::Value::kForward);
+    }
+}
+
+// MANY OF THESE ARE MANUAL, WILL BE REPLACED WITH AUTOMATION
+void Claw::ArmPistonUp(){
+    a_Piston.Set(frc::DoubleSolenoid::Value::kForward);
+}
+
+void Claw::ArmPistonDown(){
+    a_Piston.Set(frc::DoubleSolenoid::Value::kReverse);
+}
+
+void Claw::ArmMotorUp(){
+    armMotor.Set(0.1);
+}
+
+void Claw::ArmMotorDown(){
+    armMotor.Set(-0.1);
+}
+
+void Claw::ClawOpen(){
+    a_ClawSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
+}
+
+void Claw::ClawClose(){
+    a_ClawSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
+}
+
+/*
+void Claw::ConePressure(){
+    a_PressureSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
+}
+
+void Claw::CubePressure(){
+    a_PressureSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
+}
+*/
+
+void Claw::ShuttleMotorUp() {
+    shuttleMotor.Set(0.1);
+}
+
+void Claw::ShuttleMotorDown() {
+    shuttleMotor.Set(-0.1);
+}
+
+bool Claw::IsShuttleSafeToMove(){ // shuttle is safe to move as long as the arm is within a certain range
+    if (getAngle() > 30 && getAngle() < 120) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 int Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle) {
     // stage denotes the starting stage the function will start at when called. 
     // stage 4 means tells Robot that the transformClaw function has completed the transformation, and 
@@ -131,81 +217,4 @@ int Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle)
             break;
         }
     } 
-}
-
-void Claw::updateDashboard(){
-    frc::SmartDashboard::PutNumber("arm absolute encoder: ", getAngle());
-    frc::SmartDashboard::PutNumber("shuttle motor position: ", shuttleEncoder.GetPosition());
-    if (a_Piston.Get() == frc::DoubleSolenoid::Value::kReverse){
-        frc::SmartDashboard::PutString("arm solenoid position: ", "reverse");
-    } else if (a_Piston.Get() == frc::DoubleSolenoid::Value::kForward){
-        frc::SmartDashboard::PutString("arm solenoid position: ", "forward");
-    } else {
-        frc::SmartDashboard::PutString("arm solenoid position: ", "off");
-    }
-    
-}
-
-void Claw::StopShuttle(){
-    shuttleMotor.StopMotor();
-}
-
-void Claw::StopArm(){
-    armMotor.StopMotor();
-}
-
-double Claw::getAngle(){
-    return a_CANCoder.GetAbsolutePosition();
-}
-
-
-void Claw::setSolenoid(bool deployed) {
-    if (deployed) {
-        a_Piston.Set(frc::DoubleSolenoid::Value::kReverse);
-    } else {
-        a_Piston.Set(frc::DoubleSolenoid::Value::kForward);
-    }
-}
-
-// MANY OF THESE ARE MANUAL, WILL BE REPLACED WITH AUTOMATION
-void Claw::ArmPistonUp(){
-    a_Piston.Set(frc::DoubleSolenoid::Value::kForward);
-}
-
-void Claw::ArmPistonDown(){
-    a_Piston.Set(frc::DoubleSolenoid::Value::kReverse);
-}
-
-void Claw::ArmMotorUp(){
-    armMotor.Set(0.1);
-}
-
-void Claw::ArmMotorDown(){
-    armMotor.Set(-0.1);
-}
-
-void Claw::ClawOpen(){
-    a_ClawSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
-}
-
-void Claw::ClawClose(){
-    a_ClawSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
-}
-
-/*
-void Claw::ConePressure(){
-    a_PressureSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
-}
-
-void Claw::CubePressure(){
-    a_PressureSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
-}
-*/
-
-void Claw::ShuttleMotorUp() {
-    shuttleMotor.Set(0.1);
-}
-
-void Claw::ShuttleMotorDown() {
-    shuttleMotor.Set(-0.1);
 }

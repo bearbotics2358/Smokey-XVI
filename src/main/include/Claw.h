@@ -31,7 +31,7 @@ class Claw {
         void StopShuttle();
         void StopArm();
         void UpdateShuttleEncoder();
-        void MotorStop(rev::CANSparkMax motor);
+        bool IsShuttleSafeToMove();
     private:
         frc::DoubleSolenoid a_Piston;
         frc::DoubleSolenoid a_ClawSolenoid;
