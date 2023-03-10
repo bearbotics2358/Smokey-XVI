@@ -15,12 +15,14 @@ shuttleMotor(shuttleMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
 armEncoder(armMotor.GetEncoder()),
 shuttleEncoder(shuttleMotor.GetEncoder()), 
 shuttleZeroSwitch(limitSwitchId),
-a_CANCoder(carriageCANCoderID) {
+a_CANCoder(carriageCANCoderID),
+armPID(1,0,0),
+shuttlePID(1,0,0) {
     armMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 
     _CANCoderID = carriageCANCoderID - 17;
     armEncoder.SetPositionConversionFactor(20); // 360 / 18 (ticks per revolution for the rev encoder)
-    shuttleEncoder.SetPositionConversionFactor(20);
+    shuttleEncoder.SetPositionConversionFactor(1);  // just want ticks
 
     armMotor.StopMotor();
     shuttleMotor.StopMotor();
@@ -54,6 +56,7 @@ void Claw::UpdateShuttleEncoder(){
 void Claw::updateDashboard(){
     frc::SmartDashboard::PutNumber("arm absolute encoder: ", getAngle());
     frc::SmartDashboard::PutNumber("shuttle motor position: ", shuttleEncoder.GetPosition());
+    frc::SmartDashboard::PutNumber("shuttle position (mm): ", GetShuttlePositionMM());
     frc::SmartDashboard::PutBoolean("limit switch pressed: ", shuttleZeroSwitch.limitSwitchPressed());
     if (a_Piston.Get() == frc::DoubleSolenoid::Value::kReverse){
         frc::SmartDashboard::PutString("arm solenoid position: ", "reverse");
@@ -127,6 +130,20 @@ void Claw::ShuttleMotorUp() {
 
 void Claw::ShuttleMotorDown() {
     shuttleMotor.Set(-0.1);
+}
+
+double Claw::GetShuttlePositionMM() {
+    double ret;
+
+    ret = shuttleEncoder.GetPosition() / SHUTTLE_TICKS_PER_MM;
+    return ret;
+}
+
+double Claw::GetShuttlePositionInches() {
+    double ret;
+
+    ret = GetShuttlePositionMM() / 25.4;
+    return ret;
 }
 
 bool Claw::IsShuttleSafeToMove(){ // shuttle is safe to move as long as the arm is within a certain range

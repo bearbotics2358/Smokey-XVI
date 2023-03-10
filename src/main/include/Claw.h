@@ -2,6 +2,7 @@
 
 #include <ctre/Phoenix.h>
 #include <frc/DoubleSolenoid.h>
+#include <frc/controller/PIDController.h>
 #include <rev/CANSparkMax.h>
 #include "LimitSwitch.h"
 #include <ctre/phoenix/sensors/CANCoder.h>
@@ -26,6 +27,8 @@ class Claw {
         // void ConePressure();
         void ShuttleMotorUp();
         void ShuttleMotorDown();
+        double GetShuttlePositionMM();
+        double GetShuttlePositionInches();
         void updateDashboard();
         double getAngle();
         void StopShuttle();
@@ -45,4 +48,7 @@ class Claw {
         int _CANCoderID;
 
         LimitSwitch shuttleZeroSwitch;
+
+        frc2::PIDController armPID;
+        frc2::PIDController shuttlePID;
 };
