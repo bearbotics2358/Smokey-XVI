@@ -24,8 +24,8 @@ a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), misc::GetBLCANCoder()),
 a_BRModule(misc::GetBRDrive(), misc::GetBRSteer(), misc::GetBRCANCoder()),
 a_SwerveDrive(a_FLModule, a_FRModule, a_BLModule, a_BRModule, a_Gyro),
 a_Autonomous(&a_Gyro, &a_SwerveDrive, &a_Claw),
-a_DriverXboxController(JOYSTICK_PORT),
-a_OperatorXboxController(XBOX_CONTROLLER),
+a_DriverXboxController(DRIVER_PORT),
+a_OperatorXboxController(OPERATOR_PORT),
 a_CompressorController(),
 a_TOF(), 
 a_LED()
@@ -186,9 +186,9 @@ void Robot::TeleopPeriodic() {
     } 
 
     // arm rotation controls
-    if(a_DriverXboxController.GetXButton()) {
+    if(a_OperatorXboxController.GetXButton()) {
         a_Claw.ArmMotorUp();
-    } else if (a_DriverXboxController.GetBButton()) {
+    } else if (a_OperatorXboxController.GetBButton()) {
         a_Claw.ArmMotorDown();
     } else {
         a_Claw.StopArm();
@@ -196,9 +196,9 @@ void Robot::TeleopPeriodic() {
 
     // shuttle movement controls
     //if (a_Claw.IsShuttleSafeToMove() == true) {
-        if(a_DriverXboxController.GetYButton()) {
+        if(a_OperatorXboxController.GetYButton()) {
             a_Claw.ShuttleMotorUp();
-        } else if (a_DriverXboxController.GetAButton()) {
+        } else if (a_OperatorXboxController.GetAButton()) {
             a_Claw.ShuttleMotorDown();
         } else {
             a_Claw.StopShuttle();
@@ -206,16 +206,16 @@ void Robot::TeleopPeriodic() {
     //}   
 
     // piston extension controls
-    if(a_DriverXboxController.GetPOV() == 270) { // left
+    if(a_OperatorXboxController.GetPOV() == 270) { // left
         a_Claw.ArmPistonUp();
-    } else if (a_DriverXboxController.GetPOV() == 90) { // right
+    } else if (a_OperatorXboxController.GetPOV() == 90) { // right
         a_Claw.ArmPistonDown();
     }
 
     // claw open/close controls
-    if(a_OperatorXboxController.GetRightBumper()) {
+    if(a_DriverXboxController.GetRightBumper()) {
         a_Claw.ClawOpen();
-    } else if (a_OperatorXboxController.GetLeftBumper()) {
+    } else if (a_DriverXboxController.GetLeftBumper()) {
         a_Claw.ClawClose();
     }
 
@@ -245,9 +245,9 @@ void Robot::TeleopPeriodic() {
 
     // dpad up for full speed,
     // down for half speed
-    if (a_OperatorXboxController.GetPOV() == 0) {
+    if (a_DriverXboxController.GetPOV() == 0) {
         a_slowSpeed = false;
-    } else if (a_OperatorXboxController.GetPOV() == 180) {
+    } else if (a_DriverXboxController.GetPOV() == 180) {
         a_slowSpeed = true;
     }
 
@@ -256,9 +256,9 @@ void Robot::TeleopPeriodic() {
         multiplier = 0.25;
     }
  
-    float x = a_OperatorXboxController.GetLeftX();
-    float y = a_OperatorXboxController.GetLeftY();
-    float z = a_OperatorXboxController.GetRightX();
+    float x = a_DriverXboxController.GetLeftX();
+    float y = a_DriverXboxController.GetLeftY();
+    float z = a_DriverXboxController.GetRightX();
 
     if (fabs(x) < 0.10) {
         x = 0;
@@ -294,10 +294,10 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
 
-    if(a_OperatorXboxController.GetRawButton(1)) { //can change button later
+    if(a_DriverXboxController.GetRawButton(1)) { //can change button later
         SetTargetType(target_type_enum::CONE);
     } 
-    else if(a_OperatorXboxController.GetRawButton(2)) { //can change button later
+    else if(a_DriverXboxController.GetRawButton(2)) { //can change button later
         SetTargetType(target_type_enum::CUBE);
     }
 }

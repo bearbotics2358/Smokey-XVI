@@ -113,10 +113,10 @@ static double CANCODER_OFFSETS[] = {
 #define SHUTTLE_TICKS_PER_MM 2.7306
 
 /* ========== Joystick Ports ========= */
-#define JOYSTICK_PORT 0
+#define OPERATOR_PORT 0
 #define JOYSTICK_DEADZONE 0.15
 
-#define XBOX_CONTROLLER 5
+#define DRIVER_PORT 5
 
 
 /* ============ GEAR RATIOS ======== */
