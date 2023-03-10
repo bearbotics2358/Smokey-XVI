@@ -206,11 +206,11 @@ void Robot::TeleopPeriodic() {
     //}   
 
     // piston extension controls
-    if(a_OperatorXboxController.GetPOV() == 270) { // left
-        a_Claw.ArmPistonUp();
-    } else if (a_OperatorXboxController.GetPOV() == 90) { // right
-        a_Claw.ArmPistonDown();
-    }
+    // if(a_OperatorXboxController.GetPOV() == 270) { // left
+    //     a_Claw.ArmPistonUp();
+    // } else if (a_OperatorXboxController.GetPOV() == 90) { // right
+    //     a_Claw.ArmPistonDown();
+    // }
 
     // claw open/close controls
     if(a_DriverXboxController.GetRightBumper()) {
@@ -278,7 +278,7 @@ void Robot::TeleopPeriodic() {
     z *= multiplier;
 
     // turn field oriented mode off if button 3 is pressed
-    bool fieldOreo = false; // !joystickOne.GetRawButton(DriverButton::Button3);
+    bool fieldOreo = true; // !joystickOne.GetRawButton(DriverButton::Button3);
 
     // calibrate gyro
     if (a_DriverXboxController.GetLeftBumper()) {

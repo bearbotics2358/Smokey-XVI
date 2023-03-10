@@ -163,7 +163,7 @@ void Autonomous::PeriodicBDGL() {
         }
             break;
         case kBlueDriveAway0:
-            if (DriveDirection(4.8768, 0, .25, false)) {
+            if (DriveDirection(4.8768, 0, .25, true)) {
                 nextState = kBlueAutoIdle0;
             }
             break;
