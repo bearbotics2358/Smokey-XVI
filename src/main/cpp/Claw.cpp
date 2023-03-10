@@ -147,7 +147,7 @@ double Claw::GetShuttlePositionInches() {
 }
 
 bool Claw::IsShuttleSafeToMove(){ // shuttle is safe to move as long as the arm is within a certain range
-    if (getAngle() > 30 && getAngle() < 120) {
+    if (getAngle() < -30 && getAngle() > -120) {
         return true;
     } else {
         return false;

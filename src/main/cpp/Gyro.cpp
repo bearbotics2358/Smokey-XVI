@@ -1,6 +1,7 @@
 #include "Gyro.h"
 #include "misc.h"
 #include <frc/interfaces/Gyro.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 /**
  * Constructor.
@@ -30,23 +31,14 @@ void Gyro::Init() {
 }
 
 void Gyro::Cal() {
-    // get gyro drift biases
-    int i;
-    double tstart = frc::Timer::GetFPGATimestamp().value();
-    while (frc::Timer::GetFPGATimestamp().value() < tstart + 0.100) {} // wait 100 ms for readings
-
-    for (i = 0; i < 3; i++) { angleBias[i] = 0; }
-
-    // throw out first rejading, it is 0
-
-    WaitForValues();
-    Update();
-    angleBias[0] += XAxis;
-    angleBias[1] += YAxis;
-    angleBias[2] += ZAxis;
+    
 }
 
 void Gyro::Update() {
+
+    frc::SmartDashboard::PutNumber("gyro angle: ", getAngle());
+    frc::SmartDashboard::PutNumber("gyro angle clamped: ", getAngleClamped());
+    /*
     if (lastUpdate == 0) {
         lastUpdate = frc::Timer::GetFPGATimestamp().value();
         return;
@@ -72,18 +64,15 @@ void Gyro::Update() {
     angle[2] += ((ZAxis - angleBias[2]) * timeDelta);
 
     lastUpdate = time;
+    */
 }
 
 double Gyro::getAngle() const {
-    // update this depending on how the gyro is mounted in future years
-    //return angle[2];
-    return 0;
+    return getYaw();
 }
 
 double Gyro::getAngleClamped() const {
-    // update this depending on how gyro is mounted in future years
-    //return misc::clampDegrees(angle[2]);
-    return 0;
+    return misc::clampDegrees(getYaw());
 }
 double Gyro::getYaw() const {
     return a_PigeonIMU.GetYaw();
@@ -96,8 +85,5 @@ double Gyro::getAbsoluteCompassHeading () const{
 }
 
 void Gyro::Zero(double offsetAngle) { //takes offsetAngle, defaults to zero if none provided. CCW is +
-    for (int i = 0; i < 3; i++) {
-        angle[i] = 0;
-    }
-    angle[2] = offsetAngle;
+    a_PigeonIMU.SetYaw(0);
 }

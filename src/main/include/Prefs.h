@@ -10,7 +10,7 @@
 // uncomment to enable the new swerve
 //#define NEW_SWERVE
 
-#define GYRO_ID 35 // TODO: UPDATE TO CORRECT NUMBER
+#define GYRO_ID 1
 #define PISTON_PUSH_SOLENOID_MODULE 10
 #define PISTON_PULL_SOLENOID_MODULE 11
 #define CLAW_OPEN_SOLENOID_MODULE 12
