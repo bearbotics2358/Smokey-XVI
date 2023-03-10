@@ -77,12 +77,12 @@ m = number engraved on module
 
 #define CANCODER_OFFSET_1 129.5 - 180
 #define CANCODER_OFFSET_2 115.3 - 180
-#define CANCODER_OFFSET_3 252.7
-#define CANCODER_OFFSET_4 235.4
-#define CANCODER_OFFSET_5 41.2
+#define CANCODER_OFFSET_3 252.7 - 180
+#define CANCODER_OFFSET_4 235.4 - 180
+#define CANCODER_OFFSET_5 41.2 - 180
 #define CANCODER_OFFSET_6 127.4 - 180
 #define CANCODER_OFFSET_7 240.7 - 180
-#define CANCODER_OFFSET_8 157.6
+#define CANCODER_OFFSET_8 157.6 - 180
 #define CANCODER_OFFSET_ARM -130.34
 
 #define CANCODER_ID_1 17
@@ -109,7 +109,7 @@ static double CANCODER_OFFSETS[] = {
 
 
 /* ========== Joystick Ports ========= */
-#define JOYSTICK_PORT 1
+#define JOYSTICK_PORT 0
 #define JOYSTICK_DEADZONE 0.15
 
 #define XBOX_CONTROLLER 5

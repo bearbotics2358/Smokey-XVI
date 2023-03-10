@@ -22,6 +22,9 @@ a_CANCoder(carriageCANCoderID) {
     armEncoder.SetPositionConversionFactor(20); // 360 / 18 (ticks per revolution for the rev encoder)
     shuttleEncoder.SetPositionConversionFactor(20);
 
+    armMotor.StopMotor();
+    shuttleMotor.StopMotor();
+
     a_CANCoder.ConfigMagnetOffset(CANCODER_OFFSET_ARM);
 }
 
@@ -43,8 +46,7 @@ bool Claw::zeroShuttle() {
 
 void Claw::UpdateShuttleEncoder(){
     if (shuttleZeroSwitch.limitSwitchPressed() == true){
-        a_CANCoder.SetPosition(0);
-        shuttleMotor.StopMotor();
+        shuttleEncoder.SetPosition(0);
     }
 }
 
@@ -183,11 +185,11 @@ void Claw::ArmMotorDown(){
 }
 
 void Claw::ClawOpen(){
-    a_ClawSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
+    a_ClawSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
 }
 
 void Claw::ClawClose(){
-    a_ClawSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
+    a_ClawSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
 }
 
 /*

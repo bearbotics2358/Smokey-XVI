@@ -83,22 +83,22 @@ void Robot::RobotPeriodic() {
     a_Claw.updateDashboard();
     a_LED.Update();
     a_TOF.Update();
-    a_SwerveDrive.updatePosition();
+    //a_SwerveDrive.updatePosition();
 
 //testing code block for PID tuning
 
-    if(a_DriverXboxController.GetRawButton(3)) {
-        a_FRModule.steerToAng(120);
-        a_FLModule.steerToAng(120);
-        a_BRModule.steerToAng(120);
-        a_BLModule.steerToAng(120);
-    } 
-    else {
-        a_FRModule.steerToAng(150);
-        a_FLModule.steerToAng(150);
-        a_BRModule.steerToAng(150);
-        a_BLModule.steerToAng(150);
-    }
+    // if(a_DriverXboxController.GetRawButton(3)) {
+    //     a_FRModule.steerToAng(120);
+    //     a_FLModule.steerToAng(120);
+    //     a_BRModule.steerToAng(120);
+    //     a_BLModule.steerToAng(120);
+    // } 
+    // else {
+    //     a_FRModule.steerToAng(150);
+    //     a_FLModule.steerToAng(150);
+    //     a_BRModule.steerToAng(150);
+    //     a_BLModule.steerToAng(150);
+    // }
 }
 
 void Robot::DisabledInit() {
@@ -178,37 +178,43 @@ void Robot::TeleopPeriodic() {
     // frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Claw Controls =-=-=-=-=-=-=-=-=-=-= */
-
+    a_Claw.UpdateShuttleEncoder(); //automatically sets the shuttle's encoder to 0 if hitting the limit switch
     if (a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE && a_DriverXboxController.GetYButton()) {
         a_Claw.ClawClose();
         //later: move claw up into scoring position but 
         // don't score/ let go
     } 
 
-    if(a_OperatorXboxController.GetYButton()) {
-        a_Claw.ShuttleMotorUp();
-    }
-    if(a_OperatorXboxController.GetAButton()) {
-        a_Claw.ShuttleMotorDown();
-    }
-    if(a_OperatorXboxController.GetXButton()) {
-        a_Claw.ClawOpen();
-    }
-    if(a_OperatorXboxController.GetBButton()) {
-        a_Claw.ClawClose();
+    // arm rotation controls
+    if(a_DriverXboxController.GetXButton()) {
+        a_Claw.ArmMotorUp();
+    } else if (a_DriverXboxController.GetBButton()) {
+        a_Claw.ArmMotorDown();
+    } else {
+        a_Claw.StopArm();
     }
 
-    if(a_OperatorXboxController.GetPOV() == 90) {
-        a_Claw.ArmMotorUp();
+    // shuttle movement controls
+    if(a_DriverXboxController.GetYButton()) {
+        a_Claw.ShuttleMotorUp();
+    } else if (a_DriverXboxController.GetAButton()) {
+        a_Claw.ShuttleMotorDown();
+    } else {
+        a_Claw.StopShuttle();
     }
-    if(a_OperatorXboxController.GetPOV() == 270) {
-        a_Claw.ArmMotorDown();
-    }
-    if(a_OperatorXboxController.GetPOV() == 0) {
+
+    // piston extension controls
+    if(a_DriverXboxController.GetPOV() == 270) { // left
         a_Claw.ArmPistonUp();
+    } else if (a_DriverXboxController.GetPOV() == 90) { // right
+        a_Claw.ArmPistonDown();
     }
-    if(a_OperatorXboxController.GetPOV() == 180) {
-        a_Claw.ArmPistonUp();
+
+    // claw open/close controls
+    if(a_OperatorXboxController.GetRightBumper()) {
+        a_Claw.ClawOpen();
+    } else if (a_OperatorXboxController.GetLeftBumper()) {
+        a_Claw.ClawClose();
     }
 
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
