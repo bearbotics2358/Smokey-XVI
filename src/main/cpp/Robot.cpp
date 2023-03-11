@@ -138,6 +138,8 @@ void Robot::AutonomousPeriodic() {
 void Robot::TeleopInit() {
     SetTargetType(target_type_enum::CONE);
 
+    a_Gyro.setYaw(180 + a_Gyro.getYaw());
+
     if (a_doEnabledInit) {
         EnabledInit();
         a_doEnabledInit = false;
@@ -251,7 +253,7 @@ void Robot::TeleopPeriodic() {
         a_slowSpeed = true;
     }
 
-    float multiplier = 1.0;
+    float multiplier = 1.25;
     if (a_slowSpeed) {
         multiplier = 0.25;
     }
@@ -281,7 +283,7 @@ void Robot::TeleopPeriodic() {
     bool fieldOreo = true; // !joystickOne.GetRawButton(DriverButton::Button3);
 
     // calibrate gyro
-    if (a_DriverXboxController.GetLeftBumper()) {
+    if (a_DriverXboxController.GetAButton()) {
         a_Gyro.Cal();
         a_Gyro.Zero();
     }

@@ -80,6 +80,9 @@ double Gyro::getYaw() const {
 double Gyro::getPitch() const {
     return a_PigeonIMU.GetPitch();
 }
+void Gyro::setYaw(double angle){
+    a_PigeonIMU.SetYaw(angle);
+}
 double Gyro::getAbsoluteCompassHeading () const{
     return a_PigeonIMU.GetAbsoluteCompassHeading();
 }

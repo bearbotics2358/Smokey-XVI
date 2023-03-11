@@ -25,6 +25,7 @@ class Gyro {
         double getAngle() const;
         double getYaw() const;
         double getPitch() const;
+        void setYaw(double angle);
         double getAbsoluteCompassHeading () const;
         // returns the same angle as get angle, but clamped to be within 0 - 360 degrees
         double getAngleClamped() const;
