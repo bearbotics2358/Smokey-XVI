@@ -358,10 +358,10 @@ class Matrix {
         T data[size()];
 };
 
-using Vec2 = Matrix<num, 2, 1>;
-using Vec3 = Matrix<num, 3, 1>;
-using Vec4 = Matrix<num, 4, 1>;
+using Vec2 = Matrix<double, 2, 1>;
+using Vec3 = Matrix<double, 3, 1>;
+using Vec4 = Matrix<double, 4, 1>;
 
-using Mat2 = Matrix<num, 2, 2>;
-using Mat3 = Matrix<num, 3, 3>;
-using Mat4 = Matrix<num, 4, 4>;
+using Mat2 = Matrix<double, 2, 2>;
+using Mat3 = Matrix<double, 3, 3>;
+using Mat4 = Matrix<double, 4, 4>;
