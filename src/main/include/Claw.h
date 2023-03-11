@@ -35,6 +35,8 @@ class Claw {
         void StopArm();
         void UpdateShuttleEncoder();
         bool IsShuttleSafeToMove();
+        bool ShuttleMoveToMM(double targetPosition);
+        bool ShuttleHoldAtMM(double targetPosition);
     private:
         frc::DoubleSolenoid a_Piston;
         frc::DoubleSolenoid a_ClawSolenoid;

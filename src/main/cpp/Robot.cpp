@@ -203,7 +203,7 @@ void Robot::TeleopPeriodic() {
         } else if (a_OperatorXboxController.GetAButton()) {
             a_Claw.ShuttleMotorDown();
         } else {
-            a_Claw.StopShuttle();
+            //a_Claw.StopShuttle();
         }
     //}   
 
@@ -221,6 +221,13 @@ void Robot::TeleopPeriodic() {
         a_Claw.ClawClose();
     }
 
+    // shuttle PID testing
+    // if (a_DriverXboxController.GetBackButton()){
+    //     a_Claw.ShuttleMoveToMM(500);
+    // } else {
+    //     a_Claw.ShuttleMoveToMM(250);
+    // }
+    //a_Claw.ShuttleMoveToMM(250.0);
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
 
     if((a_DriverXboxController.GetPOV() == 270) || (a_DriverXboxController.GetPOV() == 0) || (a_DriverXboxController.GetPOV() == 90)) {
