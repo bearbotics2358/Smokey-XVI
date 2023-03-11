@@ -38,6 +38,8 @@ a_LED()
         // do something if handler failed to connect
     }*/
 
+    isShuttleHigh = false;
+
     a_FLModule.setDrivePID(0.001, 0, 0);
     a_FLModule.setSteerPID(0.6, 1.0, 0.06);
 
@@ -83,6 +85,7 @@ void Robot::RobotPeriodic() {
     a_Claw.updateDashboard();
     a_LED.Update();
     a_TOF.Update();
+    a_Claw.UpdateShuttleEncoder(); //automatically sets the shuttle's encoder to 0 if hitting the limit switch
     //a_SwerveDrive.updatePosition();
 
 //testing code block for PID tuning
@@ -180,7 +183,6 @@ void Robot::TeleopPeriodic() {
     // frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Claw Controls =-=-=-=-=-=-=-=-=-=-= */
-    a_Claw.UpdateShuttleEncoder(); //automatically sets the shuttle's encoder to 0 if hitting the limit switch
     if (a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE && a_DriverXboxController.GetYButton()) {
         a_Claw.ClawClose();
         //later: move claw up into scoring position but 
@@ -222,12 +224,19 @@ void Robot::TeleopPeriodic() {
     }
 
     // shuttle PID testing
-    // if (a_DriverXboxController.GetBackButton()){
-    //     a_Claw.ShuttleMoveToMM(500);
-    // } else {
-    //     a_Claw.ShuttleMoveToMM(250);
-    // }
-    //a_Claw.ShuttleMoveToMM(250.0);
+
+    if (a_DriverXboxController.GetBButton()){
+        isShuttleHigh = true;
+    } else if (a_DriverXboxController.GetXButton()) {
+        isShuttleHigh = false;
+    }
+
+    if (isShuttleHigh == true){
+        a_Claw.ShuttleMoveToMM(650);
+    } else {
+        a_Claw.ShuttleMoveToMM(-15);
+    }
+
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
 
     if((a_DriverXboxController.GetPOV() == 270) || (a_DriverXboxController.GetPOV() == 0) || (a_DriverXboxController.GetPOV() == 90)) {

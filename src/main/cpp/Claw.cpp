@@ -17,7 +17,7 @@ shuttleEncoder(shuttleMotor.GetEncoder()),
 shuttleZeroSwitch(limitSwitchId),
 a_CANCoder(carriageCANCoderID),
 armPID(0.0017,0,0),
-shuttlePID(0.0005,0,0) {
+shuttlePID(0.002,0,0) {
     armMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 
     _CANCoderID = carriageCANCoderID - 17;
@@ -147,21 +147,28 @@ double Claw::GetShuttlePositionInches() {
 }
 
 bool Claw::IsShuttleSafeToMove(){ // shuttle is safe to move as long as the arm is within a certain range
-    if (getAngle() > 30 && getAngle() < 150) {
+    if ((getAngle() > 30) && (getAngle() < 150)) {
         return true;
     } else {
         return false;
     }
 }
 
-bool Claw::ShuttleMoveToMM(double targetPosition){
-    // if (IsShuttleSafeToMove()){
-    //     //frc::SmartDashboard::PutNumber("shuttle pid: ", (shuttlePID.Calculate(GetShuttlePositionMM(), targetPosition)));
-    // }
+bool Claw::ShuttleMoveToMM(double targetPosition) {
+    double motorDrive = shuttlePID.Calculate(GetShuttlePositionMM(), targetPosition);
+    motorDrive = std::clamp(motorDrive, -1.0, 1.0);
+    if (IsShuttleSafeToMove()){
+        frc::SmartDashboard::PutNumber("shuttle pid: ", motorDrive);
+        shuttleMotor.Set(motorDrive);
+    }
+    return true;
 }
 
 bool Claw::ShuttleHoldAtMM(double targetPosition){
-    ShuttleMoveToMM(targetPosition);
+    bool ret = false;
+
+    ret = ShuttleMoveToMM(targetPosition);
+    return ret;
 }
 
 int Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle) {

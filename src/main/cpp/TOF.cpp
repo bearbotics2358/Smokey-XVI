@@ -44,7 +44,7 @@ void TOF::Update()
 	while (m_serial.GetBytesReceived() > 0) {
 		m_serial.Read(&rx_buff[rx_index], 1);
 
-		printf("TOF: %c\n", rx_buff[rx_index]);
+		// printf("TOF: %c\n", rx_buff[rx_index]);
 
 		
     if((rx_buff[rx_index] == '\r') 
@@ -59,9 +59,10 @@ void TOF::Update()
 			// terminate the report string
 			rx_buff[rx_index] = 0;
 
+			printf("TOF report: %s\n", rx_buff);
+
 			ProcessReport();
 			
-			// printf("TOF report: rx_buff\n");
 
       // reset for next report
       rx_index = 0;
