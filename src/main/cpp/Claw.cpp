@@ -16,7 +16,7 @@ armEncoder(armMotor.GetEncoder()),
 shuttleEncoder(shuttleMotor.GetEncoder()), 
 shuttleZeroSwitch(limitSwitchId),
 a_CANCoder(carriageCANCoderID),
-armPID(0.0017,0,0),
+armPID(0.01,0,0),
 shuttlePID(0.002,0,0) {
     armMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 
@@ -168,6 +168,22 @@ bool Claw::ShuttleHoldAtMM(double targetPosition){
     bool ret = false;
 
     ret = ShuttleMoveToMM(targetPosition);
+    return ret;
+}
+
+bool Claw::ArmMoveTo(double targetPosition) {
+    targetPosition = std::clamp(targetPosition, 0.0, 175.0);
+    double motorDrive = armPID.Calculate(getAngle(), targetPosition);
+    motorDrive = std::clamp(motorDrive, -1.0, 1.0);
+    frc::SmartDashboard::PutNumber("arm pid: ", motorDrive);
+    armMotor.Set(motorDrive);
+    return true;
+}
+
+bool Claw::ArmHoldAt(double targetPosition){
+    bool ret = false;
+
+    ret = ArmMoveTo(targetPosition);
     return ret;
 }
 

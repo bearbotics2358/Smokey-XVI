@@ -23,8 +23,6 @@ class Claw {
         void ArmMotorDown();
         void ClawOpen();
         void ClawClose();
-        // void CubePressure();
-        // void ConePressure();
         void ShuttleMotorUp();
         void ShuttleMotorDown();
         double GetShuttlePositionMM();
@@ -37,10 +35,11 @@ class Claw {
         bool IsShuttleSafeToMove();
         bool ShuttleMoveToMM(double targetPosition);
         bool ShuttleHoldAtMM(double targetPosition);
+        bool ArmMoveTo(double targetPosition);
+        bool ArmHoldAt(double targetPosition);
     private:
         frc::DoubleSolenoid a_Piston;
         frc::DoubleSolenoid a_ClawSolenoid;
-        //frc::DoubleSolenoid a_PressureSolenoid;
         rev::CANSparkMax shuttleMotor;
         rev::CANSparkMax armMotor;
         rev::SparkMaxRelativeEncoder shuttleEncoder;

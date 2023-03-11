@@ -190,23 +190,23 @@ void Robot::TeleopPeriodic() {
     } 
 
     // arm rotation controls
-    if(a_OperatorXboxController.GetXButton()) {
-        a_Claw.ArmMotorUp();
-    } else if (a_OperatorXboxController.GetBButton()) {
-        a_Claw.ArmMotorDown();
-    } else {
-        a_Claw.StopArm();
-    }
+    // if(a_OperatorXboxController.GetXButton()) {
+    //     a_Claw.ArmMotorUp();
+    // } else if (a_OperatorXboxController.GetBButton()) {
+    //     a_Claw.ArmMotorDown();
+    // } else {
+    //     a_Claw.StopArm();
+    // }
 
     // shuttle movement controls
     //if (a_Claw.IsShuttleSafeToMove() == true) {
-        if(a_OperatorXboxController.GetYButton()) {
-            a_Claw.ShuttleMotorUp();
-        } else if (a_OperatorXboxController.GetAButton()) {
-            a_Claw.ShuttleMotorDown();
-        } else {
-            //a_Claw.StopShuttle();
-        }
+        // if(a_OperatorXboxController.GetYButton()) {
+        //     a_Claw.ShuttleMotorUp();
+        // } else if (a_OperatorXboxController.GetAButton()) {
+        //     a_Claw.ShuttleMotorDown();
+        // } else {
+        //     a_Claw.StopShuttle();
+        // }
     //}   
 
     // piston extension controls
@@ -223,11 +223,10 @@ void Robot::TeleopPeriodic() {
         a_Claw.ClawClose();
     }
 
-    // shuttle PID testing
-
-    if (a_DriverXboxController.GetBButton()){
+    // shuttle PID
+    if (a_OperatorXboxController.GetYButton()){
         isShuttleHigh = true;
-    } else if (a_DriverXboxController.GetXButton()) {
+    } else if (a_OperatorXboxController.GetAButton()) {
         isShuttleHigh = false;
     }
 
@@ -235,6 +234,19 @@ void Robot::TeleopPeriodic() {
         a_Claw.ShuttleMoveToMM(650);
     } else {
         a_Claw.ShuttleMoveToMM(-15);
+    }
+
+    // arm PID
+    if (a_OperatorXboxController.GetXButton()){
+        isArmUp = true;
+    } else if (a_OperatorXboxController.GetBButton()) {
+        isArmUp = false;
+    }
+
+    if (isArmUp == true){
+        a_Claw.ArmMoveTo(140);
+    } else {
+        a_Claw.ArmMoveTo(0);
     }
 
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */

@@ -7,6 +7,7 @@
 #include <stdlib.h> // atoi
 #include <Prefs.h>
 #include "TOF.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 TOF::TOF():
 	m_serial(BAUD_RATE_TOF, USB_PORT_TOF, DATA_BITS_TOF, PARITY_TOF, STOP_BITS_TOF)
@@ -89,6 +90,7 @@ void TOF::ProcessReport()
 	case TOF_RIO_msgs_enum::RANGE:
 		if(data_len >= 2) {
 			target_range_indicator = (target_range_enum)atoi(strtok(NULL, ","));
+			frc::SmartDashboard::PutNumber("TOF range indicator: ", target_range_indicator);
 			range = atoi(strtok(NULL, ","));
 		}
 		break;
