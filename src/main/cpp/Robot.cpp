@@ -12,8 +12,6 @@
 #include "Claw.h"
 #include <frc/XboxController.h>
 
-//TODO: FIX LINES 68, 152-164, AND 241-261
-
 /*~~ hi :) ~~ */
 Robot::Robot():
 a_Gyro(GYRO_ID),
@@ -326,10 +324,10 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
 
-    if(a_DriverXboxController.GetRawButton(1)) { //can change button later
+    if(a_DriverXboxController.GetBButton()) { //can change button later
         SetTargetType(target_type_enum::CONE);
     } 
-    else if(a_DriverXboxController.GetRawButton(2)) { //can change button later
+    else if(a_DriverXboxController.GetXButton()) { //can change button later
         SetTargetType(target_type_enum::CUBE);
     }
 }
