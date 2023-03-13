@@ -37,11 +37,13 @@ a_LED()
     }*/
 
     isShuttleHigh = false;
+    isArmUp = true;
 
     a_FLModule.setDrivePID(0.001, 0, 0);
     a_FLModule.setSteerPID(0.6, 1.0, 0.06);
 
     a_FRModule.setDrivePID(0.001, 0, 0);
+
     a_FRModule.setSteerPID(0.6, 1.0, 0.06);
 
     a_BLModule.setDrivePID(0.001, 0, 0);
@@ -181,8 +183,12 @@ void Robot::TeleopPeriodic() {
     // frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Claw Controls =-=-=-=-=-=-=-=-=-=-= */
+    // if (a_DriverXboxController.GetYButton()){
+        // clawPrimed = true;
+    // }
     if (a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE && a_DriverXboxController.GetYButton()) {
         a_Claw.ClawClose();
+        // clawPrimed = false;
         //later: move claw up into scoring position but 
         // don't score/ let go
     } 
@@ -227,7 +233,7 @@ void Robot::TeleopPeriodic() {
     } else if (a_OperatorXboxController.GetAButton()) {
         isShuttleHigh = false;
     }
-
+    
     if (isShuttleHigh == true){
         a_Claw.ShuttleMoveToMM(650);
     } else {
@@ -244,8 +250,10 @@ void Robot::TeleopPeriodic() {
     if (isArmUp == true){
         a_Claw.ArmMoveTo(140);
     } else {
-        a_Claw.ArmMoveTo(0);
+        a_Claw.ArmMoveTo(8);
     }
+
+
 
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
 
@@ -279,9 +287,9 @@ void Robot::TeleopPeriodic() {
         a_slowSpeed = true;
     }
 
-    float multiplier = 1.25;
+    float multiplier = 1.0;
     if (a_slowSpeed) {
-        multiplier = 0.25;
+        multiplier = 0.125;
     }
  
     float x = a_DriverXboxController.GetLeftX();
@@ -317,7 +325,7 @@ void Robot::TeleopPeriodic() {
     }
 
     if (!inDeadzone) {
-        a_SwerveDrive.swerveUpdate(x, y, 0.5 * z, fieldOreo);
+        a_SwerveDrive.swerveUpdate(x, y, z, fieldOreo);
     } else {
         a_SwerveDrive.swerveUpdate(0, 0, 0, fieldOreo);
     }

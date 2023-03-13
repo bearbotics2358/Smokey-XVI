@@ -61,6 +61,7 @@ class Robot : public frc::TimedRobot {
     private:
         bool isShuttleHigh;
         bool isArmUp;
+        bool clawPrimed;
         // keeps track of when to call enabled init
         bool a_doEnabledInit { true };
         frc::SendableChooser<std::string> m_AutoModeSelector;
