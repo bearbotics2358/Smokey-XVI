@@ -12,11 +12,6 @@
 #include "Claw.h"
 #include <frc/XboxController.h>
 
-
-//TODO: FIX LINES 68, 152-164, AND 241-261
-
-
-
 /*~~ hi :) ~~ */
 Robot::Robot():
 a_Gyro(GYRO_ID),
@@ -27,8 +22,8 @@ a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), misc::GetBLCANCoder()),
 a_BRModule(misc::GetBRDrive(), misc::GetBRSteer(), misc::GetBRCANCoder()),
 a_SwerveDrive(a_FLModule, a_FRModule, a_BLModule, a_BRModule, a_Gyro),
 a_Autonomous(&a_Gyro, &a_SwerveDrive),
-a_DriverXboxController(JOYSTICK_PORT),
-a_OperatorXboxController(XBOX_CONTROLLER)
+a_DriverXboxController(DRIVER_PORT),
+a_OperatorXboxController(OPERATOR_PORT)
 // a_CompressorController(),
 // a_TOF(), 
 // a_LED()
@@ -37,6 +32,7 @@ a_OperatorXboxController(XBOX_CONTROLLER)
     a_FLModule.setSteerPID(0.6, 1.0, 0.06);
 
     a_FRModule.setDrivePID(0.001, 0, 0);
+
     a_FRModule.setSteerPID(0.6, 1.0, 0.06);
 
     a_BLModule.setDrivePID(0.001, 0, 0);
@@ -133,6 +129,8 @@ void Robot::AutonomousPeriodic() {
 void Robot::TeleopInit() {
     SetTargetType(target_type_enum::CONE);
 
+    a_Gyro.setYaw(180 + a_Gyro.getYaw());
+
     if (a_doEnabledInit) {
         EnabledInit();
         a_doEnabledInit = false;
@@ -206,6 +204,8 @@ void Robot::TeleopPeriodic() {
     //     a_Claw.ArmPistonUp();
     // }
 
+
+
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
 
     if((a_DriverXboxController.GetPOV() == 270) || (a_DriverXboxController.GetPOV() == 0) || (a_DriverXboxController.GetPOV() == 90)) {
@@ -232,15 +232,15 @@ void Robot::TeleopPeriodic() {
 
     // dpad up for full speed,
     // down for half speed
-    if (a_OperatorXboxController.GetPOV() == 0) {
+    if (a_DriverXboxController.GetPOV() == 0) {
         a_slowSpeed = false;
-    } else if (a_OperatorXboxController.GetPOV() == 180) {
+    } else if (a_DriverXboxController.GetPOV() == 180) {
         a_slowSpeed = true;
     }
 
     float multiplier = 1.0;
     if (a_slowSpeed) {
-        multiplier = 0.25;
+        multiplier = 0.125;
     }
  
     float x = a_OperatorXboxController.GetLeftX();
@@ -264,27 +264,29 @@ void Robot::TeleopPeriodic() {
     y *= multiplier;
     z *= multiplier;
 
-    // turn field oriented mode off if button 3 is pressed
-    bool fieldOreo = true; // !joystickOne.GetRawButton(DriverButton::Button3);
+    // turn field oriented mode off if the trigger is pressed for more than 0.25 (GetRightTriggerAxis ranges from 0 to 1)
+    bool fieldOreo = (a_DriverXboxController.GetRightTriggerAxis() < 0.25);
+
+    frc::SmartDashboard::PutBoolean("field oriented: ", fieldOreo);
 
     // calibrate gyro
-    if (a_DriverXboxController.GetLeftBumper()) {
+    if (a_DriverXboxController.GetAButton()) {
         a_Gyro.Cal();
         a_Gyro.Zero();
     }
 
     if (!inDeadzone) {
-        a_SwerveDrive.swerveUpdate(x, y, 0.5 * z, fieldOreo);
+        a_SwerveDrive.swerveUpdate(x, y, z, fieldOreo);
     } else {
         a_SwerveDrive.swerveUpdate(0, 0, 0, fieldOreo);
     }
 
     /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
 
-    if(a_OperatorXboxController.GetRawButton(1)) { //can change button later
+    if(a_DriverXboxController.GetBButton()) { //can change button later
         SetTargetType(target_type_enum::CONE);
     } 
-    else if(a_OperatorXboxController.GetRawButton(2)) { //can change button later
+    else if(a_DriverXboxController.GetXButton()) { //can change button later
         SetTargetType(target_type_enum::CUBE);
     }
 }

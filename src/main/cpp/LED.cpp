@@ -40,6 +40,10 @@ void LED::Update()
 	
 	while (m_serial.GetBytesReceived() > 0) {
 		m_serial.Read(&rx_buff[rx_index], 1);
+
+		//printf("LED LED LED LED: %c\n", rx_buff[rx_index]);
+ 
+		
 		if((rx_buff[rx_index] == '\r') 
 			 || (rx_buff[rx_index] == '\n')) {
 
@@ -54,7 +58,7 @@ void LED::Update()
 
 			ProcessReport();
 			
-			// printf("LED report: rx_buff\n");
+			printf("LED report: rx_buff\n");
 
 			// reset for next report
 			rx_index = 0;
@@ -78,7 +82,7 @@ void LED::ProcessReport()
 
 void LED::SetTargetType(target_type_enum target_type_param)
 {
-	char cmd[8];
+	char cmd[10];
 	strncpy(cmd, "1,1,1\r\n", 8);
 	target_type = target_type_param;
 	// lazy way to build a message

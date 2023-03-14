@@ -156,7 +156,7 @@ class Autonomous {
 
    // const char *GetCurrentPath();
     
-    double gettime_d();
+  
 
     void StartAuto();
     void PeriodicAuto();
@@ -209,6 +209,8 @@ class Autonomous {
     void StartTimer();
     bool WaitForTime(double time); // Wait for specified time in seconds
 
+    double gettime_d();
+
     // Drives in direction at speed for distance. If going straight backwards, set angle to 180, not dist as a negative
     bool DriveDirection(double dist, double angle, double speed, bool fieldOriented);
 
@@ -219,7 +221,6 @@ private:
     Gyro *a_Gyro;
     //Claw *a_Claw;
     SwerveDrive *a_SwerveDrive;
-    frc::XboxController a_OperatorXboxController;
 
     AutoState0 a_AutoState0;
     AutoState1 a_AutoState1;
