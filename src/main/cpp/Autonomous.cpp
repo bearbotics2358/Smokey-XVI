@@ -193,13 +193,13 @@ void Autonomous::PeriodicBCSL() {
             break;
 
         case kBlueDriveAway1:
-            if (DriveDirection(3.6576, 90, 0.25, false)) {
+            if (DriveDirection(3.6576, 90, 0.25, true)) {
                 nextState = kBlueGoToStation1;
             }
             break;
 
         case kBlueGoToStation1:
-           if (DriveDirection(2.667, 270, 0.25, false)) {
+           if (DriveDirection(2.667, 270, 0.25, true)) {
                 
                 nextState = kBlueAutoIdle1;
              
@@ -632,6 +632,50 @@ void Autonomous::PeriodicDoNothing() {
     }
 a_AutoState12 = nextState;
 
+}
+void Autonomous::TwoPiece() {
+    a_AutoState13 = kBlueAutoIdle13;
+}
+void Autonomous::PeriodicTwoPiece(){
+     AutoState13 nextState = a_AutoState13;
+
+    switch(a_AutoState13){
+        case kBlueAutoIdle13:
+            StopSwerves();
+            break;
+        case kBlueExtend13:
+            //a_Claw->ArmPistonUp();
+            nextState = kBlueDrop13;
+            break;
+        case kBlueDrop13:
+            //a_Claw->ClawOpen();
+            nextState = kBlueRetract13;
+            break;
+        case kBlueRetract13:
+            //a_Claw->ArmPistonDown();
+            nextState = kBlueDriveAway13;
+            break;
+        case kBlueDriveAway13:
+            if(DriveDirection(5.69, 0, .25, true)) { // need real numbers
+                nextState = kBluePickUp13;
+            }
+            break;
+        case kBluePickUp13:
+           if(DriveDirection(.1, 90, .25, true)){
+                //a_Claw->ClawClose();
+                nextState = kGoToGrid13;
+           }
+            break;
+        case kGoToGrid13:
+            if(DriveDirection(5.69, 90, .25, true)){
+                nextState = kPlace13;
+            }
+        case kPlace13:
+            //a_Claw->ArmPistonUp();
+            //a_Claw->ClawOpen();
+            break;
+    }
+   a_AutoState13 = nextState;
 }
 
 void Autonomous::StopSwerves() {
