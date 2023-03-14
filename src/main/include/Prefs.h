@@ -10,7 +10,7 @@
 // uncomment to enable the new swerve
 //#define NEW_SWERVE
 
-#define GYRO_ID 1
+#define GYRO_ID 35
 #define PISTON_PUSH_SOLENOID_MODULE 10
 #define PISTON_PULL_SOLENOID_MODULE 11
 #define CLAW_OPEN_SOLENOID_MODULE 12
@@ -43,10 +43,10 @@ m = number engraved on module
 
 */
 
-#define FL_ID 8
-#define FR_ID 4
-#define BL_ID 5
-#define BR_ID 3
+#define FL_ID 1
+#define FR_ID 6
+#define BL_ID 7
+#define BR_ID 2
 
 
 /*======= ENCODER CONSTANTS =======*/

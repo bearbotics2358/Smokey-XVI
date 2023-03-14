@@ -1,3 +1,5 @@
+
+//point x to front and back
 #include "Gyro.h"
 #include "misc.h"
 #include <frc/interfaces/Gyro.h>
@@ -35,8 +37,8 @@ void Gyro::Cal() {
 
 void Gyro::Update() {
 
-    frc::SmartDashboard::PutNumber("gyro angle: ", getAngle());
-    frc::SmartDashboard::PutNumber("gyro angle clamped: ", getAngleClamped());
+    frc::SmartDashboard::PutNumber("gyro pitch: ", a_PigeonIMU.GetPitch());
+    frc::SmartDashboard::PutNumber("gyro yaw: ", getAngleClamped());
     /*
     if (lastUpdate == 0) {
         lastUpdate = frc::Timer::GetFPGATimestamp().value();
