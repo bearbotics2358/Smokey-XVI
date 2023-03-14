@@ -12,8 +12,6 @@
 #include "Claw.h"
 #include <frc/XboxController.h>
 
-//TODO: FIX LINES 68, 152-164, AND 241-261
-
 /*~~ hi :) ~~ */
 Robot::Robot():
 a_Gyro(GYRO_ID),
@@ -37,6 +35,8 @@ a_LED()
     /*if (!handler.ready()) {
         // do something if handler failed to connect
     }*/
+
+    isShuttleHigh = false;
 
     a_FLModule.setDrivePID(0.001, 0, 0);
     a_FLModule.setSteerPID(0.6, 1.0, 0.06);
@@ -83,6 +83,7 @@ void Robot::RobotPeriodic() {
     a_Claw.updateDashboard();
     a_LED.Update();
     a_TOF.Update();
+    a_Claw.UpdateShuttleEncoder(); //automatically sets the shuttle's encoder to 0 if hitting the limit switch
     //a_SwerveDrive.updatePosition();
 
 //testing code block for PID tuning
@@ -180,7 +181,6 @@ void Robot::TeleopPeriodic() {
     // frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Claw Controls =-=-=-=-=-=-=-=-=-=-= */
-    a_Claw.UpdateShuttleEncoder(); //automatically sets the shuttle's encoder to 0 if hitting the limit switch
     if (a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE && a_DriverXboxController.GetYButton()) {
         a_Claw.ClawClose();
         //later: move claw up into scoring position but 
@@ -188,23 +188,23 @@ void Robot::TeleopPeriodic() {
     } 
 
     // arm rotation controls
-    if(a_OperatorXboxController.GetXButton()) {
-        a_Claw.ArmMotorUp();
-    } else if (a_OperatorXboxController.GetBButton()) {
-        a_Claw.ArmMotorDown();
-    } else {
-        a_Claw.StopArm();
-    }
+    // if(a_OperatorXboxController.GetXButton()) {
+    //     a_Claw.ArmMotorUp();
+    // } else if (a_OperatorXboxController.GetBButton()) {
+    //     a_Claw.ArmMotorDown();
+    // } else {
+    //     a_Claw.StopArm();
+    // }
 
     // shuttle movement controls
     //if (a_Claw.IsShuttleSafeToMove() == true) {
-        if(a_OperatorXboxController.GetYButton()) {
-            a_Claw.ShuttleMotorUp();
-        } else if (a_OperatorXboxController.GetAButton()) {
-            a_Claw.ShuttleMotorDown();
-        } else {
-            a_Claw.StopShuttle();
-        }
+        // if(a_OperatorXboxController.GetYButton()) {
+        //     a_Claw.ShuttleMotorUp();
+        // } else if (a_OperatorXboxController.GetAButton()) {
+        //     a_Claw.ShuttleMotorDown();
+        // } else {
+        //     a_Claw.StopShuttle();
+        // }
     //}   
 
     // piston extension controls
@@ -219,6 +219,32 @@ void Robot::TeleopPeriodic() {
         a_Claw.ClawOpen();
     } else if (a_DriverXboxController.GetLeftBumper()) {
         a_Claw.ClawClose();
+    }
+
+    // shuttle PID
+    if (a_OperatorXboxController.GetYButton()){
+        isShuttleHigh = true;
+    } else if (a_OperatorXboxController.GetAButton()) {
+        isShuttleHigh = false;
+    }
+
+    if (isShuttleHigh == true){
+        a_Claw.ShuttleMoveToMM(650);
+    } else {
+        a_Claw.ShuttleMoveToMM(-15);
+    }
+
+    // arm PID
+    if (a_OperatorXboxController.GetXButton()){
+        isArmUp = true;
+    } else if (a_OperatorXboxController.GetBButton()) {
+        isArmUp = false;
+    }
+
+    if (isArmUp == true){
+        a_Claw.ArmMoveTo(140);
+    } else {
+        a_Claw.ArmMoveTo(0);
     }
 
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
@@ -279,8 +305,10 @@ void Robot::TeleopPeriodic() {
     y *= multiplier;
     z *= multiplier;
 
-    // turn field oriented mode off if button 3 is pressed
-    bool fieldOreo = true; // !joystickOne.GetRawButton(DriverButton::Button3);
+    // turn field oriented mode off if the trigger is pressed for more than 0.25 (GetRightTriggerAxis ranges from 0 to 1)
+    bool fieldOreo = (a_DriverXboxController.GetRightTriggerAxis() < 0.25);
+
+    frc::SmartDashboard::PutBoolean("field oriented: ", fieldOreo);
 
     // calibrate gyro
     if (a_DriverXboxController.GetAButton()) {
@@ -296,10 +324,10 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
 
-    if(a_DriverXboxController.GetRawButton(1)) { //can change button later
+    if(a_DriverXboxController.GetBButton()) { //can change button later
         SetTargetType(target_type_enum::CONE);
     } 
-    else if(a_DriverXboxController.GetRawButton(2)) { //can change button later
+    else if(a_DriverXboxController.GetXButton()) { //can change button later
         SetTargetType(target_type_enum::CUBE);
     }
 }

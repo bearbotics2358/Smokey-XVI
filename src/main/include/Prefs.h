@@ -83,7 +83,7 @@ m = number engraved on module
 #define CANCODER_OFFSET_6 127.4 - 180
 #define CANCODER_OFFSET_7 240.7 - 180
 #define CANCODER_OFFSET_8 157.6 - 180
-#define CANCODER_OFFSET_ARM -130.34
+#define CANCODER_OFFSET_ARM -323.6
 
 #define CANCODER_ID_1 17
 #define CANCODER_ID_2 18
@@ -171,7 +171,7 @@ constexpr units::angle::radian_t TARGET_PITCH = units::angle::radian_t(0.0);
 /* ============= Arduino ============= */
 
 #define BAUD_RATE_TOF 115200
-#define USB_PORT_TOF frc::SerialPort::kMXP
+#define USB_PORT_TOF frc::SerialPort::kUSB1
 //#define USB_PORT_TOF frc::SerialPort::kUSB1 (seeing TOF print statements and roborio then rebooting)
 #define DATA_BITS_TOF 8
 #define PARITY_TOF frc::SerialPort::kParity_None
