@@ -91,9 +91,7 @@ double Gyro::getYaw() const {
 double Gyro::getPitch() const {
     return a_PigeonIMU.GetPitch();
 }
-double Gyro::getAbsoluteCompassHeading () const{
-    return a_PigeonIMU.GetAbsoluteCompassHeading();
-}
+
 
 void Gyro::Zero(double offsetAngle) { //takes offsetAngle, defaults to zero if none provided. CCW is +
     for (int i = 0; i < 3; i++) {

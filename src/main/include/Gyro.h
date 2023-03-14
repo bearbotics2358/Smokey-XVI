@@ -4,7 +4,7 @@
 #include <frc/Timer.h>
 #include <hal/HAL.h>
 #include <ctre/phoenix/sensors/PigeonIMU.h>
-
+#include <ctre/phoenix/sensors/BasePigeon.h>
 class Gyro {
     public:
         double XAxis;

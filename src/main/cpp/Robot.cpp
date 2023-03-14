@@ -13,6 +13,7 @@
 #include <frc/XboxController.h>
 
 
+
 //TODO: FIX LINES 68, 152-164, AND 241-261
 
 
@@ -66,6 +67,7 @@ void Robot::RobotInit() {
     m_AutoModeSelector.AddOption(RedChargeStationMiddle, RedChargeStationMiddle);
     m_AutoModeSelector.AddOption(RedDropAndGoRight, RedDropAndGoRight);
     m_AutoModeSelector.AddOption(RedChargeStationRight, RedChargeStationRight);
+    m_AutoModeSelector.AddOption(TwoPiece, TwoPiece);
     frc::SmartDashboard::PutData("Auto Modes", &m_AutoModeSelector); 
 
     //a_LED.Init();
@@ -147,6 +149,8 @@ void Robot::TeleopInit() {
 // main loop
 void Robot::TeleopPeriodic() {
     EnabledPeriodic();
+    frc::SmartDashboard::PutNumber("Pitch", a_Gyro.getPitch());
+    frc::SmartDashboard::PutNumber("YAW", a_Gyro.getYaw());
 
     // if (joystickOne.GetRawButtonReleased(DriverButton::Button12)) {
     //     pChange += 0.1;
