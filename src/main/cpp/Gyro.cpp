@@ -1,6 +1,7 @@
 #include "Gyro.h"
 #include "misc.h"
 #include <frc/interfaces/Gyro.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 /**
  * Constructor.
@@ -47,6 +48,8 @@ void Gyro::Cal() {
 }
 
 void Gyro::Update() {
+    frc::SmartDashboard::PutNumber("gyro pitch: ", getAngle());
+    frc::SmartDashboard::PutNumber("gyro angle: ", getPitch());
     if (lastUpdate == 0) {
         lastUpdate = frc::Timer::GetFPGATimestamp().value();
         return;
