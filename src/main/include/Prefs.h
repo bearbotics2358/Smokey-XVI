@@ -23,7 +23,7 @@
 #define ARM_MOTOR 12
 #define LIMIT_SWITCH 0
 
-#define MAX_CLIMB_PERCENT 0.2
+#define MAX_CLIMB_PERCENT 0.1
 #define MAX_FREE_SPEED 16.3
 
 #define TICKS_STEERING 18.0 // roughly 18 "position" units per steering rotation
