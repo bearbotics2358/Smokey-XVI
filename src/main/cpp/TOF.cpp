@@ -7,6 +7,7 @@
 #include <stdlib.h> // atoi
 #include <Prefs.h>
 #include "TOF.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 TOF::TOF():
 	m_serial(BAUD_RATE_TOF, USB_PORT_TOF, DATA_BITS_TOF, PARITY_TOF, STOP_BITS_TOF)
@@ -43,6 +44,10 @@ void TOF::Update()
 	
 	while (m_serial.GetBytesReceived() > 0) {
 		m_serial.Read(&rx_buff[rx_index], 1);
+
+		// printf("TOF: %c\n", rx_buff[rx_index]);
+
+		
     if((rx_buff[rx_index] == '\r') 
 			 || (rx_buff[rx_index] == '\n')) {
 
@@ -55,9 +60,10 @@ void TOF::Update()
 			// terminate the report string
 			rx_buff[rx_index] = 0;
 
+			printf("TOF report: %s\n", rx_buff);
+
 			ProcessReport();
 			
-			// printf("TOF report: rx_buff\n");
 
       // reset for next report
       rx_index = 0;
@@ -84,6 +90,7 @@ void TOF::ProcessReport()
 	case TOF_RIO_msgs_enum::RANGE:
 		if(data_len >= 2) {
 			target_range_indicator = (target_range_enum)atoi(strtok(NULL, ","));
+			frc::SmartDashboard::PutNumber("TOF range indicator: ", target_range_indicator);
 			range = atoi(strtok(NULL, ","));
 		}
 		break;

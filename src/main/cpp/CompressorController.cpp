@@ -1,4 +1,5 @@
 #include "CompressorController.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 CompressorController::CompressorController():
 a_Compressor(frc::PneumaticsModuleType::REVPH) 
@@ -12,6 +13,7 @@ void CompressorController::update(){
     } else {
         a_Compressor.EnableDigital();
     }
+    frc::SmartDashboard::PutNumber("compressor pressure: ", getTankPressure());
 }
 
 double CompressorController::getTankPressure(){

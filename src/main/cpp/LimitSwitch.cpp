@@ -7,7 +7,7 @@ a_Input(port)
 }
 
 bool LimitSwitch::limitSwitchPressed(){
-    if (a_Input.Get() == 1) {
+    if (a_Input.Get() == 0) {
         isPressed = true;
     } else {
         isPressed = false;

@@ -9,27 +9,7 @@
 //left if positive degrees right is negative
 Autonomous::Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive):
 a_Gyro(Gyro),
-a_SwerveDrive(SwerveDrive),
-a_OperatorXboxController(XBOX_CONTROLLER),
-
-a_AutoState0(kBlueAutoIdle0),
-a_AutoState1(kBlueAutoIdle1),
-a_AutoState2(kBlueAutoIdle2){}
-
-
-double Autonomous::gettime_d(){
-	// return time in seconds as a double
-	double t0;
-	struct timeval tv0;
-
-	gettimeofday(&tv0, NULL);
-	t0 = 1.0 * tv0.tv_sec + (1.0 * tv0.tv_usec) / 1000000.0;
-	// printf("seconds: %ld\n", tv0.tv_sec);
-	// printf("usecs:   %ld\n", tv0.tv_usec);
-	// printf("time:    %lf\n", t0);
-
-	return t0;
-}
+a_SwerveDrive(SwerveDrive){}
 
 
 //-------------------------------------Auto Stuff---------------------------------------------//
@@ -178,6 +158,7 @@ void Autonomous::PeriodicBDGL() {
 
 void Autonomous::BCSL() {
     a_AutoState1 = kBlueExtend1;
+    state_time = gettime_d();
 }
 
 void Autonomous::PeriodicBCSL() {
@@ -215,7 +196,6 @@ void Autonomous::PeriodicBCSL() {
             if (DriveDirection(3.6576, 90, 0.25, true)) {
                 nextState = kBlueGoToStation1;
             }
-            //need to actually use drivedirection
             break;
 
         case kBlueGoToStation1:
@@ -238,6 +218,7 @@ void Autonomous::PeriodicBCSL() {
 
 void Autonomous::BDGM() {
     a_AutoState2 = kBlueExtend2;   
+    state_time = gettime_d();
 }
 
 void Autonomous::PeriodicBDGM() {
@@ -275,6 +256,7 @@ void Autonomous::PeriodicBDGM() {
 void Autonomous::BCSM() 
 {
     a_AutoState3 = kBlueExtend3;
+    state_time = gettime_d();
 }
 
 void Autonomous::PeriodicBCSM() {
@@ -318,6 +300,7 @@ void Autonomous::PeriodicBCSM() {
 
 void Autonomous::BDGR(){
     a_AutoState4 = kBlueExtend4;
+    state_time = gettime_d();
 }
 
 void Autonomous::PeriodicBDGR() {
@@ -336,12 +319,10 @@ void Autonomous::PeriodicBDGR() {
             //a_Claw->ClawOpen();
             nextState = kBlueRetract4;
             break;
-
         case kBlueRetract4:
             //a_Claw->ArmPistonDown();
             nextState = kBlueDriveAway4;
             break;
-
         case kBlueDriveAway4:
             // need the real drive numbers
             if (DriveDirection(4.8768, 0, 0.3, true)) {
@@ -353,6 +334,7 @@ void Autonomous::PeriodicBDGR() {
  }
  void Autonomous::BCSR() 
 {
+    state_time = gettime_d();
     a_AutoState5 = kBlueExtend5;
 }
     
@@ -372,7 +354,6 @@ void Autonomous::PeriodicBCSR() {
             //a_Claw->ClawOpen();
             nextState = kBlueRetract5;
             break;
-
         case kBlueRetract5:
            //Claw close code
            //a_Claw->ArmPistonDown();
@@ -401,6 +382,7 @@ void Autonomous::PeriodicBCSR() {
 }
 
 void Autonomous::RDGL(){
+    state_time = gettime_d();
     a_AutoState6 = kRedExtend6;
 }
 
@@ -433,6 +415,7 @@ void Autonomous::PeriodicRDGL() {
 
 void Autonomous::RCSL() 
 {
+    state_time = gettime_d();
     a_AutoState7 = kRedExtend7;
 }
 
@@ -475,6 +458,7 @@ void Autonomous::PeriodicRCSL() {
 }
 
 void Autonomous::RDGM(){
+    state_time = gettime_d();
     a_AutoState8 =  kRedExtend8;
 }
 
@@ -509,6 +493,7 @@ void Autonomous::PeriodicRDGM(){
 
 
 void Autonomous::RCSM() {
+    state_time = gettime_d();
     a_AutoState9 = kRedExtend9;
 }
 
@@ -554,6 +539,7 @@ void Autonomous::PeriodicRCSM() {
 }
 
 void Autonomous::RDGR(){
+    state_time = gettime_d();
     a_AutoState10 = kRedExtend10;
 }
 
@@ -578,7 +564,6 @@ void Autonomous::PeriodicRDGR() {
             //a_Claw->ArmPistonDown();
             nextState = kRedDriveAway10;
             break;
-
         case kRedDriveAway10:
             // need the real drive numbers
             if (DriveDirection(4.8768, 0, 0.25, true)) {
@@ -590,6 +575,7 @@ void Autonomous::PeriodicRDGR() {
  }
 
 void Autonomous::RCSR() {
+    state_time = gettime_d();
     a_AutoState11 = kRedExtend11;
 }
 
@@ -700,9 +686,20 @@ void Autonomous::StartTimer() {
     waitTimeStart = misc::getSeconds();
 }
 
-bool Autonomous::WaitForTime(double time) {
-    return misc::getSeconds() > waitTimeStart + time;
+double Autonomous::gettime_d(){
+	// return time in seconds as a double
+	double t0;
+	struct timeval tv0;
+
+	gettimeofday(&tv0, NULL);
+	t0 = 1.0 * tv0.tv_sec + (1.0 * tv0.tv_usec) / 1000000.0;
+	// printf("seconds: %ld\n", tv0.tv_sec);
+	// printf("usecs:   %ld\n", tv0.tv_usec);
+	// printf("time:    %lf\n", t0);
+
+	return t0;
 }
+
 
 bool Autonomous::TurnToAngle(float angle) { // rotates bot in place to specific angle
 
@@ -742,25 +739,23 @@ bool Autonomous::DriveDirection(double dist, double angle, double speed, bool fi
 
 bool Autonomous::Balance(float direction) {
     a_SwerveDrive->brakeOnStop();
-    float currentTime = frc::Timer::GetFPGATimestamp().value();
+    float currentTime = gettime_d();
     double tiltAngle = a_Gyro->getPitch();
     double percentTilt = tiltAngle / 15;
     double speed = percentTilt * MAX_CLIMB_PERCENT * MAX_FREE_SPEED;
     if(startedClimb) {
         a_SwerveDrive->driveDirectionVelocity(speed, direction);
-        if(abs(tiltAngle) < 1) {
-            startTime = frc::Timer::GetFPGATimestamp().value();
+        if(abs(tiltAngle) < 5) {
+            startTime = gettime_d();
         }
         return false;
     }
-    if ((currentTime - startTime > 0.5) && (abs(tiltAngle) < 1) && startedClimb){
-        a_SwerveDrive->turnToAngle(0);
-        StopSwerves();
+    if ((currentTime - startTime > 0.5) && (abs(tiltAngle) < 5) && startedClimb){
         return true;
     }
     else{
         a_SwerveDrive->driveDirection(MAX_CLIMB_PERCENT, direction);
-        if(abs(tiltAngle) > 1){
+        if(abs(tiltAngle) > 5){
             startedClimb = true;
         }
         return false;

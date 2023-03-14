@@ -10,14 +10,11 @@
 // uncomment to enable the new swerve
 //#define NEW_SWERVE
 
-#define GYRO_ID 35 // TODO: UPDATE TO CORRECT NUMBER
-// #define ARM_PUSH_SOLENOID_MODULE 31
-// #define ARM_PULL_SOLENOID_MODULE 32
-// #define ARM_OPEN_SOLENOID_MODULE 33
-// #define ARM_CLOSE_SOLENOID_MODULE 34
-// #define ARM_CARRIAGE_MOTOR 29
-// #define ARM_CLAW_MOTOR 30
-// #define ARM_CARRIAGE_CANCODER 31
+#define GYRO_ID 1
+#define PISTON_PUSH_SOLENOID_MODULE 10
+#define PISTON_PULL_SOLENOID_MODULE 11
+#define CLAW_OPEN_SOLENOID_MODULE 12
+#define CLAW_CLOSE_SOLENOID_MODULE 13
 
 #define EXTEND_PISTON_TIME 0.5
 #define CLAW_PISTON_TIME 0.5
@@ -27,7 +24,7 @@
 // #define SHUTTLE_CANCODER 31
 // #define LIMIT_SWITCH 32
 
-#define MAX_CLIMB_PERCENT 0.2
+#define MAX_CLIMB_PERCENT 0.1
 #define MAX_FREE_SPEED 16.3
 
 #define TICKS_STEERING 18.0 // roughly 18 "position" units per steering rotation
@@ -46,10 +43,10 @@ m = number engraved on module
 
 */
 
-#define FL_ID 7
-#define FR_ID 2
-#define BL_ID 1
-#define BR_ID 6
+#define FL_ID 8
+#define FR_ID 4
+#define BL_ID 5
+#define BR_ID 3
 
 
 /*======= ENCODER CONSTANTS =======*/
@@ -81,13 +78,13 @@ m = number engraved on module
 
 #define CANCODER_OFFSET_1 129.5 - 180
 #define CANCODER_OFFSET_2 115.3 - 180
-#define CANCODER_OFFSET_3 0
-#define CANCODER_OFFSET_4 0
-#define CANCODER_OFFSET_5 0
+#define CANCODER_OFFSET_3 252.7 - 180
+#define CANCODER_OFFSET_4 235.4 - 180
+#define CANCODER_OFFSET_5 41.2 - 180
 #define CANCODER_OFFSET_6 127.4 - 180
 #define CANCODER_OFFSET_7 240.7 - 180
-#define CANCODER_OFFSET_8 0
-#define CANCODER_OFFSET_ARM 0
+#define CANCODER_OFFSET_8 157.6 - 180
+#define CANCODER_OFFSET_ARM -318.17
 
 #define CANCODER_ID_1 17
 #define CANCODER_ID_2 18
@@ -111,12 +108,16 @@ static double CANCODER_OFFSETS[] = {
     CANCODER_OFFSET_ARM
     };
 
+/* ========== Shuttle constants ====== */
+
+// Neo is 42 ticks / revolution, geared down, drive chain, ...
+#define SHUTTLE_TICKS_PER_MM 2.7306
 
 /* ========== Joystick Ports ========= */
-#define JOYSTICK_PORT 1
+#define OPERATOR_PORT 0
 #define JOYSTICK_DEADZONE 0.15
 
-#define XBOX_CONTROLLER 5
+#define DRIVER_PORT 5
 
 
 /* ============ GEAR RATIOS ======== */
@@ -166,19 +167,28 @@ constexpr units::angle::radian_t TARGET_PITCH = units::angle::radian_t(0.0);
 
 // mdns name of camera
 #define SHOOTER_CAMERA_NAME "photonvision"
-#define BALL_CAMERA_NAME "temp"
+#define BALL_CAMERA_NAME "temp" 
 
 /* ============= Arduino ============= */
 
 #define BAUD_RATE_TOF 115200
 #define USB_PORT_TOF frc::SerialPort::kUSB1
+//#define USB_PORT_TOF frc::SerialPort::kUSB1 (seeing TOF print statements and roborio then rebooting)
 #define DATA_BITS_TOF 8
 #define PARITY_TOF frc::SerialPort::kParity_None
 #define STOP_BITS_TOF frc::SerialPort::kStopBits_One
 
-#define BAUD_RATE_ARDUINO 9600
-#define USB_PORT_ARDUINO frc::SerialPort::kUSB2
+#define BAUD_RATE_ARDUINO 115200
+#define USB_PORT_ARDUINO frc::SerialPort::kOnboard
 #define DATA_BITS_ARDUINO 8
 #define PARITY_ARDUINO frc::SerialPort::kParity_None
 #define STOP_BITS_ARDUINO frc::SerialPort::kStopBits_One
 
+/*
+sraight up: 78.57
+"0": 130.34
+back: 319.13
+
+no cone/cube front clearance: 120
+no cone/cube back clearance: 330
+*/
