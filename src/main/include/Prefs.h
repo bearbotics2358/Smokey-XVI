@@ -60,10 +60,10 @@ m = number engraved on module
 #define FALCON_UNITS_PER_REV 2048
 
 // swerve drive absolute encoder analog ports
-#define FL_SWERVE_ABS_ENC_PORT 0
-#define FR_SWERVE_ABS_ENC_PORT 3
-#define BL_SWERVE_ABS_ENC_PORT 1
-#define BR_SWERVE_ABS_ENC_PORT 2
+// #define FL_SWERVE_ABS_ENC_PORT 0
+// #define FR_SWERVE_ABS_ENC_PORT 3
+// #define BL_SWERVE_ABS_ENC_PORT 1
+// #define BR_SWERVE_ABS_ENC_PORT 2
 
 // min and max voltage of absolute encoders on swerve drives
 #define FL_SWERVE_ABS_ENC_MIN_VOLTS 0.014076

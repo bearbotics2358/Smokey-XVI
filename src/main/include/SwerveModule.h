@@ -50,7 +50,7 @@ class SwerveModule // Handles steering and driving of each Swerve Module
         // the magnitude of the vector is the speed in meters per second
         void driveDirection(Vec2 direction);
 
-        void debugSteer(float angle);
+        //void debugSteer(float angle);
 
 
     private:
