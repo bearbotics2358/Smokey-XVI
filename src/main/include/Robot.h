@@ -20,7 +20,7 @@
 
 #include <frc/smartdashboard/SendableChooser.h>
 
-#include "LED.h"
+#include "LED_DIO.h"
 
 
 
@@ -87,7 +87,7 @@ class Robot : public frc::TimedRobot {
         CompressorController a_CompressorController;
         TOF a_TOF;
 
-        LED a_LED;
+        LED_DIO a_LED;
 
         // stuff that autonomous needs
         
