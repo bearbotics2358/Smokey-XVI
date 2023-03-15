@@ -19,6 +19,8 @@
 #define EXTEND_PISTON_TIME 0.5
 #define CLAW_PISTON_TIME 0.5
 
+#define PITCH_OFFSET -2
+
 // #define SHUTTLE_MOTOR 29
 // #define ARM_MOTOR 30
 // #define SHUTTLE_CANCODER 31

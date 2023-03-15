@@ -37,7 +37,7 @@ void Gyro::Cal() {
 
 void Gyro::Update() {
 
-    frc::SmartDashboard::PutNumber("gyro pitch: ", a_PigeonIMU.GetPitch());
+    frc::SmartDashboard::PutNumber("gyro pitch: ", a_PigeonIMU.GetPitch() - PITCH_OFFSET);
     frc::SmartDashboard::PutNumber("gyro yaw: ", getAngleClamped());
     /*
     if (lastUpdate == 0) {
@@ -81,7 +81,7 @@ double Gyro::getYaw() const {
     return a_PigeonIMU.GetYaw();
 }
 double Gyro::getPitch() const {
-    return a_PigeonIMU.GetPitch();
+    return a_PigeonIMU.GetPitch() - PITCH_OFFSET;
 }
 void Gyro::setYaw(double angle){
     a_PigeonIMU.SetYaw(angle);

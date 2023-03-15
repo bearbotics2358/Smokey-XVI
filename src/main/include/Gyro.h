@@ -5,6 +5,7 @@
 #include <hal/HAL.h>
 #include <ctre/phoenix/sensors/PigeonIMU.h>
 #include <ctre/phoenix/sensors/BasePigeon.h>
+#include "Prefs.h"
 class Gyro {
     public:
         double XAxis;
