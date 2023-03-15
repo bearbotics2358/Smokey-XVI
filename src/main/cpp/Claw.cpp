@@ -159,6 +159,7 @@ bool Claw::IsShuttleSafeToMove(){ // shuttle is safe to move as long as the arm 
 
 bool Claw::ShuttleMoveToMM(double targetPosition) {
     double motorDrive = shuttlePID.Calculate(GetShuttlePositionMM(), targetPosition);
+    shuttlePID.SetSetpoint(targetPosition);
     motorDrive = std::clamp(motorDrive, -1.0, 1.0);
     if (IsShuttleSafeToMove()){
         frc::SmartDashboard::PutNumber("shuttle pid: ", motorDrive);
@@ -177,6 +178,7 @@ bool Claw::ShuttleHoldAtMM(double targetPosition){
 bool Claw::ArmMoveTo(double targetPosition) {
     targetPosition = std::clamp(targetPosition, 5.0, 175.0);
     double motorDrive = armPID.Calculate(getAngle(), targetPosition);
+    armPID.SetSetpoint(targetPosition);
     motorDrive = std::clamp(motorDrive, -1.0, 1.0);
     frc::SmartDashboard::PutNumber("arm pid: ", motorDrive);
     armMotor.Set(motorDrive);

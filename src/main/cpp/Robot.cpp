@@ -253,8 +253,6 @@ void Robot::TeleopPeriodic() {
         a_Claw.ArmMoveTo(8);
     }
 
-
-
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
 
     if((a_DriverXboxController.GetPOV() == 270) || (a_DriverXboxController.GetPOV() == 0) || (a_DriverXboxController.GetPOV() == 90)) {

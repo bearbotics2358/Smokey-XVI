@@ -37,6 +37,8 @@ class Claw {
         bool ShuttleHoldAtMM(double targetPosition);
         bool ArmMoveTo(double targetPosition);
         bool ArmHoldAt(double targetPosition);
+        bool IsArmPIDAtSetpoint();
+        bool IsShuttlePIDAtSetpoint();
     private:
         frc::DoubleSolenoid a_Piston;
         frc::DoubleSolenoid a_ClawSolenoid;
