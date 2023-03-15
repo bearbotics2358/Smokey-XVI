@@ -193,39 +193,26 @@ void Robot::TeleopPeriodic() {
         // don't score/ let go
     } 
 
-    // arm rotation controls
-    // if(a_OperatorXboxController.GetXButton()) {
-    //     a_Claw.ArmMotorUp();
-    // } else if (a_OperatorXboxController.GetBButton()) {
-    //     a_Claw.ArmMotorDown();
-    // } else {
-    //     a_Claw.StopArm();
-    // }
-
-    // shuttle movement controls
-    //if (a_Claw.IsShuttleSafeToMove() == true) {
-        // if(a_OperatorXboxController.GetYButton()) {
-        //     a_Claw.ShuttleMotorUp();
-        // } else if (a_OperatorXboxController.GetAButton()) {
-        //     a_Claw.ShuttleMotorDown();
-        // } else {
-        //     a_Claw.StopShuttle();
-        // }
-    //}   
-
-    // piston extension controls
-    // if(a_OperatorXboxController.GetPOV() == 270) { // left
-    //     a_Claw.ArmPistonUp();
-    // } else if (a_OperatorXboxController.GetPOV() == 90) { // right
-    //     a_Claw.ArmPistonDown();
-    // }
-
     // claw open/close controls
     if(a_DriverXboxController.GetRightBumper()) {
         a_Claw.ClawOpen();
     } else if (a_DriverXboxController.GetLeftBumper()) {
         a_Claw.ClawClose();
     }
+
+    if (a_OperatorXboxController.GetYButton()){
+        isShuttleHigh = true;
+    } else if (a_OperatorXboxController.GetAButton()) {
+        isShuttleHigh = false;
+    }
+
+    if (isShuttleHigh == true){
+        a_Claw.TransformClaw(170, 650, true);
+    } else {
+        a_Claw.TransformClaw(10, -15, false);
+    }
+
+    /*
 
     // shuttle PID
     if (a_OperatorXboxController.GetYButton()){
@@ -252,6 +239,8 @@ void Robot::TeleopPeriodic() {
     } else {
         a_Claw.ArmMoveTo(8);
     }
+
+    */
 
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
 
@@ -330,10 +319,10 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
 
-    if(a_DriverXboxController.GetBButton()) { //can change button later
+    if(a_OperatorXboxController.GetXButton()) { //can change button later
         SetTargetType(target_type_enum::CONE);
     } 
-    else if(a_DriverXboxController.GetXButton()) { //can change button later
+    else if(a_OperatorXboxController.GetBButton()) { //can change button later
         SetTargetType(target_type_enum::CUBE);
     }
 }
