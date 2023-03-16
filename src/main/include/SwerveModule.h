@@ -73,4 +73,6 @@ class SwerveModule // Handles steering and driving of each Swerve Module
         // how many degrees away from the actual zero degrees
         // that the relative encoder's zero point is
         double encZeroPoint { 0.0 };
+
+        double m_inversionFactor = 1.0;
 };

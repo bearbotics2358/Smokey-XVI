@@ -32,7 +32,9 @@ class TOF
 	float GetInches();
 
  private:
+#ifdef COMP_BOT  // Not available on the practice bot
 	frc::SerialPort m_serial;
+#endif
 	char rx_buff[BUFF_SIZE];
 	int rx_index = 0;
 	int range = 9999; // range in mm

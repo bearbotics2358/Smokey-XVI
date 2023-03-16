@@ -57,6 +57,12 @@ a_LED(ARDUINO_DIO_PIN)
 
 void Robot::RobotInit() {
     frc::SmartDashboard::init();
+
+#ifndef COMP_BOT
+    // using #ifndef here to indicate when this is the practice bot
+    frc::SmartDashboard::PutString("Bot type", "PRACTICE BOT");
+#endif
+
     a_Gyro.Init();
     a_Gyro.Zero();
 
