@@ -37,7 +37,7 @@ a_LED(ARDUINO_DIO_PIN)
     }*/
 
     isShuttleHigh = false;
-    isArmUp = true;
+    isArmUp = false;
 
     a_FLModule.setDrivePID(0.001, 0, 0);
     a_FLModule.setSteerPID(0.6, 1.0, 0.06);
@@ -183,12 +183,8 @@ void Robot::TeleopPeriodic() {
     // frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Claw Controls =-=-=-=-=-=-=-=-=-=-= */
-    // if (a_DriverXboxController.GetYButton()){
-        // clawPrimed = true;
-    // }
     if (a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE && a_DriverXboxController.GetYButton()) {
         a_Claw.ClawClose();
-        // clawPrimed = false;
         //later: move claw up into scoring position but 
         // don't score/ let go
     } 
@@ -201,12 +197,12 @@ void Robot::TeleopPeriodic() {
     }
 
     if (a_OperatorXboxController.GetYButton()){
-        isShuttleHigh = true;
+        isArmUp = true;
     } else if (a_OperatorXboxController.GetAButton()) {
-        isShuttleHigh = false;
+        isArmUp = false;
     }
 
-    if (isShuttleHigh == true){
+    if (isArmUp == true){
         a_Claw.TransformClaw(170, 650, true);
     } else {
         a_Claw.TransformClaw(10, -15, false);
