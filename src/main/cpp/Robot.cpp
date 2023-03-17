@@ -257,25 +257,25 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
 
-    if((a_DriverXboxController.GetPOV() == 270) || (a_DriverXboxController.GetPOV() == 0) || (a_DriverXboxController.GetPOV() == 90)) {
-        photonlib::PhotonPipelineResult result = a_camera.GetLatestResult();
-        double angle = a_Gyro.getAngle();
-        if(result.HasTargets()){
-            units::meter_t range = photonlib::PhotonUtils::CalculateDistanceToTarget(TARGET_CAMERA_HEIGHT, TARGET_HEIGHT, TARGET_CAMERA_PITCH, units::degree_t{result.GetBestTarget().GetPitch()});
-            units::meter_t xComponent = range * sin(angle);
-            units::meter_t yComponent = (range * cos(angle)) - units::meter_t(0.36195);
-            if(a_DriverXboxController.GetPOV() == 270){ // go to cone spot to left of target
-                newXComponent = xComponent - units::meter_t(.5588);
-            }
-            else if(a_DriverXboxController.GetPOV() == 0){ // go to cube spot in line with target
-                newXComponent = xComponent;
-            }
-            else if(a_DriverXboxController.GetPOV() == 90){ // go to cone spot to right of target
-                newXComponent = xComponent + units::meter_t(.5588);
-            }
-            a_SwerveDrive.goToPosition(Vec2(double(newXComponent), double(yComponent)), 0, 0.2);
-        }
-    }
+    // if((a_DriverXboxController.GetPOV() == 270) || (a_DriverXboxController.GetPOV() == 0) || (a_DriverXboxController.GetPOV() == 90)) {
+    //     photonlib::PhotonPipelineResult result = a_camera.GetLatestResult();
+    //     double angle = a_Gyro.getAngle();
+    //     if(result.HasTargets()){
+    //         units::meter_t range = photonlib::PhotonUtils::CalculateDistanceToTarget(TARGET_CAMERA_HEIGHT, TARGET_HEIGHT, TARGET_CAMERA_PITCH, units::degree_t{result.GetBestTarget().GetPitch()});
+    //         units::meter_t xComponent = range * sin(angle);
+    //         units::meter_t yComponent = (range * cos(angle)) - units::meter_t(0.36195);
+    //         if(a_DriverXboxController.GetPOV() == 270){ // go to cone spot to left of target
+    //             newXComponent = xComponent - units::meter_t(.5588);
+    //         }
+    //         else if(a_DriverXboxController.GetPOV() == 0){ // go to cube spot in line with target
+    //             newXComponent = xComponent;
+    //         }
+    //         else if(a_DriverXboxController.GetPOV() == 90){ // go to cone spot to right of target
+    //             newXComponent = xComponent + units::meter_t(.5588);
+    //         }
+    //         a_SwerveDrive.goToPosition(Vec2(double(newXComponent), double(yComponent)), 0, 0.2);
+    //     }
+    // }
 
     /* =-=-=-=-=-=-=-=-=-=-= Swerve Controls =-=-=-=-=-=-=-=-=-=-= */
 
