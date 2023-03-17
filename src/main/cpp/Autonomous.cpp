@@ -668,15 +668,19 @@ void Autonomous::PeriodicPiece2(){
             }
             break;
         case kBluePickUp13:
-           if(DriveDirection(.1, -90, .25, true)){
+            if(TurnToAngle(-90)){
+            if(DriveDirection(.1, 0, .25, true)){
                 //a_Claw->ClawClose();
                 nextState = kGoToGrid13;
+            }
            }
             break;
         case kGoToGrid13:
+            if(TurnToAngle(90)){
             if(DriveDirection(5.69, 180, .25, true)){
                 nextState = kBlueAutoIdle13;
                 }
+            }
         case kPlace13:
             //a_Claw->ArmPistonUp();
             //a_Claw->ClawOpen();
