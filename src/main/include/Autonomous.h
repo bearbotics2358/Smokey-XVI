@@ -26,7 +26,7 @@ const std::string RedChargeStationMiddle = "Red Charge Station Middle";
 const std::string RedDropAndGoRight = "Red Drop and Go Right";
 const std::string RedChargeStationRight = "Red Charge Station Right";
 const std::string RobotDoNothing = "Sit Still";
-const std::string TwoPiece = "2 Piece";
+const std::string TwoPiece = "Two Piece";
 const std::string kAutoModeDefault = RobotDoNothing;
 
 enum AutoState0 { // Encoders
@@ -230,6 +230,7 @@ class Autonomous {
 
     bool TurnToAngle(float angle); // turns to a specific angle
     bool Balance(float direction);
+    double InternetBalance();
 
 private:
     Gyro *a_Gyro;
@@ -272,6 +273,14 @@ private:
 
     bool startedClimb{false};
     float startTime{0.0};
+
+    int state = 0;
+    int debounceCount = 0;
+    double robotSpeedFast = 0.4;
+    double robotSpeedSlow = 0.2;
+    double onChargeStationDegree = 13.0;
+    double levelDegree = 6.0;
+    double debounceTime = 0.2;
 
     // start position of robot during 5 ball auto relative to near left corner of field
     // FIXME: this is a very innacurate guess, more so than the other measurements
