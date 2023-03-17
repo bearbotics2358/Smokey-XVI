@@ -26,7 +26,7 @@ a_DriverXboxController(DRIVER_PORT),
 a_OperatorXboxController(OPERATOR_PORT),
 a_CompressorController(),
 a_TOF(), 
-a_LED()
+a_LED(ARDUINO_DIO_PIN)
 // NEEDED A PORT, THIS IS PROBABLY WRONG, PLEASE FIX IT LATER
 //  handler("169.254.179.144", "1185", "data"),
 //  handler("raspberrypi.local", 1883, "PI/CV/SHOOT/DATA"),
@@ -37,7 +37,7 @@ a_LED()
     }*/
 
     isShuttleHigh = false;
-    isArmUp = true;
+    isArmUp = false;
 
     a_FLModule.setDrivePID(0.001, 0, 0);
     a_FLModule.setSteerPID(0.6, 1.0, 0.06);
@@ -183,42 +183,11 @@ void Robot::TeleopPeriodic() {
     // frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Claw Controls =-=-=-=-=-=-=-=-=-=-= */
-    // if (a_DriverXboxController.GetYButton()){
-        // clawPrimed = true;
-    // }
     if (a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE && a_DriverXboxController.GetYButton()) {
         a_Claw.ClawClose();
-        // clawPrimed = false;
         //later: move claw up into scoring position but 
         // don't score/ let go
     } 
-
-    // arm rotation controls
-    // if(a_OperatorXboxController.GetXButton()) {
-    //     a_Claw.ArmMotorUp();
-    // } else if (a_OperatorXboxController.GetBButton()) {
-    //     a_Claw.ArmMotorDown();
-    // } else {
-    //     a_Claw.StopArm();
-    // }
-
-    // shuttle movement controls
-    //if (a_Claw.IsShuttleSafeToMove() == true) {
-        // if(a_OperatorXboxController.GetYButton()) {
-        //     a_Claw.ShuttleMotorUp();
-        // } else if (a_OperatorXboxController.GetAButton()) {
-        //     a_Claw.ShuttleMotorDown();
-        // } else {
-        //     a_Claw.StopShuttle();
-        // }
-    //}   
-
-    // piston extension controls
-    // if(a_OperatorXboxController.GetPOV() == 270) { // left
-    //     a_Claw.ArmPistonUp();
-    // } else if (a_OperatorXboxController.GetPOV() == 90) { // right
-    //     a_Claw.ArmPistonDown();
-    // }
 
     // claw open/close controls
     if(a_DriverXboxController.GetRightBumper()) {
@@ -226,6 +195,20 @@ void Robot::TeleopPeriodic() {
     } else if (a_DriverXboxController.GetLeftBumper()) {
         a_Claw.ClawClose();
     }
+
+    if (a_OperatorXboxController.GetYButton()){
+        isArmUp = true;
+    } else if (a_OperatorXboxController.GetAButton()) {
+        isArmUp = false;
+    }
+
+    if (isArmUp == true){
+        a_Claw.TransformClaw(170, 650, true);
+    } else {
+        a_Claw.TransformClaw(10, -15, false);
+    }
+
+    /*
 
     // shuttle PID
     if (a_OperatorXboxController.GetYButton()){
@@ -253,7 +236,7 @@ void Robot::TeleopPeriodic() {
         a_Claw.ArmMoveTo(8);
     }
 
-
+    */
 
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
 
@@ -332,10 +315,10 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
 
-    if(a_DriverXboxController.GetBButton()) { //can change button later
+    if(a_OperatorXboxController.GetXButton()) { //can change button later
         SetTargetType(target_type_enum::CONE);
     } 
-    else if(a_DriverXboxController.GetXButton()) { //can change button later
+    else if(a_OperatorXboxController.GetBButton()) { //can change button later
         SetTargetType(target_type_enum::CUBE);
     }
 }

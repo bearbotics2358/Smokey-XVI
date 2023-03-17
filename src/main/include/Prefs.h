@@ -183,6 +183,9 @@ constexpr units::angle::radian_t TARGET_PITCH = units::angle::radian_t(0.0);
 #define PARITY_ARDUINO frc::SerialPort::kParity_None
 #define STOP_BITS_ARDUINO frc::SerialPort::kStopBits_One
 
+#define ARDUINO_DIO_PIN 1
+
+
 /*
 sraight up: 78.57
 "0": 130.34

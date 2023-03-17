@@ -11,11 +11,10 @@ class Claw {
     public:
         Claw(int armMotorId, int shuttleMotorId, int pistonPushSolenoidModule, 
         int pistonPullSolenoidModule, int clawPushSolenoidModule, 
-        int clawPullSolenoidModule, /*int conePressureSolenoidModule, 
-        int cubePressureSolenoidModule, */ int carriageCANCoder, int limitSwitchId);
-        int transformClaw(double angle, bool extend, double shuttle);
+        int clawPullSolenoidModule, int carriageCANCoder, int limitSwitchId);
+        bool TransformClaw(double angle, double shuttle, bool extend);
+        void HoldClaw();
         void clawInit();
-        bool zeroShuttle();
         void setSolenoid(bool deployed);
         void ArmPistonUp();
         void ArmPistonDown();
@@ -34,9 +33,11 @@ class Claw {
         void UpdateShuttleEncoder();
         bool IsShuttleSafeToMove();
         bool ShuttleMoveToMM(double targetPosition);
-        bool ShuttleHoldAtMM(double targetPosition);
+        bool ShuttleHold();
         bool ArmMoveTo(double targetPosition);
-        bool ArmHoldAt(double targetPosition);
+        bool ArmHold();
+        bool IsArmPIDAtSetpoint();
+        bool IsShuttlePIDAtSetpoint();
     private:
         frc::DoubleSolenoid a_Piston;
         frc::DoubleSolenoid a_ClawSolenoid;
@@ -47,6 +48,8 @@ class Claw {
         CANCoder a_CANCoder;
         
         int _CANCoderID;
+        double currentArmAngle;
+        double currentShuttleAngle;
 
         LimitSwitch shuttleZeroSwitch;
 

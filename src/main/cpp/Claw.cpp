@@ -4,12 +4,9 @@
 
 Claw::Claw(int armMotorId, int shuttleMotorId, int pistonPushSolenoidModule, 
         int pistonPullSolenoidModule, int clawPushSolenoidModule, int clawPullSolenoidModule, 
-        /*int conePressureSolenoidModule, int cubePressureSolenoidModule, */int carriageCANCoderID, int limitSwitchId):
+        int carriageCANCoderID, int limitSwitchId):
 a_Piston(frc::PneumaticsModuleType::REVPH, pistonPushSolenoidModule, pistonPullSolenoidModule),
 a_ClawSolenoid(frc::PneumaticsModuleType::REVPH, clawPushSolenoidModule, clawPullSolenoidModule),
-/*
-a_PressureSolenoid(frc::PneumaticsModuleType::REVPH, conePressureSolenoidModule, cubePressureSolenoidModule),
-*/
 armMotor(armMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
 shuttleMotor(shuttleMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
 armEncoder(armMotor.GetEncoder()),
@@ -17,11 +14,11 @@ shuttleEncoder(shuttleMotor.GetEncoder()),
 shuttleZeroSwitch(limitSwitchId),
 a_CANCoder(carriageCANCoderID),
 armPID(0.004,0,0), //pid set low to not ruin the robot, good speed is 0.007
-shuttlePID(0.002,0,0) {
+shuttlePID(0.002,0,0) { //good pid: 0.002
     armMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 
-    armPID.SetTolerance(5, 10);
-    shuttlePID.SetTolerance(10, 20);
+    armPID.SetTolerance(15, 10);
+    shuttlePID.SetTolerance(50, 20);
 
     _CANCoderID = carriageCANCoderID - 17;
     armEncoder.SetPositionConversionFactor(20); // 360 / 18 (ticks per revolution for the rev encoder)
@@ -34,19 +31,7 @@ shuttlePID(0.002,0,0) {
 }
 
 void Claw::clawInit() {
-    transformClaw(51.77, false, 0);
-}
-
-
-bool Claw::zeroShuttle() {
-    if (shuttleZeroSwitch.limitSwitchPressed() == true){
-        shuttleMotor.StopMotor();
-        shuttleEncoder.SetPosition(0);
-        return true;
-    } else {
-        shuttleMotor.Set(0.2);
-        return false;
-    }
+    //TransformClaw(51.77, false, 0);
 }
 
 void Claw::UpdateShuttleEncoder(){
@@ -117,16 +102,6 @@ void Claw::ClawClose(){
     a_ClawSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
 }
 
-/*
-void Claw::ConePressure(){
-    a_PressureSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
-}
-
-void Claw::CubePressure(){
-    a_PressureSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
-}
-*/
-
 void Claw::ShuttleMotorUp() {
     shuttleMotor.Set(0.1);
 }
@@ -158,116 +133,65 @@ bool Claw::IsShuttleSafeToMove(){ // shuttle is safe to move as long as the arm 
 }
 
 bool Claw::ShuttleMoveToMM(double targetPosition) {
+    currentShuttleAngle = targetPosition;
     double motorDrive = shuttlePID.Calculate(GetShuttlePositionMM(), targetPosition);
+    shuttlePID.SetSetpoint(targetPosition);
     motorDrive = std::clamp(motorDrive, -1.0, 1.0);
+    frc::SmartDashboard::PutNumber("shuttle pid: ", motorDrive);
     if (IsShuttleSafeToMove()){
-        frc::SmartDashboard::PutNumber("shuttle pid: ", motorDrive);
         shuttleMotor.Set(motorDrive);
     }
     return shuttlePID.AtSetpoint();
 }
 
-bool Claw::ShuttleHoldAtMM(double targetPosition){
+bool Claw::ShuttleHold(){
     bool ret = false;
 
-    ret = ShuttleMoveToMM(targetPosition);
+    ret = ShuttleMoveToMM(currentShuttleAngle);
     return ret;
 }
 
 bool Claw::ArmMoveTo(double targetPosition) {
+    currentArmAngle = targetPosition;
     targetPosition = std::clamp(targetPosition, 5.0, 175.0);
     double motorDrive = armPID.Calculate(getAngle(), targetPosition);
+    armPID.SetSetpoint(targetPosition);
     motorDrive = std::clamp(motorDrive, -1.0, 1.0);
     frc::SmartDashboard::PutNumber("arm pid: ", motorDrive);
     armMotor.Set(motorDrive);
     return armPID.AtSetpoint();
 }
 
-bool Claw::ArmHoldAt(double targetPosition){
+bool Claw::ArmHold(){
     bool ret = false;
 
-    ret = ArmMoveTo(targetPosition);
+    ret = ArmMoveTo(currentArmAngle);
     return ret;
 }
 
-int Claw::transformClaw(double desiredAngle, bool extend, double desiredShuttle) {
-    // stage denotes the starting stage the function will start at when called. 
-    // stage 4 means tells Robot that the transformClaw function has completed the transformation, and 
-    // will no longer call it.
-    double armMotorSpeed = 0.1;
-    double shuttleMotorSpeed = 0.1;
-    int stage = 0;
+bool Claw::TransformClaw(double desiredAngle, double desiredShuttle, bool extend){
 
-    // forward = true, reverse = false
     if (extend == false){
         a_Piston.Set(frc::DoubleSolenoid::Value::kReverse); // retract piston if needed
     }
 
-    while (stage != 4) {
+    bool armDoneMoving = false;
+    armDoneMoving = ArmMoveTo(desiredAngle);
 
-        switch(stage) {
-            case 0: // rotate just enough to not damage the robot (51.77 degrees)
-            // these are placeholder angles that should be changed once we can test the arm's cancoder
-            if (abs(getAngle() - desiredAngle) < 3) {
-                stage = 1;
-            } else if (desiredAngle < getAngle()){
-                armMotor.Set(-armMotorSpeed);
-                if (getAngle() <= -51.77) {
-                    stage = 1;
-                }
-            } else if (desiredAngle > getAngle()){
-                armMotor.Set(armMotorSpeed);
-                if (getAngle() >= -51.77) {
-                    stage = 1;
-                }
-            }
+    bool shuttleDoneMoving = false;
+    shuttleDoneMoving = ShuttleMoveToMM(desiredShuttle);
 
-            break;
-
-            case 1: // shuttle movement
-            armMotor.StopMotor();
-            if (desiredShuttle == 0){
-                zeroShuttle();
-                if (zeroShuttle() == true){
-                    stage = 2;
-                }
-            } else {
-                if (abs(shuttleEncoder.GetPosition() - desiredShuttle) < 3){
-                    stage = 2;
-                } else if (shuttleEncoder.GetPosition() < desiredShuttle){
-                    shuttleMotor.Set(shuttleMotorSpeed);
-                } else if (shuttleEncoder.GetPosition() > desiredShuttle){
-                    shuttleMotor.Set(shuttleMotorSpeed);
-                }
-            }
-
-            break;
-            
-            case 2: // finish rotation
-            shuttleMotor.StopMotor();
-            if (abs(getAngle() - desiredAngle) < 3) {
-                stage = 3;
-            } else if (desiredAngle < getAngle()){
-                armMotor.Set(-armMotorSpeed);
-                if (getAngle() <= desiredAngle) {
-                    stage = 3;
-                }
-            } else if (desiredAngle > getAngle()){
-                armMotor.Set(armMotorSpeed);
-                if (getAngle() >= desiredAngle) {
-                    stage = 3;
-                }
-            }
-
-            break;
-
-            case 3: // extend piston if needed
-            armMotor.StopMotor();
-            if (extend == true){
-                a_Piston.Set(frc::DoubleSolenoid::Value::kForward);
-            }
-            stage = 4;
-            break;
+    if (shuttleDoneMoving == true && armDoneMoving == true){
+        if (extend == true){
+            a_Piston.Set(frc::DoubleSolenoid::Value::kForward);
         }
-    } 
+        return true;
+    }
+
+    return false;
+}
+
+void Claw::HoldClaw(){
+    ArmHold();
+    ShuttleHold();
 }
