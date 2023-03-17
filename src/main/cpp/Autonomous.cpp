@@ -282,7 +282,7 @@ void Autonomous::PeriodicBCSM() {
             break;
         case kBlueRetract3:
             //a_Claw -> ArmPistonDown();
-            nextState = kBlueDriveAway3;
+            nextState = kBlueGoToStation3;
             break;
         case kBlueDriveAway3:
             if (DriveDirection(3.6576, 0, 0.4, true)) {
@@ -291,14 +291,15 @@ void Autonomous::PeriodicBCSM() {
             }
             break;
         case kBlueGoToStation3:
-            if(DriveDirection(3, 180, .25, true)) {
+            if(DriveDirection(2, 180, .25, true)||a_Gyro->getPitch()>10) {
                 nextState = kBlueBalance3;
                 //need the actual numbers
             }
             break; 
         case kBlueBalance3:
-            Balance(180);
-            nextState = kBlueAutoIdle3;
+            double speed = InternetBalance();
+            printf("%f\n", speed);
+            a_SwerveDrive -> driveDirection(speed, 180);
             break;
     }
     a_AutoState3 = nextState;
@@ -639,8 +640,8 @@ void Autonomous::PeriodicDoNothing() {
 a_AutoState12 = nextState;
 
 }
-void Autonomous::Piece2() {
-    a_AutoState13 = kBlueAutoIdle13;
+void Autonomous::TwoPiece() {
+    a_AutoState13 = kBlueExtend13;
 }
 void Autonomous::PeriodicPiece2(){
      AutoState13 nextState = a_AutoState13;
@@ -667,16 +668,15 @@ void Autonomous::PeriodicPiece2(){
             }
             break;
         case kBluePickUp13:
-    
-            if(DriveDirection(.1, 90, .25, true)){
+           if(DriveDirection(.1, -90, .25, true)){
                 //a_Claw->ClawClose();
                 nextState = kGoToGrid13;
            }
             break;
         case kGoToGrid13:
-            if(DriveDirection(5.69, 90, .25, true)){
-                nextState = kPlace13;
-            }
+            if(DriveDirection(5.69, 180, .25, true)){
+                nextState = kBlueAutoIdle13;
+                }
         case kPlace13:
             //a_Claw->ArmPistonUp();
             //a_Claw->ClawOpen();
@@ -749,7 +749,8 @@ bool Autonomous::Balance(float direction) {
     float currentTime = gettime_d();
     double tiltAngle = a_Gyro->getPitch() - PITCH_OFFSET;
     double percentTilt = tiltAngle / 15;
-    double speed = percentTilt * MAX_CLIMB_PERCENT * MAX_FREE_SPEED;
+    double speed = percentTilt * MAX_FREE_SPEED;
+    startedClimb = true;
     if(startedClimb) {
         a_SwerveDrive->driveDirectionVelocity(speed, direction);
         if(abs(tiltAngle) < 5) {
@@ -757,14 +758,58 @@ bool Autonomous::Balance(float direction) {
         }
         return false;
     }
-    if ((currentTime - startTime > 0.5) && (abs(tiltAngle) < 5) && startedClimb){
+    if ((currentTime - startTime > 1.0) && (abs(tiltAngle) < 5) && startedClimb){
+        StopSwerves();
         return true;
     }
     else{
         a_SwerveDrive->driveDirection(MAX_CLIMB_PERCENT, direction);
         if(abs(tiltAngle) > 5){
             startedClimb = true;
+            a_SwerveDrive->driveDirection(0.2, direction);
         }
         return false;
     }
+}
+
+double Autonomous::InternetBalance(){
+    switch (state){
+        case 0:
+            if(a_Gyro -> getPitch() > onChargeStationDegree){
+                debounceCount++;
+            }
+            if(debounceCount > (debounceTime * 50)){
+                state = 1;
+                debounceCount = 0;
+                return robotSpeedSlow;
+            }
+            return robotSpeedFast;
+        case 1:
+            if (a_Gyro -> getPitch() < levelDegree){
+                debounceCount++;
+            }
+            if(debounceCount > (debounceTime * 50)){
+                state = 2;
+                debounceCount = 0;
+                return 0;
+            }
+            return robotSpeedSlow;
+        case 2:
+            if(fabs(a_Gyro -> getPitch()) <= levelDegree/2){
+                debounceCount++;
+            }
+            if(debounceCount > (debounceTime * 50)){
+                state = 4;
+                debounceCount = 0;
+                return 0;
+            }
+            if(a_Gyro -> getPitch() >= levelDegree) {
+                return 0.1;
+            } else if(a_Gyro -> getPitch() <= -levelDegree) {
+                return -0.1;
+            }
+        case 3:
+            return 0;
+    }
+    return 0;
 }
