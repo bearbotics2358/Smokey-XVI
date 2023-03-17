@@ -36,8 +36,8 @@ a_LED(ARDUINO_DIO_PIN)
         // do something if handler failed to connect
     }*/
 
-    isShuttleHigh = false;
-    isArmUp = false;
+    armStage = 1;
+    clawClosed = false;
 
     a_FLModule.setDrivePID(0.001, 0, 0);
     a_FLModule.setSteerPID(0.6, 1.0, 0.06);
@@ -183,60 +183,50 @@ void Robot::TeleopPeriodic() {
     // frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Claw Controls =-=-=-=-=-=-=-=-=-=-= */
-    if (a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE && a_DriverXboxController.GetYButton()) {
+    if (a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE && a_DriverXboxController.GetRightTriggerAxis() > 0.5 && clawClosed == false) {
         a_Claw.ClawClose();
+        armStage = 1;
+        clawClosed = true;
         //later: move claw up into scoring position but 
         // don't score/ let go
     } 
 
+    if (a_OperatorXboxController.GetYButton()){
+        armStage = 1;
+    } else if (a_OperatorXboxController.GetBButton()) {
+        armStage = 2;
+    } else if (a_OperatorXboxController.GetAButton()) {
+        armStage = 3;
+    } else if (a_OperatorXboxController.GetXButton()) {
+        armStage = 4;
+    }
+
+    switch (armStage) {
+        case 1: 
+            a_Claw.TransformClaw(125, -15, false); // transport
+            break;
+        case 2:
+            a_Claw.TransformClaw(10, -15, false); // arm down pointing downwards from the back
+            break;
+        case 3:
+            a_Claw.TransformClaw(170, 650, false); // arm at the top, piston off
+            break;
+        case 4:
+            a_Claw.TransformClaw(170, 650, true); // arm at the top, piston on
+            break;
+        default:
+            a_Claw.TransformClaw(125, -15, false); // transport as default state
+            break;
+    }
+
     // claw open/close controls
     if(a_DriverXboxController.GetRightBumper()) {
         a_Claw.ClawOpen();
+        clawClosed = false;
     } else if (a_DriverXboxController.GetLeftBumper()) {
         a_Claw.ClawClose();
+        clawClosed = true;
     }
-
-    if (a_OperatorXboxController.GetYButton()){
-        isArmUp = true;
-    } else if (a_OperatorXboxController.GetAButton()) {
-        isArmUp = false;
-    }
-
-    if (isArmUp == true){
-        a_Claw.TransformClaw(170, 650, true);
-    } else {
-        a_Claw.TransformClaw(10, -15, false);
-    }
-
-    /*
-
-    // shuttle PID
-    if (a_OperatorXboxController.GetYButton()){
-        isShuttleHigh = true;
-    } else if (a_OperatorXboxController.GetAButton()) {
-        isShuttleHigh = false;
-    }
-    
-    if (isShuttleHigh == true){
-        a_Claw.ShuttleMoveToMM(650);
-    } else {
-        a_Claw.ShuttleMoveToMM(-15);
-    }
-
-    // arm PID
-    if (a_OperatorXboxController.GetXButton()){
-        isArmUp = true;
-    } else if (a_OperatorXboxController.GetBButton()) {
-        isArmUp = false;
-    }
-
-    if (isArmUp == true){
-        a_Claw.ArmMoveTo(140);
-    } else {
-        a_Claw.ArmMoveTo(8);
-    }
-
-    */
 
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
 

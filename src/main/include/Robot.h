@@ -59,9 +59,7 @@ class Robot : public frc::TimedRobot {
         
 
     private:
-        bool isShuttleHigh;
-        bool isArmUp;
-        bool clawPrimed;
+        bool clawClosed;
         int armStage;
         // keeps track of when to call enabled init
         bool a_doEnabledInit { true };
