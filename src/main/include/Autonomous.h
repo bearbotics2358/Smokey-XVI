@@ -26,7 +26,7 @@ const std::string RedChargeStationMiddle = "Red Charge Station Middle";
 const std::string RedDropAndGoRight = "Red Drop and Go Right";
 const std::string RedChargeStationRight = "Red Charge Station Right";
 const std::string RobotDoNothing = "Sit Still";
-const std::string TwoPiece = "2 Piece";
+const std::string TwoPiece = "Two Piece";
 const std::string kAutoModeDefault = RobotDoNothing;
 
 enum AutoState0 { // Encoders
@@ -57,7 +57,7 @@ enum AutoState2 { // T.O.F and Encoders
     kBlueDriveAway2
 };
 
-// states for 3 ball auto
+
 enum AutoState3 {
     kBlueAutoIdle3,
     kBlueExtend3,
@@ -76,7 +76,7 @@ enum AutoState4 {
     kBlueDriveAway4
 };
 
-// states for 5 ball auto
+
 enum AutoState5 {
     kBlueAutoIdle5,
     kBlueExtend5,
@@ -208,8 +208,8 @@ class Autonomous {
     void RCSR();         // Red Charge Station Right AutoState11
     void PeriodicRCSR(); // Periodic Red Charge Station Right AutoState11
 
-    void TwoPiece();
-    void PeriodicTwoPiece();
+    void Piece2();
+    void PeriodicPiece2();
 
     void DoNothing();
     void PeriodicDoNothing();

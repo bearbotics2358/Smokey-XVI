@@ -51,6 +51,9 @@ void Autonomous::StartAuto(const std::string autoMode) {
     else if (autoMode == RedChargeStationRight){
         RCSR();
     }
+    else if(autoMode == TwoPiece){
+        Piece2();
+    }
     else if (autoMode == RobotDoNothing){
         DoNothing();
     }
@@ -94,6 +97,9 @@ void Autonomous::PeriodicAuto(const std::string periodicAutoMode) {
     }
     else if (periodicAutoMode == RedChargeStationRight){
         PeriodicRCSR();
+    }
+    else if(periodicAutoMode == TwoPiece){
+        PeriodicPiece2();
     }
     else if (periodicAutoMode == RobotDoNothing){
         PeriodicDoNothing();
@@ -285,7 +291,7 @@ void Autonomous::PeriodicBCSM() {
             }
             break;
         case kBlueGoToStation3:
-            if(DriveDirection(.2, 180, .25, true)) {
+            if(DriveDirection(3, 180, .25, true)) {
                 nextState = kBlueBalance3;
                 //need the actual numbers
             }
@@ -633,10 +639,10 @@ void Autonomous::PeriodicDoNothing() {
 a_AutoState12 = nextState;
 
 }
-void Autonomous::TwoPiece() {
+void Autonomous::Piece2() {
     a_AutoState13 = kBlueAutoIdle13;
 }
-void Autonomous::PeriodicTwoPiece(){
+void Autonomous::PeriodicPiece2(){
      AutoState13 nextState = a_AutoState13;
 
     switch(a_AutoState13){
@@ -661,7 +667,8 @@ void Autonomous::PeriodicTwoPiece(){
             }
             break;
         case kBluePickUp13:
-           if(DriveDirection(.1, 90, .25, true)){
+    
+            if(DriveDirection(.1, 90, .25, true)){
                 //a_Claw->ClawClose();
                 nextState = kGoToGrid13;
            }
