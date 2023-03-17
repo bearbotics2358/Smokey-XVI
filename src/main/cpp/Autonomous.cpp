@@ -640,7 +640,7 @@ void Autonomous::PeriodicDoNothing() {
 a_AutoState12 = nextState;
 
 }
-void Autonomous::TwoPiece() {
+void Autonomous::Piece2() {
     a_AutoState13 = kBlueExtend13;
 }
 void Autonomous::PeriodicPiece2(){
