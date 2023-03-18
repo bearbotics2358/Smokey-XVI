@@ -305,10 +305,10 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
 
-    if(a_OperatorXboxController.GetXButton()) { //can change button later
-        SetTargetType(target_type_enum::CONE);
-    } 
-    else if(a_OperatorXboxController.GetBButton()) { //can change button later
+    if(a_OperatorXboxController.GetPOV() == 0) { //can change button later
+        SetTargetType(target_type_enum::CONE);  //270 is left, 90 is right
+    }                                           //0 is up, 180 is down
+    else if(a_OperatorXboxController.GetPOV() == 180) { //can change button later
         SetTargetType(target_type_enum::CUBE);
     }
 }
