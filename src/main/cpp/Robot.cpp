@@ -135,44 +135,47 @@ void Robot::TeleopPeriodic() {
     EnabledPeriodic();
     frc::SmartDashboard::PutNumber("Pitch", a_Gyro.getPitch());
     frc::SmartDashboard::PutNumber("YAW", a_Gyro.getYaw());
-
-    if(a_DriverXboxController.GetLeftX() > 0.5) {
+    frc::SmartDashboard::PutBoolean("B Button Pressed", false);
+    frc::SmartDashboard::PutBoolean("x Button Pressed", false);
+    if(a_OperatorXboxController.GetBButton()) {
+        frc::SmartDashboard::PutBoolean("B Button Pressed", true);
         a_FRModule.steerToAng(120);
         a_FLModule.steerToAng(120);
         a_BRModule.steerToAng(120);
         a_BLModule.steerToAng(120);
     } 
-    else if(a_DriverXboxController.GetRightX() > 0.5) {
+    else if(a_OperatorXboxController.GetXButton()) {
+        frc::SmartDashboard::PutBoolean("X Button Pressed", true);
         a_FRModule.steerToAng(150);
         a_FLModule.steerToAng(150);
         a_BRModule.steerToAng(150);
         a_BLModule.steerToAng(150);
     }
 
-    if (a_DriverXboxController.GetYButtonReleased()){
+    if (a_OperatorXboxController.GetYButtonReleased()){
         pChange += 0.1;
     }
-    else if (a_DriverXboxController.GetAButtonReleased()) {
+    else if (a_OperatorXboxController.GetAButtonReleased()) {
         pChange -= 0.1;
     }
-    if (a_DriverXboxController.GetLeftBumper()) {
+    if (a_OperatorXboxController.GetLeftBumperReleased()) {
         iChange += 0.1;
-    } else if (a_DriverXboxController.GetLeftTriggerAxis() > 0.25) {
+    } else if (a_OperatorXboxController.GetLeftTriggerAxis() > 0.25) {
         iChange -= 0.1;
     }
-    if (a_DriverXboxController.GetRightBumper()) {
+    if (a_OperatorXboxController.GetRightBumperReleased()) {
         dChange += 0.01;
-    } else if (a_DriverXboxController.GetRightTriggerAxis() > 0.25) {
+    } else if (a_OperatorXboxController.GetRightTriggerAxis() > 0.25) {
         dChange -= 0.01;
     }
     
-    a_FRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    a_FLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    a_BRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    a_BLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange); //P 0.6, I 1.0 D 0.06
-    frc::SmartDashboard::PutNumber("P value", 0.6 + pChange);
-    frc::SmartDashboard::PutNumber("I value", 1.0 + iChange);
-    frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
+    a_FRModule.setSteerPID(0.5 + pChange, 0.0 + iChange, 0.0 + dChange);
+    a_FLModule.setSteerPID(0.5 + pChange, 0.0 + iChange, 0.0 + dChange);
+    a_BRModule.setSteerPID(0.5 + pChange, 0.0 + iChange, 0.0 + dChange);
+    a_BLModule.setSteerPID(0.5 + pChange, 0.0 + iChange, 0.0 + dChange); //P 0.6, I 1.0 D 0.06
+    frc::SmartDashboard::PutNumber("P value", 0.5 + pChange);
+    frc::SmartDashboard::PutNumber("I value", 0.0 + iChange);
+    frc::SmartDashboard::PutNumber("D value", 0.0 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Claw Controls =-=-=-=-=-=-=-=-=-=-= */
 
@@ -300,12 +303,50 @@ void Robot::TeleopPeriodic() {
 
 void Robot::TestInit() {
     TeleopInit();
-    a_SwerveDrive.setPosition(Vec2(0.0, 0.0));
 }
 
 
 void Robot::TestPeriodic() {
+    frc::SmartDashboard::PutNumber("Pitch", a_Gyro.getPitch());
+    frc::SmartDashboard::PutNumber("YAW", a_Gyro.getYaw());
+    EnabledPeriodic();
+    if(a_OperatorXboxController.GetBButton()) {
+        a_FRModule.steerToAng(120);
+        a_FLModule.steerToAng(120);
+        a_BRModule.steerToAng(120);
+        a_BLModule.steerToAng(120);
+    } 
+    else if(a_OperatorXboxController.GetXButton()) {
+        a_FRModule.steerToAng(180);
+        a_FLModule.steerToAng(180);
+        a_BRModule.steerToAng(180);
+        a_BLModule.steerToAng(180);
+    }
+
+    if (a_OperatorXboxController.GetYButtonReleased()){
+        pChange += 0.1;
+    }
+    else if (a_OperatorXboxController.GetAButtonReleased()) {
+        pChange -= 0.1;
+    }
+    // if (a_OperatorXboxController.GetRightTriggerAxis() > 0.25) {
+    //     iChange += 0.1;
+    // } else if (a_OperatorXboxController.GetLeftTriggerAxis() > 0.25) {
+    //     iChange -= 0.1;
+    // }
+    if (a_OperatorXboxController.GetRightBumperReleased()) {
+        dChange += 0.01;
+    } else if (a_OperatorXboxController.GetLeftBumperReleased()) {
+        dChange -= 0.01;
+    }
     
+    a_FRModule.setSteerPID(2.2 + pChange, 0.0 + iChange, 0.10 + dChange);
+    a_FLModule.setSteerPID(2.2 + pChange, 0.0 + iChange, 0.10 + dChange);
+    a_BRModule.setSteerPID(2.2 + pChange, 0.0 + iChange, 0.10 + dChange);
+    a_BLModule.setSteerPID(2.2 + pChange, 0.0 + iChange, 0.10 + dChange); //P 2.2, I 0.0 D 0.10
+    printf("P value: %6.2f ", 2.2 + pChange);
+    printf("I value: %6.2f ", 0.0 + iChange);
+    printf("D value: %6.2f\n", 0.10 + dChange);
 }
 
 void Robot::SetTargetType(target_type_enum target) {
