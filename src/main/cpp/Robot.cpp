@@ -73,6 +73,7 @@ void Robot::RobotInit() {
     m_AutoModeSelector.AddOption(RedChargeStationMiddle, RedChargeStationMiddle);
     m_AutoModeSelector.AddOption(RedDropAndGoRight, RedDropAndGoRight);
     m_AutoModeSelector.AddOption(RedChargeStationRight, RedChargeStationRight);
+    m_AutoModeSelector.AddOption(TwoPiece, TwoPiece);
     frc::SmartDashboard::PutData("Auto Modes", &m_AutoModeSelector); 
 
     a_LED.Init();

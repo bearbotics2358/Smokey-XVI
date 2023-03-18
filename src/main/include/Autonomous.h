@@ -13,6 +13,7 @@
 #include "Claw.h"
 
 
+
 const std::string BlueDropAndGoLeft = "Blue Drop and Go Left";
 const std::string BlueChargeStationLeft = "Blue Charge Station Left";
 const std::string BlueDropAndGoMiddle = "Blue Drop and Go Middle";
@@ -26,6 +27,7 @@ const std::string RedChargeStationMiddle = "Red Charge Station Middle";
 const std::string RedDropAndGoRight = "Red Drop and Go Right";
 const std::string RedChargeStationRight = "Red Charge Station Right";
 const std::string RobotDoNothing = "Sit Still";
+const std::string TwoPiece = "2 Piece"; 
 const std::string kAutoModeDefault = RobotDoNothing;
 
 enum AutoState0 { // Encoders
@@ -144,6 +146,20 @@ enum AutoState6 {
     enum AutoState12{
         kIdle
     };
+     enum AutoState13{
+        kBlueAutoIdle13,
+        kBlueExtend13,
+        kBlueDrop13,
+        kBlueRetract13,
+        kBlueDriveAway13,
+        kTurn13,
+        kBluePickUp13,
+        kGoBack13,
+        kTurnBack13,
+        kGoToGrid13,
+        kExtendAgain13,
+        kPlace13,
+    };
 
 
 class Autonomous {
@@ -200,6 +216,9 @@ class Autonomous {
     void DoNothing();
     void PeriodicDoNothing();
 
+    void Piece2();
+    void PeriodicPiece2();
+
     // ------------------Sub-Routines-------------------------//
 
     void StopSwerves(); // IDLE
@@ -221,6 +240,7 @@ private:
     Gyro *a_Gyro;
     Claw *a_Claw;
     SwerveDrive *a_SwerveDrive;
+    
 
     AutoState0 a_AutoState0;
     AutoState1 a_AutoState1;
@@ -235,14 +255,15 @@ private:
     AutoState10 a_AutoState10;
     AutoState11 a_AutoState11;
     AutoState12 a_AutoState12;
-
-
+    AutoState13 a_AutoState13;
 
 
    
     std::string a_AutoSelected;
     std::string a_PeriodicAutoSelected;
     float drivestart{0.0};
+
+    double distance = 0;
 
     // Used to measure time duration in Autonomous states
     double state_time = 0.0;
