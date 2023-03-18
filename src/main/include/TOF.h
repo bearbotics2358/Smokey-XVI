@@ -3,6 +3,8 @@
 
 */
 
+#pragma once
+
 #ifndef H_TOF
 #define H_TOF
 

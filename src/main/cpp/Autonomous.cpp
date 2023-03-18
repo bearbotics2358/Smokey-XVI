@@ -7,11 +7,11 @@
 #include <sys/time.h>
 
 //left if positive degrees right is negative
-Autonomous::Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Claw *Claw):
+Autonomous::Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Claw *Claw, TOF *tof):
 a_Gyro(Gyro),
 a_SwerveDrive(SwerveDrive),
 a_Claw(Claw),
-a_TOF(){}
+a_TOF(tof){}
 
 
 
@@ -772,7 +772,7 @@ void Autonomous::PeriodicPiece2(){
             }
             break;
         case kBluePickUp13:
-            if(DriveDirection(3, 0, .25, true||a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE)){
+            if(DriveDirection(3, 0, .25, true||a_TOF->GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE)){
                 distance = a_SwerveDrive->getAvgDistance();
                 a_Claw->ClawClose();
                 nextState = kGoBack13;

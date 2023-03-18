@@ -15,7 +15,7 @@ armEncoder(armMotor.GetEncoder()),
 shuttleEncoder(shuttleMotor.GetEncoder()), 
 shuttleZeroSwitch(limitSwitchId),
 a_CANCoder(carriageCANCoderID),
-armPID(0.004,0,0), //pid set low to not ruin the robot, good speed is 0.007
+armPID(0.005,0,0), //pid set low to not ruin the robot, good speed is 0.007
 shuttlePID(0.002,0,0)
 #endif
 { //good pid: 0.002
@@ -174,7 +174,15 @@ bool Claw::IsShuttleSafeToMove(){ // shuttle is safe to move as long as the arm 
     } else {
         return false;
     }
-}
+} 
+
+// bool Claw::IsArmSafeToMove(){
+//     if ((GetShuttlePositionMM > 15) && (getAngle() < 165)) {
+//         return true;
+//     } else {
+//         return false;
+//     }
+// }
 
 bool Claw::ShuttleMoveToMM(double targetPosition) {
 #ifdef COMP_BOT  // Not available on the practice bot
@@ -206,7 +214,11 @@ bool Claw::ShuttleHold(){
 bool Claw::ArmMoveTo(double targetPosition) {
 #ifdef COMP_BOT  // Not available on the practice bot
     currentArmAngle = targetPosition;
-    targetPosition = std::clamp(targetPosition, 5.0, 175.0);
+    if (GetShuttlePositionMM() < 540) {
+        targetPosition = std::clamp(targetPosition, 5.0, 175.0);
+    } else {
+        targetPosition = std::clamp(targetPosition, 5.0, 270.0);
+    }
     double motorDrive = armPID.Calculate(getAngle(), targetPosition);
     armPID.SetSetpoint(targetPosition);
     motorDrive = std::clamp(motorDrive, -1.0, 1.0);

@@ -21,11 +21,11 @@ a_FRModule(misc::GetFRDrive(), misc::GetFRSteer(), misc::GetFRCANCoder()),
 a_BLModule(misc::GetBLDrive(), misc::GetBLSteer(), misc::GetBLCANCoder()),
 a_BRModule(misc::GetBRDrive(), misc::GetBRSteer(), misc::GetBRCANCoder()),
 a_SwerveDrive(a_FLModule, a_FRModule, a_BLModule, a_BRModule, a_Gyro),
-a_Autonomous(&a_Gyro, &a_SwerveDrive, &a_Claw),
+a_TOF(),
+a_Autonomous(&a_Gyro, &a_SwerveDrive, &a_Claw, &a_TOF),
 a_DriverXboxController(DRIVER_PORT),
 a_OperatorXboxController(OPERATOR_PORT),
 a_CompressorController(),
-a_TOF(), 
 a_LED(ARDUINO_DIO_PIN)
 // NEEDED A PORT, THIS IS PROBABLY WRONG, PLEASE FIX IT LATER
 //  handler("169.254.179.144", "1185", "data"),
@@ -221,13 +221,21 @@ void Robot::TeleopPeriodic() {
             a_Claw.TransformClaw(10, -15, false); // arm down pointing downwards from the back
             break;
         case 3:
-            a_Claw.TransformClaw(170, 650, false); // arm at the top, piston off
+            a_Claw.TransformClaw(175, 575, false); // arm at the top, piston off
             break;
         case 4:
-            a_Claw.TransformClaw(170, 650, true); // arm at the top, piston on
+            isHighPistonDone = false;
+            armStage = 5;
             break;
-        default:
-            a_Claw.TransformClaw(125, -15, false); // transport as default state
+        case 5:
+            if (!isHighPistonDone){
+                isHighPistonDone = a_Claw.TransformClaw(160, 575, false);
+            } else {
+                a_Claw.TransformClaw(190, 575, true); // arm at the top, piston on
+            }
+            break;
+          default:
+            a_Claw.TransformClaw(130, -15, false); // transport as default state
             break;
     }
 

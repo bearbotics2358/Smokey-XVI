@@ -169,7 +169,7 @@ class Autonomous {
         void PeriodicAuto(const std::string periodicAutoMode);
 
     void DecidePath();
-    Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Claw *Claw);
+    Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Claw *Claw, TOF *tof);
 
    // const char *GetCurrentPath();
     
@@ -242,7 +242,7 @@ private:
     Claw *a_Claw;
     SwerveDrive *a_SwerveDrive;
 
-    TOF a_TOF;
+    TOF *a_TOF;
     
 
     AutoState0 a_AutoState0;
