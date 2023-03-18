@@ -4,7 +4,9 @@
 
 Claw::Claw(int armMotorId, int shuttleMotorId, int pistonPushSolenoidModule, 
         int pistonPullSolenoidModule, int clawPushSolenoidModule, int clawPullSolenoidModule, 
-        int carriageCANCoderID, int limitSwitchId):
+        int carriageCANCoderID, int limitSwitchId)
+#ifdef COMP_BOT  // Not available on the practice bot
+:
 a_Piston(frc::PneumaticsModuleType::REVPH, pistonPushSolenoidModule, pistonPullSolenoidModule),
 a_ClawSolenoid(frc::PneumaticsModuleType::REVPH, clawPushSolenoidModule, clawPullSolenoidModule),
 armMotor(armMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
@@ -14,7 +16,10 @@ shuttleEncoder(shuttleMotor.GetEncoder()),
 shuttleZeroSwitch(limitSwitchId),
 a_CANCoder(carriageCANCoderID),
 armPID(0.004,0,0), //pid set low to not ruin the robot, good speed is 0.007
-shuttlePID(0.002,0,0) { //good pid: 0.002
+shuttlePID(0.002,0,0)
+#endif
+{ //good pid: 0.002
+#ifdef COMP_BOT  // Not available on the practice bot
     armMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 
     armPID.SetTolerance(15, 10);
@@ -28,6 +33,7 @@ shuttlePID(0.002,0,0) { //good pid: 0.002
     shuttleMotor.StopMotor();
 
     a_CANCoder.ConfigMagnetOffset(CANCODER_OFFSET_ARM);
+#endif
 }
 
 void Claw::clawInit() {
@@ -35,13 +41,16 @@ void Claw::clawInit() {
 }
 
 void Claw::UpdateShuttleEncoder(){
+#ifdef COMP_BOT  // Not available on the practice bot
     if (shuttleZeroSwitch.limitSwitchPressed() == true){
         shuttleEncoder.SetPosition(0);
     }
+#endif
 }
 
 
 void Claw::updateDashboard(){
+#ifdef COMP_BOT  // Not available on the practice bot
     frc::SmartDashboard::PutNumber("arm absolute encoder: ", getAngle());
     frc::SmartDashboard::PutNumber("shuttle motor position: ", shuttleEncoder.GetPosition());
     frc::SmartDashboard::PutNumber("shuttle position (mm): ", GetShuttlePositionMM());
@@ -53,75 +62,110 @@ void Claw::updateDashboard(){
     } else {
         frc::SmartDashboard::PutString("arm solenoid position: ", "off");
     }
+#endif
     
 }
 
 void Claw::StopShuttle(){
+#ifdef COMP_BOT  // Not available on the practice bot
     shuttleMotor.StopMotor();
+#endif
 }
 
 void Claw::StopArm(){
+#ifdef COMP_BOT  // Not available on the practice bot
     armMotor.StopMotor();
+#endif
 }
 
 double Claw::getAngle(){
+#ifdef COMP_BOT  // Not available on the practice bot
     return a_CANCoder.GetAbsolutePosition();
+#else
+    return 0.0;
+#endif
 }
 
 
 void Claw::setSolenoid(bool deployed) {
+#ifdef COMP_BOT  // Not available on the practice bot
     if (deployed) {
         a_Piston.Set(frc::DoubleSolenoid::Value::kReverse);
     } else {
         a_Piston.Set(frc::DoubleSolenoid::Value::kForward);
     }
+#endif
 }
 
 // MANY OF THESE ARE MANUAL, WILL BE REPLACED WITH AUTOMATION
 void Claw::ArmPistonUp(){
+#ifdef COMP_BOT  // Not available on the practice bot
     a_Piston.Set(frc::DoubleSolenoid::Value::kForward);
+#endif
 }
 
 void Claw::ArmPistonDown(){
+#ifdef COMP_BOT  // Not available on the practice bot
     a_Piston.Set(frc::DoubleSolenoid::Value::kReverse);
+#endif
 }
 
 void Claw::ArmMotorUp(){
+#ifdef COMP_BOT  // Not available on the practice bot
     armMotor.Set(0.1);
+#endif
 }
 
 void Claw::ArmMotorDown(){
+#ifdef COMP_BOT  // Not available on the practice bot
     armMotor.Set(-0.1);
+#endif
 }
 
 void Claw::ClawOpen(){
+#ifdef COMP_BOT  // Not available on the practice bot
     a_ClawSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
+#endif
 }
 
 void Claw::ClawClose(){
+#ifdef COMP_BOT  // Not available on the practice bot
     a_ClawSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
+#endif
 }
 
 void Claw::ShuttleMotorUp() {
+#ifdef COMP_BOT  // Not available on the practice bot
     shuttleMotor.Set(0.1);
+#endif
 }
 
 void Claw::ShuttleMotorDown() {
+#ifdef COMP_BOT  // Not available on the practice bot
     shuttleMotor.Set(-0.1);
+#endif
 }
 
 double Claw::GetShuttlePositionMM() {
+#ifdef COMP_BOT  // Not available on the practice bot
     double ret;
 
     ret = shuttleEncoder.GetPosition() / SHUTTLE_TICKS_PER_MM;
     return ret;
+#else
+    return 0.0;
+#endif
 }
 
 double Claw::GetShuttlePositionInches() {
+#ifdef COMP_BOT  // Not available on the practice bot
     double ret;
 
     ret = GetShuttlePositionMM() / 25.4;
     return ret;
+#else
+    return 0.0;
+#endif
 }
 
 bool Claw::IsShuttleSafeToMove(){ // shuttle is safe to move as long as the arm is within a certain range
@@ -133,6 +177,7 @@ bool Claw::IsShuttleSafeToMove(){ // shuttle is safe to move as long as the arm 
 }
 
 bool Claw::ShuttleMoveToMM(double targetPosition) {
+#ifdef COMP_BOT  // Not available on the practice bot
     currentShuttleAngle = targetPosition;
     double motorDrive = shuttlePID.Calculate(GetShuttlePositionMM(), targetPosition);
     shuttlePID.SetSetpoint(targetPosition);
@@ -142,16 +187,24 @@ bool Claw::ShuttleMoveToMM(double targetPosition) {
         shuttleMotor.Set(motorDrive);
     }
     return shuttlePID.AtSetpoint();
+#else
+    return true;
+#endif
 }
 
 bool Claw::ShuttleHold(){
+#ifdef COMP_BOT  // Not available on the practice bot
     bool ret = false;
 
     ret = ShuttleMoveToMM(currentShuttleAngle);
     return ret;
+#else
+    return true;
+#endif
 }
 
 bool Claw::ArmMoveTo(double targetPosition) {
+#ifdef COMP_BOT  // Not available on the practice bot
     currentArmAngle = targetPosition;
     targetPosition = std::clamp(targetPosition, 5.0, 175.0);
     double motorDrive = armPID.Calculate(getAngle(), targetPosition);
@@ -160,17 +213,25 @@ bool Claw::ArmMoveTo(double targetPosition) {
     frc::SmartDashboard::PutNumber("arm pid: ", motorDrive);
     armMotor.Set(motorDrive);
     return armPID.AtSetpoint();
+#else
+    return true;
+#endif
 }
 
 bool Claw::ArmHold(){
+#ifdef COMP_BOT  // Not available on the practice bot
     bool ret = false;
 
     ret = ArmMoveTo(currentArmAngle);
     return ret;
+#else
+    return true;
+#endif
 }
 
 bool Claw::TransformClaw(double desiredAngle, double desiredShuttle, bool extend){
 
+#ifdef COMP_BOT  // Not available on the practice bot
     if (extend == false){
         a_Piston.Set(frc::DoubleSolenoid::Value::kReverse); // retract piston if needed
     }
@@ -189,6 +250,9 @@ bool Claw::TransformClaw(double desiredAngle, double desiredShuttle, bool extend
     }
 
     return false;
+#else
+    return true;
+#endif
 }
 
 void Claw::HoldClaw(){

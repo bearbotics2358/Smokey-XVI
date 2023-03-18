@@ -19,7 +19,16 @@ steerPID(0, 0, 0) {
     _steerID = steerID;
     _CANCoderID = CANCoderID - 17;
 
+#ifdef COMP_BOT  // Only needs to be inverted on the comp bot
     steerMotor.SetInverted(true);
+
+    // For the comp bot, angle values don't need to be changed
+    m_inversionFactor = 1.0;
+#else
+    // For the practice bot, angle values must be negated
+    // @todo: Why does this need to be different for the practice bot?
+    m_inversionFactor = -1.0;
+#endif
 
     // these settings are present in the documentation example, and since they relate to safety of motor, they are probably a good idea to include
     config.supplyCurrLimit.triggerThresholdCurrent = 40; // the peak supply current, in amps
@@ -48,7 +57,7 @@ void SwerveModule::resetDriveEncoder() {
 
 double SwerveModule::getRelativeAngle() {
     //float temp = steerEncFalcon.GetIntegratedSensorPosition() * -1;
-    double angle = m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
+    double angle = (m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID]) * m_inversionFactor;
     //printf("%f\n",temp);
     //float angle = (fmod(angle, 44000) / 44000) * 360; // convert to angle in degrees -- we were getting 44000 ticks per revolution
     //if (_steerID == 8){ printf("Raw Angle: %f\n",angle); } //TODO: Delete this
@@ -64,7 +73,7 @@ double SwerveModule::getRelativeAngle() {
 
 float SwerveModule::getAngle() {
     if((_CANCoderID + 17) == misc::GetFLCANCoder()) {
-        double position = m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
+        double position = (m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID]) * m_inversionFactor;
         //printf("position: %6.2f \n", position);
     }
     return misc::clampDegrees(getRelativeAngle() + encZeroPoint);
@@ -76,27 +85,12 @@ void SwerveModule::goToPosition(float meters) {
 }
 
 void SwerveModule::steerToAng(float degrees) {
-    float ticks = degrees / 360 * 44000;
-    //float trueticks = steerEncFalcon.GetIntegratedSensorPosition() * -1;
-    double CANticks = m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
-    //float trueangle = (fmod(trueticks, 44000) / 44000) * 360;
     float speed = std::clamp(steerPID.Calculate(getAngle(), degrees) / 270.0, -0.5, 0.5);
     steerMotor.Set(TalonFXControlMode::PercentOutput, speed);
     // if(_CANCoderID == misc::GetBLCANCoder()) {
     //     int position = m_CANCoder.GetAbsolutePosition();
     //     printf("position: %6.2f \n", position);
     // }
-}
-
-void SwerveModule::debugSteer(float angle) {
-    float ticks = angle / 360 * 44000;
-    float trueticks = steerEncFalcon.GetIntegratedSensorPosition() * -1;
-    double CANticks = m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
-    float trueangle = (fmod(trueticks, 44000) / 44000) * 360;
-    // if (_steerID == 5) { 
-    //     printf("angle: %6.2f    trueangle: %6.2f   ticks: %6.2f  trueticks: %6.2f\n", angle, trueangle, ticks, trueticks); 
-    // }
-    steerMotor.Set(TalonFXControlMode::Position, angle);
 }
 
 void SwerveModule::setDrivePercent(float percent) {

@@ -7,8 +7,11 @@
 #include <Prefs.h>
 #include "LED.h"
 
-LED::LED():
+LED::LED()
+#ifdef COMP_BOT  // Not available on the practice bot
+:
 	m_serial(BAUD_RATE_ARDUINO, USB_PORT_ARDUINO, DATA_BITS_ARDUINO, PARITY_ARDUINO, STOP_BITS_ARDUINO)
+#endif
 	// comments from 2018:
 	// USB1 is the onboard port closest to the center of the rio
 	// I dunno which one USB2 is yet. (Rio docs aren't very helpful)
@@ -30,6 +33,7 @@ void LED::Init()
 
 void LED::Update()
 {
+#ifdef COMP_BOT  // Not available on the practice bot
 	// call this routine periodically to check for any readings and store
 	// into result registers
 
@@ -69,6 +73,7 @@ void LED::Update()
 			}
 		}
 	}
+#endif
 }
 
 // instead of atoi(), UltrasonicSerial used strtol(&readBuffer[1], (char **)NULL, 10);
@@ -82,6 +87,7 @@ void LED::ProcessReport()
 
 void LED::SetTargetType(target_type_enum target_type_param)
 {
+#ifdef COMP_BOT  // Not available on the practice bot
 	char cmd[10];
 	strncpy(cmd, "1,1,1\r\n", 8);
 	target_type = target_type_param;
@@ -89,6 +95,7 @@ void LED::SetTargetType(target_type_enum target_type_param)
 	cmd[4] = target_type ? '1' : '0';
 	m_serial.Write(cmd, strlen(cmd));
 	m_serial.Flush();
+#endif
 }
 
 target_type_enum LED::GetTargetType()
