@@ -274,10 +274,10 @@ void Robot::TeleopPeriodic() {
 
     // dpad up for full speed,
     // down for half speed
-    if (a_DriverXboxController.GetPOV() == 0) {
-        a_slowSpeed = false;
-    } else if (a_DriverXboxController.GetPOV() == 180) {
+    if (a_DriverXboxController.GetLeftTriggerAxis() > .5) {
         a_slowSpeed = true;
+    } else if (a_DriverXboxController.GetPOV() == 180) {
+        a_slowSpeed = false;
     }
 
     float multiplier = 1.0;
@@ -307,7 +307,16 @@ void Robot::TeleopPeriodic() {
     z *= multiplier;
 
     // turn field oriented mode off if the trigger is pressed for more than 0.25 (GetRightTriggerAxis ranges from 0 to 1)
-    bool fieldOreo = (a_DriverXboxController.GetRightTriggerAxis() < 0.25);
+    
+    bool fieldOreo = (a_DriverXboxController.GetPOV() == 180);
+    if(a_DriverXboxController.GetPOV() == 180 && fieldOreo == true)
+    {
+        fieldOreo = false;
+
+    }
+    else if(a_DriverXboxController.GetPOV() == 180 && fieldOreo == false){
+        fieldOreo = true;
+    }
 
     frc::SmartDashboard::PutBoolean("field oriented: ", fieldOreo);
 
