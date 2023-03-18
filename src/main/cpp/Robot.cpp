@@ -29,17 +29,16 @@ a_OperatorXboxController(OPERATOR_PORT)
 // a_LED()
 {
     a_FLModule.setDrivePID(0.001, 0, 0);
-    a_FLModule.setSteerPID(0.6, 1.0, 0.06);
+    a_FLModule.setSteerPID(2.2, 0.0, 0.10);
 
     a_FRModule.setDrivePID(0.001, 0, 0);
-
-    a_FRModule.setSteerPID(0.6, 1.0, 0.06);
+    a_FRModule.setSteerPID(2.2, 0.0, 0.10);
 
     a_BLModule.setDrivePID(0.001, 0, 0);
-    a_BLModule.setSteerPID(0.6, 1.0, 0.06);
+    a_BLModule.setSteerPID(2.2, 0.0, 0.10);
 
     a_BRModule.setDrivePID(0.001, 0, 0);
-    a_BRModule.setSteerPID(0.6, 1.0, 0.06);
+    a_BRModule.setSteerPID(2.2, 0.0, 0.10);
 
     a_SwerveDrive.brakeOnStop();
 }
@@ -135,22 +134,18 @@ void Robot::TeleopPeriodic() {
     EnabledPeriodic();
     frc::SmartDashboard::PutNumber("Pitch", a_Gyro.getPitch());
     frc::SmartDashboard::PutNumber("YAW", a_Gyro.getYaw());
-    frc::SmartDashboard::PutBoolean("B Button Pressed", false);
-    frc::SmartDashboard::PutBoolean("x Button Pressed", false);
-    if(a_OperatorXboxController.GetBButton()) {
-        frc::SmartDashboard::PutBoolean("B Button Pressed", true);
-        a_FRModule.steerToAng(120);
-        a_FLModule.steerToAng(120);
-        a_BRModule.steerToAng(120);
-        a_BLModule.steerToAng(120);
-    } 
-    else if(a_OperatorXboxController.GetXButton()) {
-        frc::SmartDashboard::PutBoolean("X Button Pressed", true);
-        a_FRModule.steerToAng(150);
-        a_FLModule.steerToAng(150);
-        a_BRModule.steerToAng(150);
-        a_BLModule.steerToAng(150);
-    }
+    // if(a_OperatorXboxController.GetBButton()) {
+    //     a_FRModule.steerToAng(120);
+    //     a_FLModule.steerToAng(120);
+    //     a_BRModule.steerToAng(120);
+    //     a_BLModule.steerToAng(120);
+    // } 
+    // else if(a_OperatorXboxController.GetXButton()) {
+    //     a_FRModule.steerToAng(150);
+    //     a_FLModule.steerToAng(150);
+    //     a_BRModule.steerToAng(150);
+    //     a_BLModule.steerToAng(150);
+    // }
 
     if (a_OperatorXboxController.GetYButtonReleased()){
         pChange += 0.1;
@@ -250,12 +245,12 @@ void Robot::TeleopPeriodic() {
         multiplier = 0.125;
     }
  
-    // float x = a_OperatorXboxController.GetLeftX();
-    // float y = a_OperatorXboxController.GetLeftY();
-    // float z = a_OperatorXboxController.GetRightX();
-    float x = 0;
-    float y = 0;
-    float z = 0;
+    float x = a_DriverXboxController.GetLeftX();
+    float y = a_DriverXboxController.GetLeftY();
+    float z = a_DriverXboxController.GetRightX();
+    // float x = 0;
+    // float y = 0;
+    // float z = 0;
 
     if (fabs(x) < 0.10) {
         x = 0;
