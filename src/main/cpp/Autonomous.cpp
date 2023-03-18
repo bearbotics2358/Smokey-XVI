@@ -10,8 +10,8 @@
 Autonomous::Autonomous(Gyro *Gyro, SwerveDrive *SwerveDrive, Claw *Claw):
 a_Gyro(Gyro),
 a_SwerveDrive(SwerveDrive),
-
-a_Claw(Claw){}
+a_Claw(Claw),
+a_TOF(){}
 
 
 
@@ -772,13 +772,14 @@ void Autonomous::PeriodicPiece2(){
             }
             break;
         case kBluePickUp13:
-            if(DriveDirection(3, 0, .25, true)){
+            if(DriveDirection(3, 0, .25, true||a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE)){
                 distance = a_SwerveDrive->getAvgDistance();
                 a_Claw->ClawClose();
                 nextState = kGoBack13;
             }
             break;
         case kGoBack13:
+        //TODO subtract the distance we need to get to the cube platform
             if(DriveDirection(distance, 180, .25, true)){
                 nextState = kTurnBack13;
             }

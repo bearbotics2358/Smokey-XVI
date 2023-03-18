@@ -11,6 +11,7 @@
 #include <frc/XboxController.h>
 #include <units/math.h>
 #include "Claw.h"
+#include "TOF.h"
 
 
 
@@ -240,6 +241,8 @@ private:
     Gyro *a_Gyro;
     Claw *a_Claw;
     SwerveDrive *a_SwerveDrive;
+
+    TOF a_TOF;
     
 
     AutoState0 a_AutoState0;
