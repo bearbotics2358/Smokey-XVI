@@ -209,7 +209,7 @@ class Autonomous {
     void StartTimer();
     bool WaitForTime(double time); // Wait for specified time in seconds
 
-    double gettime_d();
+    static double gettime_d();
 
     // Drives in direction at speed for distance. If going straight backwards, set angle to 180, not dist as a negative
     bool DriveDirection(double dist, double angle, double speed, bool fieldOriented);

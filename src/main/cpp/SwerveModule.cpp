@@ -65,7 +65,19 @@ double SwerveModule::getRelativeAngle() {
 float SwerveModule::getAngle() {
     if((_CANCoderID + 17) == misc::GetFLCANCoder()) {
         double position = m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
-        //printf("position: %6.2f \n", position);
+        frc::SmartDashboard::PutNumber("fl position", position);
+    }
+    if((_CANCoderID + 17) == misc::GetBLCANCoder()) {
+        double position = m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
+        frc::SmartDashboard::PutNumber("bl position", position);
+    }
+    if((_CANCoderID + 17) == misc::GetFRCANCoder()) {
+        double position = m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
+        frc::SmartDashboard::PutNumber("fr position", position);
+    }
+    if((_CANCoderID + 17) == misc::GetBRCANCoder()) {
+        double position = m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID];
+        frc::SmartDashboard::PutNumber("br position", position);
     }
     return misc::clampDegrees(getRelativeAngle() + encZeroPoint);
 }
