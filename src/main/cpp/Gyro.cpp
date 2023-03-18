@@ -38,33 +38,6 @@ void Gyro::Update() {
 
     frc::SmartDashboard::PutNumber("gyro angle: ", getAngle());
     frc::SmartDashboard::PutNumber("gyro angle clamped: ", getAngleClamped());
-    /*
-    if (lastUpdate == 0) {
-        lastUpdate = frc::Timer::GetFPGATimestamp().value();
-        return;
-    }
-    double time = frc::Timer::GetFPGATimestamp().value();
-    double timeDelta = (time - lastUpdate);
-
-    double storeAngles[3];
-
-    a_PigeonIMU.GetAccelerometerAngles(storeAngles);
-
-    XAxis = storeAngles[0];
-    XAxis = XAxis / 14.375;
-
-    YAxis = storeAngles[1];
-    YAxis = YAxis / 14.375;
-
-    ZAxis = storeAngles[2];
-    ZAxis = ZAxis / 14.375;
-
-    angle[0] += ((XAxis - angleBias[0]) * timeDelta);
-    angle[1] += ((YAxis - angleBias[1]) * timeDelta);
-    angle[2] += ((ZAxis - angleBias[2]) * timeDelta);
-
-    lastUpdate = time;
-    */
 }
 
 double Gyro::getAngle() const {

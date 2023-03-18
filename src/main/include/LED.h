@@ -26,7 +26,9 @@ public:
 	target_type_enum GetTargetType();
 
 private:
+#ifdef COMP_BOT  // Not available on the practice bot
 	frc::SerialPort m_serial;
+#endif
 	char rx_buff[BUFF_SIZE];
 	int rx_index = 0;
 	target_type_enum target_type = target_type_enum::CONE;

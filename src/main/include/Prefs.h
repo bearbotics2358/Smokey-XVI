@@ -10,7 +10,15 @@
 // uncomment to enable the new swerve
 //#define NEW_SWERVE
 
+// For the competition bot, this line *MUST* be enabled. For the practice bot, comment out this line.
+#define COMP_BOT
+
+#ifdef COMP_BOT  // The comp bot and the practice bot have some different IDs for various components
 #define GYRO_ID 1
+#else
+#define GYRO_ID 35
+#endif
+
 #define PISTON_PUSH_SOLENOID_MODULE 10
 #define PISTON_PULL_SOLENOID_MODULE 11
 #define CLAW_OPEN_SOLENOID_MODULE 12
@@ -43,10 +51,17 @@ m = number engraved on module
 
 */
 
+#ifdef COMP_BOT  // The comp bot and the practice bot have some different IDs for various components
 #define FL_ID 8
 #define FR_ID 4
 #define BL_ID 5
 #define BR_ID 3
+#else
+#define FL_ID 1
+#define FR_ID 6
+#define BL_ID 7
+#define BR_ID 2
+#endif
 
 
 /*======= ENCODER CONSTANTS =======*/
@@ -78,12 +93,12 @@ m = number engraved on module
 
 #define CANCODER_OFFSET_1 129.5 - 180
 #define CANCODER_OFFSET_2 115.3 - 180
-#define CANCODER_OFFSET_3 252.7 - 180
-#define CANCODER_OFFSET_4 235.4 - 180
-#define CANCODER_OFFSET_5 41.2 - 180
+#define CANCODER_OFFSET_3 252.9 - 180
+#define CANCODER_OFFSET_4 234.2 - 180
+#define CANCODER_OFFSET_5 42.2 - 180
 #define CANCODER_OFFSET_6 127.4 - 180
 #define CANCODER_OFFSET_7 240.7 - 180
-#define CANCODER_OFFSET_8 157.6 - 180
+#define CANCODER_OFFSET_8 156.8 - 180
 #define CANCODER_OFFSET_ARM -318.17
 
 #define CANCODER_ID_1 17

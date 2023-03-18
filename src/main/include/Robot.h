@@ -88,6 +88,9 @@ class Robot : public frc::TimedRobot {
 
         LED_DIO a_LED;
 
+        double state_time;
+        bool catchBegin = false;
+
         // stuff that autonomous needs
         
         double pChange;
