@@ -151,6 +151,7 @@ enum AutoState6 {
         kBlueDrop13,
         kBlueRetract13,
         kBlueDriveAway13,
+        kBlueTurn13,
         kBluePickUp13,
         kGoToGrid13,
         kPlace13

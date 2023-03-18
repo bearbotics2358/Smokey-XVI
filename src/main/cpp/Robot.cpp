@@ -78,19 +78,6 @@ void Robot::RobotPeriodic() {
     //a_SwerveDrive.updatePosition();
 
 //testing code block for PID tuning
-
-    // if(a_DriverXboxController.GetRawButton(3)) {
-    //     a_FRModule.steerToAng(120);
-    //     a_FLModule.steerToAng(120);
-    //     a_BRModule.steerToAng(120);
-    //     a_BLModule.steerToAng(120);
-    // } 
-    // else {
-    //     a_FRModule.steerToAng(150);
-    //     a_FLModule.steerToAng(150);
-    //     a_BRModule.steerToAng(150);
-    //     a_BLModule.steerToAng(150);
-    // }
 }
 
 void Robot::DisabledInit() {
@@ -149,29 +136,43 @@ void Robot::TeleopPeriodic() {
     frc::SmartDashboard::PutNumber("Pitch", a_Gyro.getPitch());
     frc::SmartDashboard::PutNumber("YAW", a_Gyro.getYaw());
 
-    // if (joystickOne.GetRawButtonReleased(DriverButton::Button12)) {
-    //     pChange += 0.1;
-    // } else if (joystickOne.GetRawButtonReleased(DriverButton::Button11)) {
-    //     pChange -= 0.1;
-    // }
-    // if (joystickOne.GetRawButtonReleased(DriverButton::Button8)) {
-    //     iChange += 0.1;
-    // } else if (joystickOne.GetRawButtonReleased(DriverButton::Button7)) {
-    //     iChange -= 0.1;
-    // }
-    // if (joystickOne.GetRawButtonReleased(DriverButton::Button10)) {
-    //     dChange += 0.01;
-    // } else if (joystickOne.GetRawButtonReleased(DriverButton::Button9)) {
-    //     dChange -= 0.01;
-    // }
+    if(a_DriverXboxController.GetLeftX() > 0.5) {
+        a_FRModule.steerToAng(120);
+        a_FLModule.steerToAng(120);
+        a_BRModule.steerToAng(120);
+        a_BLModule.steerToAng(120);
+    } 
+    else if(a_DriverXboxController.GetRightX() > 0.5) {
+        a_FRModule.steerToAng(150);
+        a_FLModule.steerToAng(150);
+        a_BRModule.steerToAng(150);
+        a_BLModule.steerToAng(150);
+    }
+
+    if (a_DriverXboxController.GetYButtonReleased()){
+        pChange += 0.1;
+    }
+    else if (a_DriverXboxController.GetAButtonReleased()) {
+        pChange -= 0.1;
+    }
+    if (a_DriverXboxController.GetLeftBumper()) {
+        iChange += 0.1;
+    } else if (a_DriverXboxController.GetLeftTriggerAxis() > 0.25) {
+        iChange -= 0.1;
+    }
+    if (a_DriverXboxController.GetRightBumper()) {
+        dChange += 0.01;
+    } else if (a_DriverXboxController.GetRightTriggerAxis() > 0.25) {
+        dChange -= 0.01;
+    }
     
-    // a_FRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    // a_FLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    // a_BRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
-    // a_BLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange); //P 0.6, I 1.0 D 0.06
-    // frc::SmartDashboard::PutNumber("P value", 0.6 + pChange);
-    // frc::SmartDashboard::PutNumber("I value", 1.0 + iChange);
-    // frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
+    a_FRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
+    a_FLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
+    a_BRModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange);
+    a_BLModule.setSteerPID(0.6 + pChange, 1.0 + iChange, 0.06 + dChange); //P 0.6, I 1.0 D 0.06
+    frc::SmartDashboard::PutNumber("P value", 0.6 + pChange);
+    frc::SmartDashboard::PutNumber("I value", 1.0 + iChange);
+    frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Claw Controls =-=-=-=-=-=-=-=-=-=-= */
 
@@ -211,25 +212,25 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Alignment Controls =-=-=-=-=-=-=-=-=-=-= */
 
-    if((a_DriverXboxController.GetPOV() == 270) || (a_DriverXboxController.GetPOV() == 0) || (a_DriverXboxController.GetPOV() == 90)) {
-        photonlib::PhotonPipelineResult result = a_camera.GetLatestResult();
-        double angle = a_Gyro.getAngle();
-        if(result.HasTargets()){
-            units::meter_t range = photonlib::PhotonUtils::CalculateDistanceToTarget(TARGET_CAMERA_HEIGHT, TARGET_HEIGHT, TARGET_CAMERA_PITCH, units::degree_t{result.GetBestTarget().GetPitch()});
-            units::meter_t xComponent = range * sin(angle);
-            units::meter_t yComponent = (range * cos(angle)) - units::meter_t(0.36195);
-            if(a_DriverXboxController.GetPOV() == 270){ // go to cone spot to left of target
-                newXComponent = xComponent - units::meter_t(.5588);
-            }
-            else if(a_DriverXboxController.GetPOV() == 0){ // go to cube spot in line with target
-                newXComponent = xComponent;
-            }
-            else if(a_DriverXboxController.GetPOV() == 90){ // go to cone spot to right of target
-                newXComponent = xComponent + units::meter_t(.5588);
-            }
-            a_SwerveDrive.goToPosition(Vec2(double(newXComponent), double(yComponent)), 0, 0.2);
-        }
-    }
+    // if((a_DriverXboxController.GetPOV() == 270) || (a_DriverXboxController.GetPOV() == 0) || (a_DriverXboxController.GetPOV() == 90)) {
+    //     photonlib::PhotonPipelineResult result = a_camera.GetLatestResult();
+    //     double angle = a_Gyro.getAngle();
+    //     if(result.HasTargets()){
+    //         units::meter_t range = photonlib::PhotonUtils::CalculateDistanceToTarget(TARGET_CAMERA_HEIGHT, TARGET_HEIGHT, TARGET_CAMERA_PITCH, units::degree_t{result.GetBestTarget().GetPitch()});
+    //         units::meter_t xComponent = range * sin(angle);
+    //         units::meter_t yComponent = (range * cos(angle)) - units::meter_t(0.36195);
+    //         if(a_DriverXboxController.GetPOV() == 270){ // go to cone spot to left of target
+    //             newXComponent = xComponent - units::meter_t(.5588);
+    //         }
+    //         else if(a_DriverXboxController.GetPOV() == 0){ // go to cube spot in line with target
+    //             newXComponent = xComponent;
+    //         }
+    //         else if(a_DriverXboxController.GetPOV() == 90){ // go to cone spot to right of target
+    //             newXComponent = xComponent + units::meter_t(.5588);
+    //         }
+    //         a_SwerveDrive.goToPosition(Vec2(double(newXComponent), double(yComponent)), 0, 0.2);
+    //     }
+    // }
 
     /* =-=-=-=-=-=-=-=-=-=-= Swerve Controls =-=-=-=-=-=-=-=-=-=-= */
 
@@ -246,9 +247,12 @@ void Robot::TeleopPeriodic() {
         multiplier = 0.125;
     }
  
-    float x = a_OperatorXboxController.GetLeftX();
-    float y = a_OperatorXboxController.GetLeftY();
-    float z = a_OperatorXboxController.GetRightX();
+    // float x = a_OperatorXboxController.GetLeftX();
+    // float y = a_OperatorXboxController.GetLeftY();
+    // float z = a_OperatorXboxController.GetRightX();
+    float x = 0;
+    float y = 0;
+    float z = 0;
 
     if (fabs(x) < 0.10) {
         x = 0;
@@ -268,12 +272,12 @@ void Robot::TeleopPeriodic() {
     z *= multiplier;
 
     // turn field oriented mode off if the trigger is pressed for more than 0.25 (GetRightTriggerAxis ranges from 0 to 1)
-    bool fieldOreo = (a_DriverXboxController.GetRightTriggerAxis() < 0.25);
+    bool fieldOreo = (a_DriverXboxController.GetXButton());
 
     frc::SmartDashboard::PutBoolean("field oriented: ", fieldOreo);
 
     // calibrate gyro
-    if (a_DriverXboxController.GetAButton()) {
+    if (a_DriverXboxController.GetBButton()) {
         a_Gyro.Cal();
         a_Gyro.Zero();
     }
@@ -286,12 +290,12 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
 
-    if(a_DriverXboxController.GetBButton()) { //can change button later
-        SetTargetType(target_type_enum::CONE);
-    } 
-    else if(a_DriverXboxController.GetXButton()) { //can change button later
-        SetTargetType(target_type_enum::CUBE);
-    }
+    // if(a_DriverXboxController.GetBButton()) { //can change button later
+    //     SetTargetType(target_type_enum::CONE);
+    // } 
+    // else if(a_DriverXboxController.GetXButton()) { //can change button later
+    //     SetTargetType(target_type_enum::CUBE);
+    // }
 }
 
 void Robot::TestInit() {
@@ -301,7 +305,7 @@ void Robot::TestInit() {
 
 
 void Robot::TestPeriodic() {
-    TeleopPeriodic();
+    
 }
 
 void Robot::SetTargetType(target_type_enum target) {

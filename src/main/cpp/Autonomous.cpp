@@ -154,7 +154,7 @@ void Autonomous::PeriodicBDGL() {
             }
             break;
         case kBlueDriveAway0:
-            if (DriveDirection(4.8768, 0, .25, true)) {
+            if (DriveDirection(2.0, 0, .25, false)) { //4.8768 meters
                 nextState = kBlueAutoIdle0;
             }
             break;
@@ -663,21 +663,24 @@ void Autonomous::PeriodicPiece2(){
             nextState = kBlueDriveAway13;
             break;
         case kBlueDriveAway13:
-            if(DriveDirection(5.69, 0, .25, true)) { // need real numbers
+            if(DriveDirection(5.69, 0, .25, false)) { // need real numbers
+                nextState = kBlueTurn13;
+            }
+            break;
+        case kBlueTurn13:
+            if(TurnToAngle(-90)){
                 nextState = kBluePickUp13;
             }
             break;
         case kBluePickUp13:
-            if(TurnToAngle(-90)){
-            if(DriveDirection(.1, 0, .25, true)){
+            if(DriveDirection(.1, 0, .25, false)){
                 //a_Claw->ClawClose();
                 nextState = kGoToGrid13;
             }
-           }
             break;
         case kGoToGrid13:
             if(TurnToAngle(90)){
-            if(DriveDirection(5.69, 180, .25, true)){
+            if(DriveDirection(5.69, 180, .25, false)){
                 nextState = kBlueAutoIdle13;
                 }
             }

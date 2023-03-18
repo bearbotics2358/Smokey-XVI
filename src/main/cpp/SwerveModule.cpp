@@ -63,9 +63,21 @@ double SwerveModule::getRelativeAngle() {
 }
 
 float SwerveModule::getAngle() {
+    if((_CANCoderID + 17) == misc::GetBRCANCoder()) {
+        double position = (m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID]);
+        frc::SmartDashboard::PutNumber("br position", position);
+    }
+    if((_CANCoderID + 17) == misc::GetFRCANCoder()) {
+        double position = (m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID]);
+        frc::SmartDashboard::PutNumber("fr position", position);
+    }
     if((_CANCoderID + 17) == misc::GetBLCANCoder()) {
         double position = (m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID]);
-        //printf("position: %6.2f \n", position);
+        frc::SmartDashboard::PutNumber("bl position", position);
+    }
+    if((_CANCoderID + 17) == misc::GetFLCANCoder()) {
+        double position = (m_CANCoder.GetAbsolutePosition() - CANCODER_OFFSETS[_CANCoderID]);
+        frc::SmartDashboard::PutNumber("fl position", position);
     }
     return misc::clampDegrees(getRelativeAngle() + encZeroPoint);
 }
@@ -96,7 +108,7 @@ void SwerveModule::steerToAng(float degrees) {
 //     // if (_steerID == 5) { 
 //     //     printf("angle: %6.2f    trueangle: %6.2f   ticks: %6.2f  trueticks: %6.2f\n", angle, trueangle, ticks, trueticks); 
 //     // }
-//     steerMotor.Set(TalonFXControlMode::Position, angle);
+//     steerMotor.Set(TalonFXControlMode::Position, angle); LEAVE COMMENTED
 // }
 
 void SwerveModule::setDrivePercent(float percent) {
