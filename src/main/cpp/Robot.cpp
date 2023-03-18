@@ -57,6 +57,12 @@ a_LED(ARDUINO_DIO_PIN)
 
 void Robot::RobotInit() {
     frc::SmartDashboard::init();
+
+#ifndef COMP_BOT
+    // using #ifndef here to indicate when this is the practice bot
+    frc::SmartDashboard::PutString("Bot type", "PRACTICE BOT");
+#endif
+
     a_Gyro.Init();
     a_Gyro.Zero();
 
@@ -73,6 +79,7 @@ void Robot::RobotInit() {
     m_AutoModeSelector.AddOption(RedChargeStationMiddle, RedChargeStationMiddle);
     m_AutoModeSelector.AddOption(RedDropAndGoRight, RedDropAndGoRight);
     m_AutoModeSelector.AddOption(RedChargeStationRight, RedChargeStationRight);
+    m_AutoModeSelector.AddOption(TwoPiece, TwoPiece);
     frc::SmartDashboard::PutData("Auto Modes", &m_AutoModeSelector); 
 
     a_LED.Init();
@@ -310,10 +317,10 @@ void Robot::TeleopPeriodic() {
 
     /* =-=-=-=-=-=-=-=-=-=-= Change Cone/ Cube Mode =-=-=-=-=-=-=-=-=-=-= */
 
-    if(a_OperatorXboxController.GetXButton()) { //can change button later
-        SetTargetType(target_type_enum::CONE);
-    } 
-    else if(a_OperatorXboxController.GetBButton()) { //can change button later
+    if(a_OperatorXboxController.GetPOV() == 0) { //can change button later
+        SetTargetType(target_type_enum::CONE);  //270 is left, 90 is right
+    }                                           //0 is up, 180 is down
+    else if(a_OperatorXboxController.GetPOV() == 180) { //can change button later
         SetTargetType(target_type_enum::CUBE);
     }
 }

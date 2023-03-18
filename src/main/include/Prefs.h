@@ -10,7 +10,15 @@
 // uncomment to enable the new swerve
 //#define NEW_SWERVE
 
+// For the competition bot, this line *MUST* be enabled. For the practice bot, comment out this line.
+#define COMP_BOT
+
+#ifdef COMP_BOT  // The comp bot and the practice bot have some different IDs for various components
 #define GYRO_ID 1
+#else
+#define GYRO_ID 35
+#endif
+
 #define PISTON_PUSH_SOLENOID_MODULE 10
 #define PISTON_PULL_SOLENOID_MODULE 11
 #define CLAW_OPEN_SOLENOID_MODULE 12
@@ -42,10 +50,17 @@ m = number engraved on module
 
 */
 
+#ifdef COMP_BOT  // The comp bot and the practice bot have some different IDs for various components
 #define FL_ID 8
 #define FR_ID 4
 #define BL_ID 5
 #define BR_ID 3
+#else
+#define FL_ID 1
+#define FR_ID 6
+#define BL_ID 7
+#define BR_ID 2
+#endif
 
 
 /*======= ENCODER CONSTANTS =======*/

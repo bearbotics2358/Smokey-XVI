@@ -10,8 +10,8 @@
 class Claw {
     public:
         Claw(int armMotorId, int shuttleMotorId, int pistonPushSolenoidModule, 
-        int pistonPullSolenoidModule, int clawPushSolenoidModule, 
-        int clawPullSolenoidModule, int carriageCANCoder, int limitSwitchId);
+                int pistonPullSolenoidModule, int clawPushSolenoidModule, 
+                int clawPullSolenoidModule, int carriageCANCoder, int limitSwitchId);
         bool TransformClaw(double angle, double shuttle, bool extend);
         void HoldClaw();
         void clawInit();
@@ -39,6 +39,7 @@ class Claw {
         bool IsArmPIDAtSetpoint();
         bool IsShuttlePIDAtSetpoint();
     private:
+#ifdef COMP_BOT  // Not available on the practice bot
         frc::DoubleSolenoid a_Piston;
         frc::DoubleSolenoid a_ClawSolenoid;
         rev::CANSparkMax shuttleMotor;
@@ -55,4 +56,5 @@ class Claw {
 
         frc2::PIDController armPID;
         frc2::PIDController shuttlePID;
+#endif
 };
