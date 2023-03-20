@@ -7,6 +7,25 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <ctre/phoenix/sensors/CANCoder.h>
 
+/* ============= Drive Motor Current Limits ============= */
+
+// the peak supply current, in amps
+constexpr double kDriveMotorTriggerThresholdCurrent = 60.0;
+// the time at the peak supply current before the limit triggers, in seconds
+constexpr double kDriveMotorTriggerThresholdTime = 0.1;
+// the current to maintain if the peak supply limit is triggered
+constexpr double kDriveMotorCurrentLimit = 35.0;
+
+/* ============= Steer Momtor Current Limits ============= */
+
+// the peak supply current, in amps -- Set this lower than the drive motor threshold since the steering motors
+// shouldn't need as much to get into position.
+constexpr double kSteerMotorTriggerThresholdCurrent = 40.0;
+// the time at the peak supply current before the limit triggers, in seconds
+constexpr double kSteerMotorTriggerThresholdTime = 0.1;
+// the current to maintain if the peak supply limit is triggered
+constexpr double kSteerMotorCurrentLimit = 30.0;
+
 SwerveModule::SwerveModule(int driveID, int steerID, int CANCoderID):
 driveMotor(driveID),
 steerMotor(steerID),
@@ -14,8 +33,6 @@ driveEnc(driveMotor),
 steerEncFalcon(steerMotor),
 m_CANCoder(CANCoderID),
 steerPID(0, 0, 0) {
-    // by default this selects the ingetrated sensor
-    ctre::phoenix::motorcontrol::can::TalonFXConfiguration config;
     _steerID = steerID;
     _CANCoderID = CANCoderID - 17;
 
@@ -30,18 +47,34 @@ steerPID(0, 0, 0) {
     m_inversionFactor = -1.0;
 #endif
 
-    // these settings are present in the documentation example, and since they relate to safety of motor, they are probably a good idea to include
-    config.supplyCurrLimit.triggerThresholdCurrent = 40; // the peak supply current, in amps
-    config.supplyCurrLimit.triggerThresholdTime = 1.5; // the time at the peak supply current before the limit triggers, in sec
-    config.supplyCurrLimit.currentLimit = 30; // the current to maintain if the peak supply limit is triggered
+    ctre::phoenix::motorcontrol::can::TalonFXConfiguration drive_config;
 
-    config.velocityMeasurementPeriod = ctre::phoenix::sensors::SensorVelocityMeasPeriod::Period_25Ms;
+    // Current limits for the drive motor to prevent it from drawing too much current and browning out the system
+    drive_config.supplyCurrLimit.triggerThresholdCurrent = kDriveMotorTriggerThresholdCurrent;
+    drive_config.supplyCurrLimit.triggerThresholdTime = kDriveMotorTriggerThresholdTime;
+    drive_config.supplyCurrLimit.currentLimit = kDriveMotorCurrentLimit;
+    drive_config.supplyCurrLimit.enable = true;
+
+    drive_config.velocityMeasurementPeriod = ctre::phoenix::sensors::SensorVelocityMeasPeriod::Period_25Ms;
 
     // this allows the motor to actually turn, pid values are set later
-    config.slot0.kP = 1.0;
+    drive_config.slot0.kP = 1.0;
 
-    driveMotor.ConfigAllSettings(config);
-    steerMotor.ConfigAllSettings(config);
+    driveMotor.ConfigAllSettings(drive_config);
+
+    ctre::phoenix::motorcontrol::can::TalonFXConfiguration steer_config;
+
+    // Current limits for the steer motor to prevent it from drawing too much current and browning out the system
+    steer_config.supplyCurrLimit.triggerThresholdCurrent = kSteerMotorTriggerThresholdCurrent;
+    steer_config.supplyCurrLimit.triggerThresholdTime = kSteerMotorTriggerThresholdTime;
+    steer_config.supplyCurrLimit.currentLimit = kSteerMotorCurrentLimit;
+    steer_config.supplyCurrLimit.enable = true;
+
+    steer_config.velocityMeasurementPeriod = ctre::phoenix::sensors::SensorVelocityMeasPeriod::Period_25Ms;
+
+    // this allows the motor to actually turn, pid values are set later
+    steer_config.slot0.kP = 1.0;
+    steerMotor.ConfigAllSettings(steer_config);
     steerMotor.ConfigNeutralDeadband(0.001);
 
     steerPID.EnableContinuousInput(0.0, 360.0);
