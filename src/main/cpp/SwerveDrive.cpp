@@ -185,7 +185,7 @@ void SwerveDrive::turnToAngle(float angle) {
     brModule.setDrivePercent(speed);
 }
 
-void SwerveDrive::goToTheDon(float speed, float direction, float distance, bool fieldOriented) {
+void SwerveDrive::goToTheDon(float speed, float direction, float distance, bool fieldOriented, bool stop_on_completion) {
     if (getAvgDistance() <= distance) {
         float radians = direction * M_PI / 180.0;
 
@@ -194,7 +194,9 @@ void SwerveDrive::goToTheDon(float speed, float direction, float distance, bool 
 
         crabUpdate(x, y, fieldOriented);
     } else {
-        stop();
+        if(stop_on_completion) {
+            stop();
+        }
     }
 }
 

@@ -105,7 +105,9 @@ class SwerveDrive // Class to handle the kinematics of Swerve Drive
         void turnToAngle(float angle);
 
         // drives at a given speed (units uknown), in a given direction in degrees, for a given distance in meters
-        void goToTheDon(float speed, float direction, float distance, bool fieldOriented = true);
+        // if another call to goToTheDon() will follow this call, suggest setting stop_on_completion false so that
+        // the 'bot will not slam on the brakes once the first run is successful
+        void goToTheDon(float speed, float direction, float distance, bool fieldOriented = true, bool stop_on_completion = true);
 
         // goes to the specified position in meters and the specified angle in degrees at the specified percent speed
         // returns true when it has reached the position and angle

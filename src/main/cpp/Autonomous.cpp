@@ -851,10 +851,14 @@ bool Autonomous::DriveDirection(double dist, double angle, double speed, bool fi
     if (fabs(a_SwerveDrive->getAvgDistance()) < (dist + drivestart)) {
 
         if (a_SwerveDrive->getAvgDistance() > (0.80 * (dist + drivestart))) {
-            a_SwerveDrive->goToTheDon(speed / 2, angle, dist, fieldOriented);
+            // for the second part of the move, drive slower
+            // after the second part of the move, allow goToTheDon() to slam on the brakes
+            a_SwerveDrive->goToTheDon(speed / 2, angle, dist, fieldOriented, true);
 
         } else {
-            a_SwerveDrive->goToTheDon(speed, angle, dist, fieldOriented);
+            // first part of the move, at the user specified speed
+            // after the first part of the move, do not slam on the brakes
+            a_SwerveDrive->goToTheDon(speed, angle, dist, fieldOriented, false);
         }
         return false;
 
