@@ -876,9 +876,10 @@ bool Autonomous::DriveDirection(double dist, double angle, double speed, bool fi
 bool Autonomous::Balance(float direction) {
     a_SwerveDrive->brakeOnStop();
     float currentTime = gettime_d();
-    double tiltAngle = a_Gyro->getPitch();
+    double tiltAngle = a_Gyro->getPitch() - PITCH_OFFSET;
     double percentTilt = tiltAngle / 15;
-    double speed = percentTilt * MAX_CLIMB_PERCENT * MAX_FREE_SPEED;
+    double speed = percentTilt * MAX_FREE_SPEED;
+    startedClimb = true;
     if(startedClimb) {
         a_SwerveDrive->driveDirectionVelocity(speed, direction);
         if(abs(tiltAngle) < 5) {
@@ -886,13 +887,15 @@ bool Autonomous::Balance(float direction) {
         }
         return false;
     }
-    if ((currentTime - startTime > 0.5) && (abs(tiltAngle) < 5) && startedClimb){
+    if ((currentTime - startTime > 1.0) && (abs(tiltAngle) < 5) && startedClimb){
+        StopSwerves();
         return true;
     }
     else{
         a_SwerveDrive->driveDirection(MAX_CLIMB_PERCENT, direction);
         if(abs(tiltAngle) > 5){
             startedClimb = true;
+            a_SwerveDrive->driveDirection(0.2, direction);
         }
         return false;
     }
