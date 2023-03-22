@@ -57,8 +57,11 @@ void Autonomous::StartAuto(const std::string autoMode) {
     else if (autoMode == RobotDoNothing){
         DoNothing();
     }
-    else if(autoMode == TwoPiece){
-        Piece2();
+    else if(autoMode == LeftTwoPiece){
+        LeftPiece2();
+    }
+    else if(autoMode == RightTwoPiece){
+        RightPiece2();
     }
 
     a_AutoSelected = autoMode; 
@@ -104,8 +107,11 @@ void Autonomous::PeriodicAuto(const std::string periodicAutoMode) {
     else if (periodicAutoMode == RobotDoNothing){
         PeriodicDoNothing();
     }
-    else if(periodicAutoMode == TwoPiece){
-        PeriodicPiece2();
+    else if(periodicAutoMode == LeftTwoPiece){
+        LeftPeriodicPiece2();
+    }
+    else if(periodicAutoMode == RightTwoPiece){
+        RightPeriodicPiece2();
     }
 
     a_PeriodicAutoSelected = periodicAutoMode; 
@@ -729,11 +735,11 @@ void Autonomous::PeriodicDoNothing() {
 a_AutoState12 = nextState;
 
 }
-void Autonomous::Piece2() {
+void Autonomous::LeftPiece2() {
     a_AutoState13 = kBlueExtend13;
 }
-void Autonomous::PeriodicPiece2(){
-     AutoState13 nextState = a_AutoState13;
+void Autonomous::LeftPeriodicPiece2(){
+    AutoState13 nextState = a_AutoState13;
 
     switch(a_AutoState13){
         case kBlueAutoIdle13:
@@ -772,7 +778,7 @@ void Autonomous::PeriodicPiece2(){
             }
             break;
         case kBluePickUp13:
-            if(DriveDirection(3, 0, .25, true||a_TOF->GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE)){
+            if(DriveDirection(3, 90, .25, true)||a_TOF->GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE){
                 distance = a_SwerveDrive->getAvgDistance();
                 a_Claw->ClawClose();
                 nextState = kGoBack13;
@@ -780,7 +786,7 @@ void Autonomous::PeriodicPiece2(){
             break;
         case kGoBack13:
         //TODO subtract the distance we need to get to the cube platform
-            if(DriveDirection(distance, 180, .25, true)){
+            if(DriveDirection(distance, -90, .25, true)){
                 nextState = kTurnBack13;
             }
             break;
@@ -803,11 +809,96 @@ void Autonomous::PeriodicPiece2(){
             break;
         case kPlace13:
             a_Claw->ClawOpen();
+            if(gettime_d() > state_time + CLAW_PISTON_TIME){
+            state_time = gettime_d();
+            nextState = kBlueAutoIdle13;
+            }
             break;
     }
    a_AutoState13 = nextState;
 }
+void Autonomous::RightPiece2() {
+    a_AutoState13 = kBlueExtend13;
+}
+void Autonomous::RightPeriodicPiece2(){
+AutoState14 nextState = a_AutoState14;
 
+    switch(a_AutoState14){
+        case kBlueAutoIdle14:
+            StopSwerves();
+            break;
+        case kBlueExtend14:
+            a_Claw->TransformClaw(170, 650, true);
+            if(gettime_d() > state_time + EXTEND_PISTON_TIME){
+            distance = 
+            state_time = gettime_d();
+            nextState = kBlueDrop14;
+            }
+            break;
+        case kBlueDrop14:
+            a_Claw->ClawOpen();
+            if(gettime_d() > state_time + CLAW_PISTON_TIME){
+            state_time = gettime_d();
+            nextState = kBlueRetract14;
+            }
+            break;
+        case kBlueRetract14:
+             a_Claw->TransformClaw(125, -15, false);
+             if(gettime_d() > state_time + EXTEND_PISTON_TIME){
+            state_time = gettime_d();
+            nextState = kBlueDriveAway14;
+             }
+            break;
+        case kBlueDriveAway14:
+            if(DriveDirection(5.69, 0, .25, true)) { // need real numbers
+                nextState = kTurn14;
+            }
+            break;
+        case kTurn14:
+            if(TurnToAngle(90)){
+                nextState = kBluePickUp14;
+            }
+            break;
+        case kBluePickUp14:
+            if(DriveDirection(3, -90, .25, true)||a_TOF->GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE){
+                distance = a_SwerveDrive->getAvgDistance();
+                a_Claw->ClawClose();
+                nextState = kGoBack14;
+            }
+            break;
+        case kGoBack14:
+        //TODO subtract the distance we need to get to the cube platform
+            if(DriveDirection(distance, 90, .25, true)){
+                nextState = kTurnBack14;
+            }
+            break;
+        case kTurnBack14:
+            if(TurnToAngle(-90)){
+                nextState = kGoToGrid14;
+            }
+            break;
+        case kGoToGrid14:
+            if(DriveDirection(5.69, 180, .25, true)){
+                nextState = kBlueAutoIdle14;
+                }
+            
+        case kExtendAgain14:
+            a_Claw->TransformClaw(170, 650, true);
+            if(gettime_d() > state_time + EXTEND_PISTON_TIME){
+            state_time = gettime_d();
+            nextState = kPlace14;
+            }
+            break;
+        case kPlace14:
+            a_Claw->ClawOpen();
+            if(gettime_d() > state_time + CLAW_PISTON_TIME){
+            state_time = gettime_d();
+            nextState = kBlueAutoIdle14;
+            }
+            break;
+    }
+   a_AutoState14 = nextState;
+}
 
 
 void Autonomous::StopSwerves() {

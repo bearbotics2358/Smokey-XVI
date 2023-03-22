@@ -28,7 +28,8 @@ const std::string RedChargeStationMiddle = "Red Charge Station Middle";
 const std::string RedDropAndGoRight = "Red Drop and Go Right";
 const std::string RedChargeStationRight = "Red Charge Station Right";
 const std::string RobotDoNothing = "Sit Still";
-const std::string TwoPiece = "2 Piece"; 
+const std::string LeftTwoPiece = "Left 2 Piece"; 
+const std::string RightTwoPiece = "Right 2 Piece";
 const std::string kAutoModeDefault = RobotDoNothing;
 
 enum AutoState0 { // Encoders
@@ -161,6 +162,20 @@ enum AutoState6 {
         kExtendAgain13,
         kPlace13,
     };
+    enum AutoState14{
+        kBlueAutoIdle14,
+        kBlueExtend14,
+        kBlueDrop14,
+        kBlueRetract14,
+        kBlueDriveAway14,
+        kTurn14,
+        kBluePickUp14,
+        kGoBack14,
+        kTurnBack14,
+        kGoToGrid14,
+        kExtendAgain14,
+        kPlace14,
+    };
 
 
 class Autonomous {
@@ -217,8 +232,11 @@ class Autonomous {
     void DoNothing();
     void PeriodicDoNothing();
 
-    void Piece2();
-    void PeriodicPiece2();
+    void LeftPiece2();
+    void LeftPeriodicPiece2();
+
+    void RightPiece2();
+    void RightPeriodicPiece2();
 
     // ------------------Sub-Routines-------------------------//
 
@@ -259,6 +277,7 @@ private:
     AutoState11 a_AutoState11;
     AutoState12 a_AutoState12;
     AutoState13 a_AutoState13;
+    AutoState14 a_AutoState14;
 
 
    
