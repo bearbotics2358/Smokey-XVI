@@ -125,7 +125,6 @@ void Autonomous::PeriodicAuto(const std::string periodicAutoMode) {
 
 void Autonomous::BDGL() {
     a_AutoState0 = kBlueExtend0;
-
     // reset state time
     state_time = gettime_d();
 }
@@ -195,9 +194,7 @@ void Autonomous::PeriodicBCSL() {
                 state_time = gettime_d();
              nextState = kBlueRetract1;
         }
-            
             break;
-
         case kBlueRetract1:
             a_Claw->TransformClaw(125, -15, false);
             if(gettime_d() > state_time + EXTEND_PISTON_TIME){
@@ -213,14 +210,12 @@ void Autonomous::PeriodicBCSL() {
             break;
 
         case kBlueGoToStation1:
-            if (DriveDirection(2.667, -90, 0.25, true)) {
+            if (DriveDirection(2.667, 90, 0.25, true)) {
                 nextState = kBlueBalance1;
             }
-            //need to actually use drivedirection
             break;
-
         case kBlueBalance1:
-            Balance(-90);
+            Balance(180);
             nextState = kBlueAutoIdle1;
             break;
 
@@ -265,7 +260,6 @@ void Autonomous::PeriodicBDGM() {
             break;
 
         case kBlueDriveAway2:
-            // we might be stuck on the wall, so move to the next state after some time
             if (DriveDirection(4.8768, 0, 0.4, true)) {
                 nextState = kBlueAutoIdle2;
             }
@@ -312,13 +306,11 @@ void Autonomous::PeriodicBCSM() {
         case kBlueDriveAway3:
             if (DriveDirection(3.6576, 0, 0.4, true)) {
                 nextState = kBlueGoToStation3;
-                //need the actual numbers
             }
             break;
         case kBlueGoToStation3:
             if(DriveDirection(.2, 180, .25, true)) {
                 nextState = kBlueBalance3;
-                //need the actual numbers
             }
             break; 
         case kBlueBalance3:
@@ -364,7 +356,6 @@ void Autonomous::PeriodicBDGR() {
              }
             break;
         case kBlueDriveAway4:
-            // need the real drive numbers
             if (DriveDirection(4.8768, 0, 0.3, true)) {
                 nextState = kBlueAutoIdle4;
             }
@@ -415,13 +406,12 @@ void Autonomous::PeriodicBCSR() {
             break;
 
         case kBlueGoToStation5:
-             if (DriveDirection(2.667, 90, 0.25, true)) {
+             if (DriveDirection(2.667, -90, 0.25, true)) {
                 nextState = kBlueBalance5;
             }
             break;
-
         case kBlueBalance5:
-            Balance(90);
+            Balance(180);
             nextState = kBlueAutoIdle5;
             break;
 
@@ -463,7 +453,7 @@ void Autonomous::PeriodicRDGL() {
              }
             break;
         case kRedDriveAway6:
-            if(DriveDirection(4.8768, 0, .3, true)) { // need real numbers
+            if(DriveDirection(4.8768, 0, .3, true)) { 
                 nextState = kRedAutoIdle6;
             }
     }
@@ -510,13 +500,12 @@ void Autonomous::PeriodicRCSL() {
             }
             break;
         case kRedGoToStation7:
-            if (DriveDirection(2.667, -90, 0.25, true)) {
+            if (DriveDirection(2.667, 90, 0.25, true)) {
                 nextState = kRedBalance7;
-                //need the actual numbers
             }
             break; 
         case kRedBalance7:
-            Balance(-90);
+            Balance(180);
             nextState = kRedAutoIdle7;
             break;
     }
@@ -559,7 +548,6 @@ void Autonomous::PeriodicRDGM(){
         case kRedDriveAway8:
          if (DriveDirection(4.8768, 0, 0.4, true)) {
                 nextState = kRedAutoIdle8;
-                //need the actual numbers
             }
             break;
     }
@@ -603,13 +591,13 @@ void Autonomous::PeriodicRCSM() {
             break;
 
         case kRedDriveAway9:
-            if(DriveDirection(3.6576, 0, .4, true)) { // need real numbers please & ty
+            if(DriveDirection(3.6576, 0, .4, true)) { 
                 nextState = kRedGoToStation9;
             }
             break;
             
         case kRedGoToStation9:
-            if(DriveDirection(.2, 180, .25, true)) { // need real numbers please & ty
+            if(DriveDirection(.2, 180, .25, true)) { 
                 nextState = kRedBalance9;
             }
             break;
@@ -658,7 +646,6 @@ void Autonomous::PeriodicRDGR() {
              }
             break;
         case kRedDriveAway10:
-            // need the real drive numbers
             if (DriveDirection(4.8768, 0, 0.25, true)) {
                 nextState = kRedAutoIdle10;
             }
@@ -701,17 +688,17 @@ void Autonomous::PeriodicRCSR() {
              }
             break;
         case kRedDriveAway11:
-            if(DriveDirection(3.6576, 0, .25, true)) { // need real numbers
+            if(DriveDirection(3.6576, 0, .25, true)) { 
                 nextState = kRedGoToStation11;
             }
             break;
         case kRedGoToStation11:
-            if(DriveDirection(2.667, 90, .25,true)) { // need real numbers
+            if(DriveDirection(2.667, -90, .25,true)) { 
                 nextState = kRedBalance11;
-            }//18ft wide by 11 ft 3/8 
+            }
             break;
         case kRedBalance11:
-        Balance(90);
+        Balance(180);
             nextState = kRedAutoIdle11;
             break; 
         
@@ -768,7 +755,7 @@ void Autonomous::LeftPeriodicPiece2(){
              }
             break;
         case kBlueDriveAway13:
-            if(DriveDirection(5.69, 0, .25, true)) { // need real numbers
+            if(DriveDirection(5.69, 0, .25, true)) { 
                 nextState = kTurn13;
             }
             break;
@@ -850,7 +837,7 @@ AutoState14 nextState = a_AutoState14;
              }
             break;
         case kBlueDriveAway14:
-            if(DriveDirection(5.69, 0, .25, true)) { // need real numbers
+            if(DriveDirection(5.69, 0, .25, true)) { 
                 nextState = kTurn14;
             }
             break;
