@@ -149,18 +149,19 @@ enum AutoState6 {
         kIdle
     };
      enum AutoState13{
-        kBlueAutoIdle13,
-        kBlueExtend13,
-        kBlueDrop13,
-        kBlueRetract13,
-        kBlueDriveAway13,
+        kAutoIdle13,
+        kExtend13,
+        kDrop13,
+        kRetract13,
+        kDriveAway13,
         kTurn13,
-        kBluePickUp13,
+        kPickUp13,
         kGoBack13,
         kTurnBack13,
         kGoToGrid13,
         kExtendAgain13,
         kPlace13,
+        kRetractAgain13
     };
     enum AutoState14{
         kBlueAutoIdle14,

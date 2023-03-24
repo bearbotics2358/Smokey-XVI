@@ -224,7 +224,7 @@ void Robot::TeleopPeriodic() {
             a_Claw.TransformClaw(10, -15, false); // arm down pointing downwards from the back
             break;
         case 3:
-            a_Claw.TransformClaw(195, 525, false); // arm at the top, piston off
+            a_Claw.TransformClaw(190, 500, false); // arm at the top, piston off
             break;
         case 4:
             isHighPistonDone = false;
@@ -233,10 +233,10 @@ void Robot::TeleopPeriodic() {
             break;
         case 5:
             if (!isHighPistonDone){
-                bool pistonDone = a_Claw.TransformClaw(160, 525, true);
+                bool pistonDone = a_Claw.TransformClaw(160, 500, true);
                 isHighPistonDone = pistonDone && (Autonomous::gettime_d() > piston_time + 3);
             } else {
-                a_Claw.TransformClaw(195, 525, true); // arm at the top, piston on
+                a_Claw.TransformClaw(185, 500, true); // arm at the top, piston on
             }
             break;
         case 6: {

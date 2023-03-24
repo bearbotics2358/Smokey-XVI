@@ -169,11 +169,22 @@ double Claw::GetShuttlePositionInches() {
 }
 
 bool Claw::IsShuttleSafeToMove(){ // shuttle is safe to move as long as the arm is within a certain range
-    if ((getAngle() > 15) && (getAngle() < 165)) {
-        return true;
+    if (GetShuttlePositionMM() < 480) {
+        if ((getAngle() > 15) && (getAngle() < 165)) {
+            return true;
+        } else {
+            return false;
+        }
+    } else if (GetShuttlePositionMM() < 610) {
+        if ((getAngle() > 15) && (getAngle() < 200)) {
+            return true;
+        } else {
+            return false;
+        }
     } else {
-        return false;
+        return true;
     }
+
 } 
 
 // bool Claw::IsArmSafeToMove(){
@@ -214,7 +225,7 @@ bool Claw::ShuttleHold(){
 bool Claw::ArmMoveTo(double targetPosition) {
 #ifdef COMP_BOT  // Not available on the practice bot
     currentArmAngle = targetPosition;
-    if (GetShuttlePositionMM() < 500) {
+    if (GetShuttlePositionMM() < 480){
         targetPosition = std::clamp(targetPosition, 5.0, 175.0);
     } else if (GetShuttlePositionMM() < 610) {
         targetPosition = std::clamp(targetPosition, 5.0, 200.0);
