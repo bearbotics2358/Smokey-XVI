@@ -24,8 +24,8 @@
 #define CLAW_OPEN_SOLENOID_MODULE 12
 #define CLAW_CLOSE_SOLENOID_MODULE 13
 
-#define EXTEND_PISTON_TIME 0.5
-#define CLAW_PISTON_TIME 0.5
+#define EXTEND_PISTON_TIME 2.0
+#define CLAW_PISTON_TIME 2.0
 
 #define PITCH_OFFSET -2;
 #define SHUTTLE_MOTOR 22
@@ -54,12 +54,12 @@ m = number engraved on module
 #ifdef COMP_BOT  // The comp bot and the practice bot have some different IDs for various components
 #define FL_ID 8
 #define FR_ID 4
-#define BL_ID 5
+#define BL_ID 7
 #define BR_ID 3
 #else
 #define FL_ID 1
 #define FR_ID 6
-#define BL_ID 7
+#define BL_ID 5
 #define BR_ID 2
 #endif
 
@@ -93,13 +93,14 @@ m = number engraved on module
 
 #define CANCODER_OFFSET_1 129.5 - 180
 #define CANCODER_OFFSET_2 115.3 - 180
-#define CANCODER_OFFSET_3 252.9 - 180
+#define CANCODER_OFFSET_3 70.6
 #define CANCODER_OFFSET_4 234.2 - 180
 #define CANCODER_OFFSET_5 42.2 - 180
 #define CANCODER_OFFSET_6 127.4 - 180
-#define CANCODER_OFFSET_7 240.7 - 180
+#define CANCODER_OFFSET_7 278.2 - 180
 #define CANCODER_OFFSET_8 156.8 - 180
 #define CANCODER_OFFSET_ARM -318.17
+
 
 #define CANCODER_ID_1 17
 #define CANCODER_ID_2 18

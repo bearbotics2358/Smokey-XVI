@@ -191,7 +191,7 @@ void Robot::TeleopPeriodic() {
     // frc::SmartDashboard::PutNumber("D value", 0.06 + dChange);
 
     /* =-=-=-=-=-=-=-=-=-=-= Claw Controls =-=-=-=-=-=-=-=-=-=-= */
-    if (a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE && a_DriverXboxController.GetRightTriggerAxis() > 0.5 && clawClosed == false) {
+    if (catchBegin || (a_TOF.GetTargetRangeIndicator() == target_range_enum::TARGET_IN_RANGE && a_DriverXboxController.GetRightTriggerAxis() > 0.5 && clawClosed == false)) {
         a_Claw.ClawClose();
         if(!catchBegin) {
             state_time = Autonomous::gettime_d();
@@ -204,14 +204,16 @@ void Robot::TeleopPeriodic() {
         }
     } 
 
-    if (a_DriverXboxController.GetBButton()){
+    if (a_DriverXboxController.GetYButton()){
         armStage = 1;
-    } else if (a_DriverXboxController.GetYButton()) {
+    } else if (a_DriverXboxController.GetBButton()) {
         armStage = 2;
     } else if (a_OperatorXboxController.GetLeftBumperPressed()) {
         armStage = 3;
     } else if (a_OperatorXboxController.GetRightBumperPressed()) {
         armStage = 4;
+    } else if (a_DriverXboxController.GetAButton()) {
+        armStage = 6;
     }
 
     switch (armStage) {
@@ -222,20 +224,32 @@ void Robot::TeleopPeriodic() {
             a_Claw.TransformClaw(10, -15, false); // arm down pointing downwards from the back
             break;
         case 3:
-            a_Claw.TransformClaw(175, 575, false); // arm at the top, piston off
+            a_Claw.TransformClaw(195, 525, false); // arm at the top, piston off
             break;
         case 4:
             isHighPistonDone = false;
+            piston_time = Autonomous::gettime_d();
             armStage = 5;
             break;
         case 5:
             if (!isHighPistonDone){
-                isHighPistonDone = a_Claw.TransformClaw(160, 575, false);
+                bool pistonDone = a_Claw.TransformClaw(160, 525, true);
+                isHighPistonDone = pistonDone && (Autonomous::gettime_d() > piston_time + 3);
             } else {
-                a_Claw.TransformClaw(190, 575, true); // arm at the top, piston on
+                a_Claw.TransformClaw(195, 525, true); // arm at the top, piston on
             }
             break;
-          default:
+        case 6: {
+            bool transformDone = a_Claw.TransformClaw(160, 640, false);
+            if (transformDone){
+                armStage = 7;
+            }
+            break;
+        }
+        case 7:
+            a_Claw.TransformClaw(300, 640, false); //set point 290 640
+            break;
+        default:
             a_Claw.TransformClaw(130, -15, false); // transport as default state
             break;
     }
@@ -290,7 +304,7 @@ void Robot::TeleopPeriodic() {
 
     float multiplier = 1.0;
     if (a_slowSpeed) {
-        multiplier = 0.125;
+        multiplier = 0.2;
     }
  
     float x = a_DriverXboxController.GetLeftX();

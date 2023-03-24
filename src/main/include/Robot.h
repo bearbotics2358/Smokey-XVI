@@ -90,6 +90,7 @@ class Robot : public frc::TimedRobot {
         LED_DIO a_LED;
 
         double state_time;
+        double piston_time;
         bool catchBegin = false;
 
         // stuff that autonomous needs

@@ -10,21 +10,21 @@
 /* ============= Drive Motor Current Limits ============= */
 
 // the peak supply current, in amps
-constexpr double kDriveMotorTriggerThresholdCurrent = 60.0;
+constexpr double kDriveMotorTriggerThresholdCurrent = 30.0;
 // the time at the peak supply current before the limit triggers, in seconds
 constexpr double kDriveMotorTriggerThresholdTime = 0.1;
 // the current to maintain if the peak supply limit is triggered
-constexpr double kDriveMotorCurrentLimit = 35.0;
+constexpr double kDriveMotorCurrentLimit = 20.0;
 
 /* ============= Steer Momtor Current Limits ============= */
 
 // the peak supply current, in amps -- Set this lower than the drive motor threshold since the steering motors
 // shouldn't need as much to get into position.
-constexpr double kSteerMotorTriggerThresholdCurrent = 40.0;
+constexpr double kSteerMotorTriggerThresholdCurrent = 20.0;
 // the time at the peak supply current before the limit triggers, in seconds
 constexpr double kSteerMotorTriggerThresholdTime = 0.1;
 // the current to maintain if the peak supply limit is triggered
-constexpr double kSteerMotorCurrentLimit = 30.0;
+constexpr double kSteerMotorCurrentLimit = 15.0;
 
 SwerveModule::SwerveModule(int driveID, int steerID, int CANCoderID):
 driveMotor(driveID),

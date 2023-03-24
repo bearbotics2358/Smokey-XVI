@@ -214,10 +214,12 @@ bool Claw::ShuttleHold(){
 bool Claw::ArmMoveTo(double targetPosition) {
 #ifdef COMP_BOT  // Not available on the practice bot
     currentArmAngle = targetPosition;
-    if (GetShuttlePositionMM() < 540) {
+    if (GetShuttlePositionMM() < 500) {
         targetPosition = std::clamp(targetPosition, 5.0, 175.0);
+    } else if (GetShuttlePositionMM() < 610) {
+        targetPosition = std::clamp(targetPosition, 5.0, 200.0);
     } else {
-        targetPosition = std::clamp(targetPosition, 5.0, 270.0);
+        targetPosition = std::clamp(targetPosition, 5.0, 300.0);
     }
     double motorDrive = armPID.Calculate(getAngle(), targetPosition);
     armPID.SetSetpoint(targetPosition);

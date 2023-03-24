@@ -137,28 +137,31 @@ void Autonomous::PeriodicBDGL() {
         case kBlueAutoIdle0:
             StopSwerves();
             break;
-        case kBlueExtend0:
-            a_Claw->TransformClaw(170, 650, true);
-            if(gettime_d() > state_time + EXTEND_PISTON_TIME){
-                state_time = gettime_d();
+         case kBlueExtend0:
+            a_Claw -> ClawClose();
+            // bool shuttleUp = false;
+            if(a_Claw->TransformClaw(170, 650, true)){
+            state_time = gettime_d();
             nextState = kBlueDrop0;
             }
+            // if(gettime_d() > state_time + EXTEND_PISTON_TIME && shuttleUp){
+                   
+            // }
             break;
         case kBlueDrop0:
-            a_Claw->ClawOpen();
-        if(gettime_d() > state_time + CLAW_PISTON_TIME){
+            if(gettime_d() > state_time + EXTEND_PISTON_TIME){
             state_time = gettime_d();
+            a_Claw->ClawOpen();
             nextState = kBlueRetract0;
-        }
+            }
             break;
         case kBlueRetract0:
-             a_Claw->TransformClaw(125, -15, false);
-             if(gettime_d() > state_time + EXTEND_PISTON_TIME){
-                state_time = gettime_d();
+            if(a_Claw->TransformClaw(125, -15, false)) {
             nextState = kBlueDriveAway0;
              }
             break;
         case kBlueDriveAway0:
+            a_Claw->TransformClaw(125, -15, false);
             if (DriveDirection(4.8768, 0, .25, true)) {
                 nextState = kBlueAutoIdle0;
             }
@@ -182,41 +185,46 @@ void Autonomous::PeriodicBCSL() {
             StopSwerves();
             break;
         case kBlueExtend1:
-            a_Claw->TransformClaw(170, 650, true);
-            if(gettime_d() > state_time + EXTEND_PISTON_TIME){
-                state_time = gettime_d();
-             nextState = kBlueDrop1;
+            a_Claw -> ClawClose();
+            // bool shuttleUp = false;
+            if(a_Claw->TransformClaw(170, 650, true)){
+            state_time = gettime_d();
+            nextState = kBlueDrop1;
             }
+            // if(gettime_d() > state_time + EXTEND_PISTON_TIME && shuttleUp){
+                   
+            // }
             break;
         case kBlueDrop1:
-             a_Claw->ClawOpen();
-               if(gettime_d() > state_time + CLAW_PISTON_TIME){
-                state_time = gettime_d();
-             nextState = kBlueRetract1;
-        }
+            if(gettime_d() > state_time + EXTEND_PISTON_TIME){
+            state_time = gettime_d();
+            a_Claw->ClawOpen();
+            nextState = kBlueRetract1;
+            }
             break;
         case kBlueRetract1:
-            a_Claw->TransformClaw(125, -15, false);
-            if(gettime_d() > state_time + EXTEND_PISTON_TIME){
-                state_time = gettime_d();
-             nextState = kBlueDriveAway1;
-            }
+            if(a_Claw->TransformClaw(125, -15, false)) {
+            nextState = kBlueDriveAway1;
+             }
             break;
 
         case kBlueDriveAway1:
-            if (DriveDirection(3.6576, 0, 0.25, true)) {
+            a_Claw->TransformClaw(125, -15, false);
+            if (DriveDirection(3.5052, 0, 0.25, true)) {
                 nextState = kBlueGoToStation1;
             }
             break;
 
         case kBlueGoToStation1:
-            if (DriveDirection(2.667, 90, 0.25, true)) {
+        a_Claw->TransformClaw(125, -15, false);
+            if (DriveDirection(1.9812, 90, 0.25, true)) {
                 nextState = kBlueBalance1;
             }
             break;
         case kBlueBalance1:
-            Balance(180);
-            nextState = kBlueAutoIdle1;
+            if(Balance(180)){
+            nextState = kBlueAutoIdle1;     
+            }
             break;
 
        }
@@ -236,30 +244,32 @@ void Autonomous::PeriodicBDGM() {
        case kBlueAutoIdle2:
             StopSwerves();
             break;
-        case kBlueExtend2:
-            a_Claw->TransformClaw(170, 650, true);
-             if(gettime_d() > state_time + EXTEND_PISTON_TIME){
-             state_time = gettime_d();
-             nextState = kBlueDrop2;
-             }
+         case kBlueExtend2:
+            a_Claw -> ClawClose();
+            // bool shuttleUp = false;
+            if(a_Claw->TransformClaw(170, 650, true)){
+            state_time = gettime_d();
+            nextState = kBlueDrop2;
+            }
+            // if(gettime_d() > state_time + EXTEND_PISTON_TIME && shuttleUp){
+                   
+            // }
             break;
         case kBlueDrop2:
-            a_Claw->ClawOpen();
-            if(gettime_d() > state_time + CLAW_PISTON_TIME){
+            if(gettime_d() > state_time + EXTEND_PISTON_TIME){
             state_time = gettime_d();
-             nextState = kBlueRetract2;
-        }
-            
+            a_Claw->ClawOpen();
+            nextState = kBlueRetract2;
+            }
             break;
         case kBlueRetract2:
-             a_Claw->TransformClaw(125, -15, false);     
-            if(gettime_d() > state_time + EXTEND_PISTON_TIME){
-                state_time = gettime_d();
-             nextState = kBlueDriveAway2;
-            }
+            if(a_Claw->TransformClaw(125, -15, false)) {
+            nextState = kBlueDriveAway2;
+             }
             break;
 
         case kBlueDriveAway2:
+            a_Claw -> TransformClaw(125, -15, false);
             if (DriveDirection(4.8768, 0, 0.4, true)) {
                 nextState = kBlueAutoIdle2;
             }
@@ -283,39 +293,42 @@ void Autonomous::PeriodicBCSM() {
             StopSwerves();
             break;
         case kBlueExtend3:
-            a_Claw->TransformClaw(170, 650, true);
-             if(gettime_d() > state_time + EXTEND_PISTON_TIME){
+            a_Claw -> ClawClose();
+            // bool shuttleUp = false;
+            if(a_Claw->TransformClaw(170, 650, true)){
             state_time = gettime_d();
             nextState = kBlueDrop3;
-             }
+            }
+            // if(gettime_d() > state_time + EXTEND_PISTON_TIME && shuttleUp){
+                   
+            // }
             break;
         case kBlueDrop3:
-            a_Claw->ClawOpen();
-            if(gettime_d() > state_time + CLAW_PISTON_TIME){
+            if(gettime_d() > state_time + EXTEND_PISTON_TIME){
             state_time = gettime_d();
+            a_Claw->ClawOpen();
             nextState = kBlueRetract3;
-        }
+            }
             break;
         case kBlueRetract3:
-            a_Claw->TransformClaw(125, -15, false); 
-             if(gettime_d() > state_time + EXTEND_PISTON_TIME){
-            state_time = gettime_d();
+            if(a_Claw->TransformClaw(125, -15, false)) {
             nextState = kBlueDriveAway3;
              }
             break;
         case kBlueDriveAway3:
-            if (DriveDirection(3.6576, 0, 0.4, true)) {
+            a_Claw->TransformClaw(125, -15, false);
+            if (DriveDirection(3.5052, 0, 0.4, true)) {
                 nextState = kBlueGoToStation3;
             }
             break;
         case kBlueGoToStation3:
-            if(DriveDirection(.2, 180, .25, true)) {
                 nextState = kBlueBalance3;
-            }
             break; 
         case kBlueBalance3:
-            Balance(180);
+            a_Claw->TransformClaw(125, -15, false);
+            if(Balance(180)){
             nextState = kBlueAutoIdle3;
+            }
             break;
     }
     a_AutoState3 = nextState;
@@ -334,28 +347,31 @@ void Autonomous::PeriodicBDGR() {
          case kBlueAutoIdle4:
             StopSwerves();
             break;
-        case kBlueExtend4:
-            a_Claw->TransformClaw(170, 650, true);
-            if(gettime_d() > state_time + EXTEND_PISTON_TIME){
-            state_time = gettime_d();    
+         case kBlueExtend4:
+            a_Claw -> ClawClose();
+            // bool shuttleUp = false;
+            if(a_Claw->TransformClaw(170, 650, true)){
+            state_time = gettime_d();
             nextState = kBlueDrop4;
             }
+            // if(gettime_d() > state_time + EXTEND_PISTON_TIME && shuttleUp){
+                   
+            // }
             break;
         case kBlueDrop4:
-            a_Claw->ClawOpen();
-            if(gettime_d() > state_time + CLAW_PISTON_TIME){
+            if(gettime_d() > state_time + EXTEND_PISTON_TIME){
             state_time = gettime_d();
+            a_Claw->ClawOpen();
             nextState = kBlueRetract4;
-        }
+            }
             break;
         case kBlueRetract4:
-             a_Claw->TransformClaw(125, -15, false);
-             if(gettime_d() > state_time + EXTEND_PISTON_TIME){
-            state_time = gettime_d();
+            if(a_Claw->TransformClaw(125, -15, false)) {
             nextState = kBlueDriveAway4;
              }
             break;
         case kBlueDriveAway4:
+            a_Claw -> TransformClaw(125, -15, false);
             if (DriveDirection(4.8768, 0, 0.3, true)) {
                 nextState = kBlueAutoIdle4;
             }
@@ -377,42 +393,48 @@ void Autonomous::PeriodicBCSR() {
         case kBlueAutoIdle5:
             StopSwerves();
             break;
-        case kBlueExtend5:
-            a_Claw->TransformClaw(170, 650, true);
-            if(gettime_d() > state_time + EXTEND_PISTON_TIME){
+         case kBlueExtend5:
+            a_Claw -> ClawClose();
+            // bool shuttleUp = false;
+            if(a_Claw->TransformClaw(170, 650, true)){
             state_time = gettime_d();
             nextState = kBlueDrop5;
             }
+            // if(gettime_d() > state_time + EXTEND_PISTON_TIME && shuttleUp){
+                   
+            // }
             break;
         case kBlueDrop5:
-            a_Claw->ClawOpen();
-            if(gettime_d() > state_time + CLAW_PISTON_TIME){
-            state_time = gettime_d();
-            nextState = kBlueRetract5;
-        }
-            break;
-        case kBlueRetract5:
-            a_Claw->TransformClaw(125, -15, false);
             if(gettime_d() > state_time + EXTEND_PISTON_TIME){
             state_time = gettime_d();
-            nextState = kBlueDriveAway5;
+            a_Claw->ClawOpen();
+            nextState = kBlueRetract5;
             }
+            break;
+        case kBlueRetract5:
+            if(a_Claw->TransformClaw(125, -15, false)) {
+            nextState = kBlueDriveAway5;
+             }
             break;
 
         case kBlueDriveAway5:
-            if (DriveDirection(3.6576, 0, 0.3, true)) {
+            a_Claw -> TransformClaw(125, -15, false);
+            if (DriveDirection(3.5052, 0, 0.3, true)) {
                 nextState = kBlueGoToStation5;
             }
             break;
 
         case kBlueGoToStation5:
-             if (DriveDirection(2.667, -90, 0.25, true)) {
+             a_Claw -> TransformClaw(125, -15, false);
+             if (DriveDirection(1.9812, -90, 0.25, true)) {
                 nextState = kBlueBalance5;
             }
             break;
         case kBlueBalance5:
-            Balance(180);
-            nextState = kBlueAutoIdle5;
+            a_Claw -> TransformClaw(125, -15, false);
+            if(Balance(180)){
+                nextState = kBlueAutoIdle5;
+            }
             break;
 
     }
@@ -495,18 +517,20 @@ void Autonomous::PeriodicRCSL() {
             }
             break;
         case kRedDriveAway7:
-            if (DriveDirection(3.6576, 0, 0.3, true)) {
+            if (DriveDirection(3.5052, 0, 0.3, true)) {
                 nextState = kRedGoToStation7;
             }
             break;
         case kRedGoToStation7:
-            if (DriveDirection(2.667, 90, 0.25, true)) {
+            if (DriveDirection(1.9812, 90, 0.25, true)) {
                 nextState = kRedBalance7;
             }
             break; 
         case kRedBalance7:
-            Balance(180);
-            nextState = kRedAutoIdle7;
+            if(Balance(180)){
+                 nextState = kRedAutoIdle7;
+            }
+           
             break;
     }
     a_AutoState7 = nextState;
@@ -591,20 +615,19 @@ void Autonomous::PeriodicRCSM() {
             break;
 
         case kRedDriveAway9:
-            if(DriveDirection(3.6576, 0, .4, true)) { 
+            if(DriveDirection(3.5052, 0, .4, true)) { 
                 nextState = kRedGoToStation9;
             }
             break;
             
         case kRedGoToStation9:
-            if(DriveDirection(.2, 180, .25, true)) { 
                 nextState = kRedBalance9;
-            }
             break;
         
         case kRedBalance9:
-           Balance(180);
-           nextState = kRedAutoIdle9;
+           if(Balance(180)){
+            nextState = kRedAutoIdle9;
+           }
             break;
     }   
     a_AutoState9 = nextState;
@@ -688,18 +711,19 @@ void Autonomous::PeriodicRCSR() {
              }
             break;
         case kRedDriveAway11:
-            if(DriveDirection(3.6576, 0, .25, true)) { 
+            if(DriveDirection(3.5052, 0, .25, true)) { 
                 nextState = kRedGoToStation11;
             }
             break;
         case kRedGoToStation11:
-            if(DriveDirection(2.667, -90, .25,true)) { 
+            if(DriveDirection(1.9812, -90, .25,true)) { 
                 nextState = kRedBalance11;
             }
             break;
         case kRedBalance11:
-        Balance(180);
-            nextState = kRedAutoIdle11;
+        if(Balance(180)){
+                nextState = kRedAutoIdle11;
+        } 
             break; 
         
     }
@@ -773,7 +797,7 @@ void Autonomous::LeftPeriodicPiece2(){
             break;
         case kGoBack13:
         //TODO subtract the distance we need to get to the cube platform
-            if(DriveDirection(distance, -90, .25, true)){
+            if(DriveDirection(distance-.47, -90, .25, true)){
                 nextState = kTurnBack13;
             }
             break;
@@ -855,7 +879,7 @@ AutoState14 nextState = a_AutoState14;
             break;
         case kGoBack14:
         //TODO subtract the distance we need to get to the cube platform
-            if(DriveDirection(distance, 90, .25, true)){
+            if(DriveDirection(distance-.47, 90, .25, true)){
                 nextState = kTurnBack14;
             }
             break;

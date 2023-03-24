@@ -11,8 +11,6 @@ class CompressorController {
         void turnOff();
 
     private:
-#ifdef COMP_BOT  // Not available on the practice bot
         frc::Compressor a_Compressor;
-#endif
 
 };
