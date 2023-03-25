@@ -197,13 +197,22 @@ bool Claw::IsShuttleSafeToMove(){ // shuttle is safe to move as long as the arm 
 
 bool Claw::ShuttleMoveToMM(double targetPosition) {
 #ifdef COMP_BOT  // Not available on the practice bot
+    if (getAngle() > 250){
+        targetPosition = std::clamp(targetPosition, 600.0, 650.0);
+    } else if (getAngle() > 165) {
+        targetPosition = std::clamp(targetPosition, 480.0, 650.0);
+    } else {
+        targetPosition = std::clamp(targetPosition, -15.0, 650.0);
+    }
     currentShuttleAngle = targetPosition;
     double motorDrive = shuttlePID.Calculate(GetShuttlePositionMM(), targetPosition);
     shuttlePID.SetSetpoint(targetPosition);
     motorDrive = std::clamp(motorDrive, -1.0, 1.0);
     frc::SmartDashboard::PutNumber("shuttle pid: ", motorDrive);
-    if (IsShuttleSafeToMove()){
+    if (getAngle() > 15){
         shuttleMotor.Set(motorDrive);
+    } else {
+        shuttleMotor.Set(0);
     }
     return shuttlePID.AtSetpoint();
 #else
