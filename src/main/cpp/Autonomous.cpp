@@ -140,7 +140,7 @@ void Autonomous::PeriodicBDGL() {
          case kBlueExtend0:
             a_Claw -> ClawClose();
             // bool shuttleUp = false;
-            if(a_Claw->TransformClaw(170, 510, true)){
+            if(a_Claw -> TransformClaw(160, 500, true)){
                 state_time = gettime_d();
                 nextState = kBlueDrop0;
             }
@@ -149,8 +149,8 @@ void Autonomous::PeriodicBDGL() {
             // }
             break;
         case kBlueDrop0:
-            a_Claw->TransformClaw(195, 510, true);
-            if(gettime_d() > state_time + 3){
+            a_Claw->TransformClaw(185, 500, true);
+            if(gettime_d() > state_time + 6){
                 state_time = gettime_d();
                 a_Claw->ClawOpen();
                 nextState = kBlueRetract0;
