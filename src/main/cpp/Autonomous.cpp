@@ -134,24 +134,24 @@ void Autonomous::PeriodicBDGL() {
             break;
         case kBlueExtend0:
             a_Claw->TransformClaw(170, 650, true);
-            if(gettime_d() > state_time + EXTEND_PISTON_TIME){
-                state_time = gettime_d();
+            //if(gettime_d() > state_time + EXTEND_PISTON_TIME){
+              //  state_time = gettime_d();
             nextState = kBlueDrop0;
-            }
+            //}
             break;
         case kBlueDrop0:
             a_Claw->ClawOpen();
-        if(gettime_d() > state_time + CLAW_PISTON_TIME){
-            state_time = gettime_d();
+        //if(gettime_d() > state_time + CLAW_PISTON_TIME){
+           // state_time = gettime_d();
             nextState = kBlueRetract0;
-        }
+        //}
             break;
         case kBlueRetract0:
              a_Claw->TransformClaw(125, -15, false);
-             if(gettime_d() > state_time + EXTEND_PISTON_TIME){
-                state_time = gettime_d();
-            nextState = kBlueDriveAway0;
-             }
+             //if(gettime_d() > state_time + EXTEND_PISTON_TIME){
+               // state_time = gettime_d();
+             nextState = kBlueAutoIdle0;
+             //}
             break;
         case kBlueDriveAway0:
             if (DriveDirection(4.8768, 0, .25, true)) {

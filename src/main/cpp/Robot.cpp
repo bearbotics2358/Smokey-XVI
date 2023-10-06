@@ -327,7 +327,7 @@ void Robot::TeleopPeriodic() {
     }
 
     if (!inDeadzone) {
-        a_SwerveDrive.swerveUpdate(x, y, z, fieldOreo);
+        a_SwerveDrive.swerveUpdate(x, y, z * 0.5, fieldOreo);
     } else {
         a_SwerveDrive.swerveUpdate(0, 0, 0, fieldOreo);
     }
