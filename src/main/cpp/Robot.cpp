@@ -240,7 +240,7 @@ void Robot::TeleopPeriodic() {
             }
             break;
         case 6: {
-            bool transformDone = a_Claw.TransformClaw(160, 640, false);
+            bool transformDone = a_Claw.TransformClaw(60, 640, false);
             if (transformDone){
                 armStage = 7;
             }
@@ -294,13 +294,13 @@ void Robot::TeleopPeriodic() {
     } else  {
         a_slowSpeed = false;
     }
-    if(a_DriverXboxController.GetPOV() == 270){
-        a_FLModule.steerToAng(90);
-        a_FRModule.steerToAng(90);
-        a_BLModule.steerToAng(90); 
-        a_BRModule.steerToAng(90);
+    // if(a_DriverXboxController.GetPOV() == 270){
+    //     a_FLModule.steerToAng(90);
+    //     a_FRModule.steerToAng(90);
+    //     a_BLModule.steerToAng(90); 
+    //     a_BRModule.steerToAng(90);
 
-    }
+    // }
 
     float multiplier = 1.0;
     if (a_slowSpeed) {

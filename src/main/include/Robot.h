@@ -93,6 +93,8 @@ class Robot : public frc::TimedRobot {
         double piston_time;
         bool catchBegin = false;
 
+        int count;
+
         // stuff that autonomous needs
         
         double pChange;
